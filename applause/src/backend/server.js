@@ -28,6 +28,6 @@ req.end(function (res) {
     console.log(yes);
 });
 
-app.post('/search', function (req,res) {
+app.post('/searchserver', function (req,res) {
 
 });
