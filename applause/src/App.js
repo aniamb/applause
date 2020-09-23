@@ -15,6 +15,10 @@ function App () {
       <BrowserRouter>
         <Switch>
             <Route path="/feed" component={Feed}/>
+            <Route render= {() =>
+                // <Timeline />
+                <Feed />
+            }/>
         </Switch>
       </BrowserRouter>
     </div>
