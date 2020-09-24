@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import './CreateAccount.css';
+import axios from 'axios'
 
 
 
@@ -13,7 +14,6 @@ class CreateAccount extends React.Component{
         email: '',
         password: '',
         passwordConfirm: '',
-        handle: '',
         isSubmitted: false,
         isRedirect: null,
         //receivedRequest: false
@@ -38,12 +38,33 @@ handlePasswordConfirmChange(event) {
 handleHandleChange(event) {
   this.setState({handle: event.target.value})
 } 
+handleSubmit(event){
+  const { password, passwordConfirm } = this.state
+  event.preventDefault();
+  event.target.reset();
+  const registerInfo = {firstname: this.state.firstname, lastname: this.state.lastname, email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm}
+  if(password !== passwordConfirm){
+      alert("Passwords don't match");
+  }else{
+      axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
+          console.log(this.state.firstname);
+          localStorage.setItem("currentUser", response.data);
+          console.log('create account success');
+          this.setState({isRedirect: true})
+      })
+       .catch((err)=> {
+           this.setState({isRedirect: false});
+           console.log('create account fail');
+           alert("Email or handle already in use");
+       })
+      }
+}
 render() {
   return (
     <div className="CreateAccount">
             <div className="inputBox">
                 <p> create an account </p>
-                <form>
+                <form onSubmit={this.handleSubmit.bind(this)}>
                         <input className="inputCreate" type="text" name="firstname" placeholder="first name" value={this.state.firstname}
                             onChange={this.handleFirstNameChange.bind(this)} required/><br></br>
                         <br></br>
@@ -64,7 +85,7 @@ render() {
                 <br/>
                 <NavLink to="/login">existing user?</NavLink><br></br>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/editprofile'
+                    pathname: '/login'
                 }}/>}
             </div>
         </div>
