@@ -19,8 +19,21 @@ class Feed extends Component {
       }
     
     handleSubmit(event) {
-        alert('Search Value was: ' + this.state.value);
+        //alert('Search Value was: ' + this.state.value);
         event.preventDefault();
+        axios.post('http://localhost:3000/searchserver', {searchTerm : this.state.value}).then(response=>{
+            console.log('Search is complete')
+
+            // fetch for response here
+            // console.log(response.data.results);
+            // this.setState({data: this.state.data.concat([response.data.results])})
+
+            // this.setState({navigate: true});
+        }).catch((err)=>{
+            console.log("Search function failed");
+            this.setState({navigate: false});
+        })
+
     }
 
     render () {
