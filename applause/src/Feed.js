@@ -7,26 +7,33 @@ class Feed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            searchTerm:''
+            value:''
         }
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    updateSearch = (search) => {
-        this.setState({ search });
-      };
+    handleChange(event) {
+        this.setState({value: event.target.value});
+      }
+    
+      handleSubmit(event) {
+        alert('A name was submitted: ' + this.state.value);
+        event.preventDefault();
+      }
 
     render () {
         const { search } = this.state;
 
         return (
             <div>
-                <h1>yuh</h1>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <label>
-                        Search:
-                        <input type="text" name="name" />
+                        Search for Music: 
+                        <input type="text" placeholder = "Text Here..." name="name" value={this.state.value} onChange={this.handleChange}/>
                     </label>
-                    <input type="submit" value="Submit" />
+                    <input type="submit" value="Search" />
                 </form>
             </div>
 
