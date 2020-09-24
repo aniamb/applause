@@ -18,10 +18,10 @@ class Feed extends Component {
         this.setState({value: event.target.value});
       }
     
-      handleSubmit(event) {
-        alert('A name was submitted: ' + this.state.value);
+    handleSubmit(event) {
+        alert('Search Value was: ' + this.state.value);
         event.preventDefault();
-      }
+    }
 
     render () {
         const { search } = this.state;
