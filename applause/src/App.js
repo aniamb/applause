@@ -1,7 +1,7 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, NavLink, Redirect } from 'react-router-dom';
 import './App.css';
-import Feed from './Feed';
+import Feed from './Feed.js';
 
 function App () {
 
@@ -16,7 +16,6 @@ function App () {
         <Switch>
             <Route path="/feed" component={Feed}/>
             <Route render= {() =>
-                // <Timeline />
                 <Feed />
             }/>
         </Switch>
