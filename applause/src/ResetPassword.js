@@ -3,7 +3,7 @@ import { NavLink, Redirect} from 'react-router-dom'
 import './Login.css';
 import axios from 'axios'
 
-class Login extends React.Component{
+class ResetPassword extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -17,9 +17,6 @@ class Login extends React.Component{
 
 handleEmailChange(event) {
   this.setState({email: event.target.value})
-}
-handlePasswordChange(event) {
-  this.setState({password: event.target.value})
 }
 
 handleSubmit(event){
@@ -39,23 +36,18 @@ handleSubmit(event){
  
 render() {
   return (
-    <div className="CreateAccount">
+    <div className="ResetPassword">
             <div className="inputBox">
-                <p> welcome back </p>
+                <p> reset password </p>
                 <form onSubmit = {this.handleSubmit.bind(this)}>
                         <input className="inputLogin" type="email" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
-                        <input className="inputLogin" type="password" name="password" placeholder="password" value={this.state.password}
-                            onChange={this.handlePasswordChange.bind(this)} required/><br></br>
                         <br></br>
-                        <br></br>
-                        <br></br>
-                    <input className="submitButtonLogin" type="submit" value="login"/><br></br>
+                    <input className="submitButtonLogin" type="submit" value="reset"/><br></br>
                 </form>
                 <br/>
-                <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
-                <NavLink to="/createaccount">new user?</NavLink><br></br>
+                <NavLink to="/login">back to login</NavLink><br></br>
                 {this.state.isRedirect && <Redirect to={{
                     pathname: '/'
                 }}/>}
@@ -66,4 +58,4 @@ render() {
 }
 
 }
-export default Login;
+export default ResetPassword;
