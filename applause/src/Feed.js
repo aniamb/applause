@@ -19,16 +19,11 @@ class Feed extends Component {
       }
     
     handleSubmit(event) {
-        //alert('Search Value was: ' + this.state.value);
+        alert('Search Value was: ' + this.state.value);
         event.preventDefault();
-        axios.post('http://localhost:3000/searchserver', {searchTerm : this.state.value}).then(response=>{
-            console.log('Search is complete')
+        axios.post('/searchserver', {value : this.state.value}).then(response=>{
+           console.log('Search is complete')
 
-            // fetch for response here
-            // console.log(response.data.results);
-            // this.setState({data: this.state.data.concat([response.data.results])})
-
-            // this.setState({navigate: true});
         }).catch((err)=>{
             console.log("Search function failed");
             this.setState({navigate: false});
@@ -41,10 +36,10 @@ class Feed extends Component {
 
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={this.handleSubmit.bind(this)}>
                     <label>
                         Search for Music: 
-                        <input type="text" placeholder = "Text Here..." name="name" value={this.state.value} onChange={this.handleChange}/>
+                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)}/>
                     </label>
                     <input type="submit" value="Search" />
                 </form>

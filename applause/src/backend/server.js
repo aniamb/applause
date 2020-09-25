@@ -30,4 +30,5 @@ req.end(function (res) {
 
 app.post('/searchserver', function (req,res) {
 	console.log(req.body);
+	console.log(res.body);
 });
