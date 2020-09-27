@@ -19,20 +19,26 @@ class Feed extends Component {
       }
     
     handleSubmit(event) {
-        alert('Search Value was: ' + this.state.value);
+    //#alert('Search Value was: ' + this.state.value);
+
+        const { search } = this.state; 
         event.preventDefault();
-        axios.post('/searchserver', {value : this.state.value}).then(response=>{
-           console.log('Search is complete')
-
-        }).catch((err)=>{
-            console.log("Search function failed");
-            this.setState({navigate: false});
+  
+        console.log("ok");
+        axios.post('http://localhost:5000/searchserver', {
+            value: this.state.value
         })
-
+        .then(res => {
+            console.log(`statusCode: ${res.statusCode}`)
+            console.log(res)
+        })
+        .catch(error => {
+            console.error(error)
+        })
     }
 
+
     render () {
-        const { search } = this.state;
 
         return (
             <div>

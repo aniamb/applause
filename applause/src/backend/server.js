@@ -1,7 +1,14 @@
 
 const express = require('express');
+const bodyParser = require("body-parser");
+const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded());
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -21,14 +28,15 @@ req.headers({
 });
 
 
-req.end(function (res) {
-	if (res.error) throw new Error(res.error);
-    console.log("hi");
-    var yes = res.body;
-    console.log(yes);
-});
+// req.end(function (res) {
+// 	if (res.error) throw new Error(res.error);
+//     console.log("hi");
+//     var yes = res.body;
+//     console.log(yes);
+// });
 
 app.post('/searchserver', function (req,res) {
 	console.log(req.body);
-	console.log(res.body);
+    res.status(200);
+    res.end();
 });
