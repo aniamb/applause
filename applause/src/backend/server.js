@@ -16,6 +16,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
+//var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
 
 var searchTerm;
 
@@ -25,6 +26,7 @@ api.headers({
 	"useQueryString": true
 });
 
+//searches API for artist/album
 app.post('/searchserver', function (req,res) {
 	console.log(req.body);
 	searchTerm = (req.body.value);
@@ -32,15 +34,27 @@ app.post('/searchserver', function (req,res) {
 	res.status(200);
 
 	if (searchTerm) {
-		console.log("printing out artist info");
 		api.query({
 			"q": searchTerm
 		});
 		
 		api.end(function (res) {
 			if (res.error) throw new Error(res.error);
-			var yes = res.body;
-			console.log(yes);
+
+			var i;
+			console.log(res.body.data.length);
+			for (i = 0; i < res.body.data.length; i++) {
+				var albumId = "Album Id:" + res.body.data[i].album.id;
+				var albumTitle = "Album Title:" + res.body.data[i].album.title;
+				var artist = "Artist:" + res.body.data[i].artist.name;
+				
+				if (i==0 || (res.body.data[i-1].album.id != res.body.data[i].album.id )) {
+					console.log(albumId);
+					console.log(albumTitle);
+					console.log(artist);
+					console.log(" ");
+				}
+			}
 		});
 	}
 
