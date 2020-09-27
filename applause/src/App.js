@@ -1,8 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
-import CreateAccount from './CreateAccount'
-import Login from './Login'
 
 
 function App () {
@@ -14,16 +11,6 @@ function App () {
            applause
             </div>
       </div>
-      <BrowserRouter>
-        <Switch>
-            <Route path="/createaccount" component={CreateAccount}/>
-            <Route path="/login" component={Login}/>
-            <Route render= {() =>
-                // <Timeline />
-                <CreateAccount />
-            }/>
-        </Switch>
-      </BrowserRouter>
     </div>
   );
 }
