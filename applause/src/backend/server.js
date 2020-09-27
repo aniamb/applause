@@ -15,28 +15,38 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 var unirest = require("unirest");
 
-var req = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
+var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 
-req.query({
-	"q": "harry styles"
-});
+var searchTerm;
 
-req.headers({
+api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
 
-
-// req.end(function (res) {
-// 	if (res.error) throw new Error(res.error);
-//     console.log("hi");
-//     var yes = res.body;
-//     console.log(yes);
-// });
-
 app.post('/searchserver', function (req,res) {
 	console.log(req.body);
-    res.status(200);
+	searchTerm = (req.body.value);
+	console.log(searchTerm);
+	res.status(200);
+
+	if (searchTerm) {
+		console.log("printing out artist info");
+		api.query({
+			"q": searchTerm
+		});
+		
+		api.end(function (res) {
+			if (res.error) throw new Error(res.error);
+			var yes = res.body;
+			console.log(yes);
+		});
+	}
+
     res.end();
 });
+
+console.log(searchTerm);
+
+
