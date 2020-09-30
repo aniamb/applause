@@ -16,8 +16,10 @@ class CreateAccount extends React.Component{
         passwordConfirm: '',
         isSubmitted: false,
         isRedirect: null,
-        //receivedRequest: false
     }
+}
+componentDidMount(){
+  localStorage.clear();
 }
 
 handleFirstNameChange(event) {
@@ -55,7 +57,7 @@ handleSubmit(event){
        .catch((err)=> {
            this.setState({isRedirect: false});
            console.log('create account fail');
-           alert("Email or handle already in use");
+           alert("Email already in use");
        })
       }
 }

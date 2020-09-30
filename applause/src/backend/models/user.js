@@ -9,7 +9,7 @@ let User = new mongoose.Schema({
         type: String,
         required: true
     },
-    username: {
+    email: {
         type: String,
         required: true
     },
@@ -17,14 +17,17 @@ let User = new mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String
+    },
     reviews: {
         type: [String]
     },
     followers: {
-        type: [User]
+        type: [String]
     },
     following: {
-        type: [User]
+        type: [String]
     },
     favorites: {
         type: [String]
@@ -34,3 +37,5 @@ let User = new mongoose.Schema({
     }
 
 });
+var userModel = mongoose.model('User', User);
+module.exports = userModel;

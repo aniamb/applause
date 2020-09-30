@@ -15,6 +15,9 @@ class Login extends React.Component{
         }
     }
 
+componentDidMount(){
+    localStorage.clear();
+}
 handleEmailChange(event) {
   this.setState({email: event.target.value})
 }
@@ -33,13 +36,14 @@ handleSubmit(event){
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            alert('Invalid Email/Password');
+            console.log(err);
+            alert(err.response.data.message);
         })
 };
  
 render() {
   return (
-    <div className="CreateAccount">
+    <div className="Login">
             <div className="inputBox">
                 <p> welcome back </p>
                 <form onSubmit = {this.handleSubmit.bind(this)}>
@@ -57,7 +61,7 @@ render() {
                 <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
                 <NavLink to="/createaccount">new user?</NavLink><br></br>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/'
+                    pathname: '/resetpassword'
                 }}/>}
             </div>
         </div>
