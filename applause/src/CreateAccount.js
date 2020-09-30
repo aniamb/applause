@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
+import PasswordStrengthBar from 'react-password-strength-bar'
 import './CreateAccount.css';
 import axios from 'axios'
 
@@ -57,11 +58,17 @@ handleSubmit(event){
        .catch((err)=> {
            this.setState({isRedirect: false});
            console.log('create account fail');
-           alert("Email already in use");
+           alert(err.response.data.message);
        })
       }
 }
 render() {
+  const styles = {
+    scoreWord: {
+      fontSize: 15,
+      color: "rgb(82,82,82)",
+    }
+  };
   return (
     <div className="CreateAccount">
             <div className="inputBox">
@@ -78,7 +85,13 @@ render() {
                         <br></br>
                         <input className="inputCreate" type="password" name="password" placeholder="password" value={this.state.password}
                             onChange={this.handlePasswordChange.bind(this)} required/><br></br>
-                        <br></br>
+                        <PasswordStrengthBar 
+                            className = "passwordbar"
+                            password={this.state.password}
+                            minLength={5}
+                            scoreWordStyle = {styles.scoreWord}
+                            barColors = {['#d1d1d1','#db2a33', '#f58c3b', '#177cfe', '#25943f' ]}/>
+                             
                         <input className="inputCreate" type="password" name="passwordConfirm" placeholder = "confirm password" value={this.state.passwordConfirm}
                             onChange={this.handlePasswordConfirmChange.bind(this)} required/><br></br>
                         <br></br>

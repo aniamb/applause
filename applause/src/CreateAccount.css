@@ -4,6 +4,8 @@
 }
 p{
     font-size: 25px;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 .inputBox{
     background-color:rgb(119,205,195);
@@ -21,7 +23,15 @@ p{
     height: 21px;
     border: none;
     width: 50%;
-}  
+} 
+
+.passwordbar {
+    width: 50%;
+    margin: 0 auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
 .submitButton{
     width: 125px;
     border-radius: 25px;

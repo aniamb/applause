@@ -39,7 +39,7 @@ app.post('/createaccount', function(req, res) {
             if(user){
             //user with email/handle exists
             console.log('email or handle already in use');
-            res.status(400).send('Email or handle already in use');
+            res.status(400).send('Email In Use');
             res.end();
          }else{
             //user unique ->add to db
