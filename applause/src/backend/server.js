@@ -85,3 +85,22 @@ app.post('/createaccount', function(req, res) {
   })
  });
 
+ app.post('/resetpassword', function(req, res, err) {
+   User.findOne({
+      'email': req.body.email }, function(err, user) {
+      if (user) {
+          //email exists
+            console.log('user found successfully');
+            res.status(200).send(user.email);
+            res.end();
+      } else {
+          // user does not exist
+          console.log('user not in base');
+          res.status(400).send({
+            message: 'There is No Account With This Email'});
+         res.end();
+      }
+  })
+ });
+
+

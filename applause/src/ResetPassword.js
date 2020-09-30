@@ -14,6 +14,9 @@ class ResetPassword extends React.Component{
             receivedRequest: false
         }
     }
+componentDidMount(){
+    localStorage.clear();
+}
 
 handleEmailChange(event) {
   this.setState({email: event.target.value})
@@ -23,14 +26,16 @@ handleSubmit(event){
     event.preventDefault();
     event.target.reset();
     this.setState({receivedRequest: true});
-    const loginInfo = {email: this.state.email, password:this.state.password};
-    axios.post('http://localhost:5000/login', loginInfo).then(response=> {
+    const resetemail = {email: this.state.email};
+    axios.post('http://localhost:5000/resetpassword', resetemail).then(response=> {
             localStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
+            console.log("user exists");
+            alert('Found User Account')
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            alert('Invalid Email/Password');
+            alert(err.response.data.message);
         })
 };
  
