@@ -11,7 +11,8 @@ class Login extends React.Component{
             password:'',
             isSubmitted: false,
             isRedirect: null,
-            receivedRequest: false
+            receivedRequest: false,
+            errorMessage: '',
         }
     }
 
@@ -37,7 +38,7 @@ handleSubmit(event){
         .catch((err)=> {
             this.setState({isRedirect: false});
             console.log(err);
-            alert(err.response.data.message);
+            this.setState({errorMessage: err.response.data.message});
         })
 };
  
@@ -53,8 +54,8 @@ render() {
                         <input className="inputLogin" type="password" name="password" placeholder="password" value={this.state.password}
                             onChange={this.handlePasswordChange.bind(this)} required/><br></br>
                         <br></br>
-                        <br></br>
-                        <br></br>
+                       
+                        { this.state.errorMessage && <h5 className="error" style={{marginTop: "0", color: "red"}}> { this.state.errorMessage } </h5> }
                     <input className="submitButtonLogin" type="submit" value="login"/><br></br>
                 </form>
                 <br/>

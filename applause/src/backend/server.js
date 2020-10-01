@@ -38,8 +38,10 @@ app.post('/createaccount', function(req, res) {
          {'email' : req.body.email}]}).exec(function (err, user){
             if(user){
             //user with email/handle exists
-            console.log('email or handle already in use');
-            res.status(400).send('Email In Use');
+            console.log('email already in use');
+            res.status(400).send({
+               message: 'Email In Use'
+            });
             res.end();
          }else{
             //user unique ->add to db
@@ -70,7 +72,7 @@ app.post('/createaccount', function(req, res) {
               // Passwords don't match
               console.log('password mismatch');
               res.status(400).send({
-               message: 'Password Does Not Match'
+               message: 'Password Does Not Match Existing User'
             });
               res.end();
           }

@@ -11,7 +11,8 @@ class ResetPassword extends React.Component{
             password:'',
             isSubmitted: false,
             isRedirect: null,
-            receivedRequest: false
+            receivedRequest: false,
+            errorMessage: ''
         }
     }
 componentDidMount(){
@@ -35,7 +36,8 @@ handleSubmit(event){
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            alert(err.response.data.message);
+            // alert(err.response.data.message);
+            this.setState({errorMessage: err.response.data.message});
         })
 };
  
@@ -48,7 +50,7 @@ render() {
                         <input className="inputLogin" type="email" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
-                        <br></br>
+                    {this.state.errorMessage && <h5 className="error" style={{marginTop: "0", color: "red"}}> { this.state.errorMessage } </h5>}
                     <input className="submitButtonLogin" type="submit" value="reset"/><br></br>
                 </form>
                 <br/>

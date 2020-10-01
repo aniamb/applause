@@ -17,6 +17,7 @@ class CreateAccount extends React.Component{
         passwordConfirm: '',
         isSubmitted: false,
         isRedirect: null,
+        errorMessage: ''
     }
 }
 componentDidMount(){
@@ -47,7 +48,8 @@ handleSubmit(event){
   event.target.reset();
   const registerInfo = {firstname: this.state.firstname, lastname: this.state.lastname, email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm}
   if(password !== passwordConfirm){
-      alert("Passwords don't match");
+      //alert("Passwords don't match");
+      this.setState({errorMessage: "Passwords Don't Match"});
   }else{
       axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
           console.log(this.state.firstname);
@@ -58,7 +60,9 @@ handleSubmit(event){
        .catch((err)=> {
            this.setState({isRedirect: false});
            console.log('create account fail');
-           alert(err.response.data.message);
+           //alert(err.response.data.message);
+           console.log(err.response.data.message)
+           this.setState({errorMessage: err.response.data.message});
        })
       }
 }
@@ -94,11 +98,11 @@ render() {
                              
                         <input className="inputCreate" type="password" name="passwordConfirm" placeholder = "confirm password" value={this.state.passwordConfirm}
                             onChange={this.handlePasswordConfirmChange.bind(this)} required/><br></br>
-                        <br></br>
+                        {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <input className="submitButton" type="submit" value="create account"/><br></br>
                 </form>
-                <br/>
-                <NavLink to="/login">existing user?</NavLink><br></br>
+        
+                <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
                 {this.state.isRedirect && <Redirect to={{
                     pathname: '/login'
                 }}/>}
