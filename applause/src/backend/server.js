@@ -50,6 +50,7 @@ app.post('/createaccount', function(req, res) {
             lastname: req.body.lastname,
             email: req.body.email,
             password: hash,
+            bio: "bio check",
             })
            res.status(200).send(req.body.email);
            res.end();
