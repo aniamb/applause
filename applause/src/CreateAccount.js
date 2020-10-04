@@ -3,6 +3,7 @@ import { NavLink, Redirect} from 'react-router-dom'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import './CreateAccount.css';
 import axios from 'axios'
+import validator from 'validator';
 
 
 
@@ -31,7 +32,7 @@ handleLastNameChange(event) {
   this.setState({lastname: event.target.value})
 }
 handleEmailChange(event) {
-  this.setState({email: event.target.value})
+    this.setState({email: event.target.value})
 }
 handlePasswordChange(event) {
   this.setState({password: event.target.value})
@@ -47,7 +48,9 @@ handleSubmit(event){
   event.preventDefault();
   event.target.reset();
   const registerInfo = {firstname: this.state.firstname, lastname: this.state.lastname, email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm}
-  if(password !== passwordConfirm){
+  if(!validator.isEmail(this.state.email)){
+    this.setState({errorMessage: "Email Format is Incorrect"});
+  }else if(password !== passwordConfirm){
       //alert("Passwords don't match");
       this.setState({errorMessage: "Passwords Don't Match"});
   }else{
@@ -84,7 +87,7 @@ render() {
                         <input className="inputCreate" type="text" name="lastname" placeholder="last name" value={this.state.lastname}
                             onChange={this.handleLastNameChange.bind(this)} required/><br></br>
                         <br></br>
-                        <input className="inputCreate" type="email" name="email" placeholder ="email" value={this.state.email}
+                        <input className="inputCreate" type="text" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
                         <input className="inputCreate" type="password" name="password" placeholder="password" value={this.state.password}
@@ -92,7 +95,7 @@ render() {
                         <PasswordStrengthBar 
                             className = "passwordbar"
                             password={this.state.password}
-                            minLength={5}
+                            minLength={2}
                             scoreWordStyle = {styles.scoreWord}
                             barColors = {['#d1d1d1','#db2a33', '#f58c3b', '#177cfe', '#25943f' ]}/>
                              

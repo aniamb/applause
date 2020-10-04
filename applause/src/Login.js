@@ -2,6 +2,8 @@ import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import './Login.css';
 import axios from 'axios'
+import validator from 'validator'
+
 
 class Login extends React.Component{
     constructor(props) {
@@ -31,7 +33,10 @@ handleSubmit(event){
     event.target.reset();
     this.setState({receivedRequest: true});
     const loginInfo = {email: this.state.email, password:this.state.password};
-    axios.post('http://localhost:5000/login', loginInfo).then(response=> {
+    if(!validator.isEmail(this.state.email)){
+        this.setState({errorMessage: "Email Format is Incorrect"});
+    } else { 
+        axios.post('http://localhost:5000/login', loginInfo).then(response=> {
             localStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
         })
@@ -40,6 +45,7 @@ handleSubmit(event){
             console.log(err);
             this.setState({errorMessage: err.response.data.message});
         })
+    }
 };
  
 render() {
@@ -48,7 +54,7 @@ render() {
             <div className="inputBox">
                 <p> welcome back </p>
                 <form onSubmit = {this.handleSubmit.bind(this)}>
-                        <input className="inputLogin" type="email" name="email" placeholder ="email" value={this.state.email}
+                        <input className="inputLogin" type="text" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
                         <input className="inputLogin" type="password" name="password" placeholder="password" value={this.state.password}
