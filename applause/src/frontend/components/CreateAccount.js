@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import PasswordStrengthBar from 'react-password-strength-bar'
-import './CreateAccount.css';
+import '../css/CreateAccount.css';
 import axios from 'axios'
 
 
@@ -12,6 +12,7 @@ class CreateAccount extends React.Component{
     this.state = {
         firstname: '',
         lastname: '',
+        handle: '',
         email: '',
         password: '',
         passwordConfirm: '',
@@ -46,13 +47,13 @@ handleSubmit(event){
   const { password, passwordConfirm } = this.state
   event.preventDefault();
   event.target.reset();
-  const registerInfo = {firstname: this.state.firstname, lastname: this.state.lastname, email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm}
+  const registerInfo = {firstname: this.state.firstname, lastname: this.state.lastname, email: this.state.email, password: this.state.password, passwordConfirm: this.state.passwordConfirm, handle: this.state.handle}
   if(password !== passwordConfirm){
       //alert("Passwords don't match");
       this.setState({errorMessage: "Passwords Don't Match"});
   }else{
       axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
-          console.log(this.state.firstname);
+          console.log(registerInfo.firstname);
           localStorage.setItem("currentUser", response.data);
           console.log('create account success');
           this.setState({isRedirect: true})
@@ -84,6 +85,9 @@ render() {
                         <input className="inputCreate" type="text" name="lastname" placeholder="last name" value={this.state.lastname}
                             onChange={this.handleLastNameChange.bind(this)} required/><br></br>
                         <br></br>
+                        <input className="inputCreate" type="text" name="handle" placeholder ="handle" value={this.state.handle}
+                            onChange={this.handleHandleChange.bind(this)} required/><br></br>
+                        <br></br>
                         <input className="inputCreate" type="email" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
@@ -104,7 +108,7 @@ render() {
         
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/login'
+                    pathname: '/profile'
                 }}/>}
             </div>
         </div>

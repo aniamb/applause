@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import './Login.css';
+import '../css/Login.css';
 import axios from 'axios'
 
 class Login extends React.Component{
@@ -32,12 +32,15 @@ handleSubmit(event){
     this.setState({receivedRequest: true});
     const loginInfo = {email: this.state.email, password:this.state.password};
     axios.post('http://localhost:5000/login', loginInfo).then(response=> {
-            localStorage.setItem("currentUser", response.data);
+            console.log(response.data.firstname);
+            localStorage.setItem("currentUser", response.data.handle);
+            console.log(response.data.handle);
+            console.log('login account success');
             this.setState({isRedirect: true});
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            console.log(err);
+            console.log("err:\t", err);
             this.setState({errorMessage: err.response.data.message});
         })
 };
@@ -62,7 +65,7 @@ render() {
                 <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
                 <NavLink to="/createaccount">new user?</NavLink><br></br>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/resetpassword'
+                    pathname: '/profile'
                 }}/>}
             </div>
         </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import './Login.css';
+import '../css/Login.css';
 import axios from 'axios'
 
 class ResetPassword extends React.Component{

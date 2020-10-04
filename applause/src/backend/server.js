@@ -1,4 +1,3 @@
-
 const express = require('express');
 const bodyParser = require("body-parser");
 const cors = require('cors');
@@ -19,7 +18,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 mongoose.connect(dbConnectionString, { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
@@ -51,6 +50,7 @@ app.post('/createaccount', function(req, res) {
             email: req.body.email,
             password: hash,
             bio: "bio check",
+            handle: req.body.handle
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -59,24 +59,27 @@ app.post('/createaccount', function(req, res) {
    });
  });
 
- app.post('/login', function(req, res, err) {
-   User.findOne({
-      'email': req.body.email }, function(err, user) {
+ app.post('/login', function(req, res) {
+   console.log('email requested:' + req.body.email);
+   User.findOne({'email': req.body.email }, function(err, user) {
       if (user) {
           //email exists
-          if(bcrypt.compareSync(req.body.password, user.password)) {
-              // Passwords match
-              console.log('user found successfully');
-              res.status(200).send(user.email);
-              res.end();
-          } else {
-              // Passwords don't match
-              console.log('password mismatch');
+
+          bcrypt.compare(req.body.password, user.password, function(err, isMatch) {
+            if (err) {
+              throw err
+            } else if (!isMatch) {
+              console.log("Password doesn't match!");
               res.status(400).send({
-               message: 'Password Does Not Match Existing User'
-            });
+              message: 'Password Does Not Match Existing User'});
               res.end();
-          }
+            } else {
+               console.log("Password matches!");
+               console.log('user found successfully');
+               res.status(200).send(user);
+               res.end();
+            }
+          })
       } else {
           // user does not exist
           console.log('user not in base');
@@ -104,6 +107,82 @@ app.post('/createaccount', function(req, res) {
          res.end();
       }
   })
+ });
+
+ app.get('/followers', function(req, res){
+    console.log("Followers in Server:\t" + req.query.userHandle);
+    var userfollowers = [];
+    User.findOne({
+      'handle': req.query.userHandle}, function(err, user) {
+        if (user) {
+          // user exists
+          console.log("Length of followers:\t" + user.followers.length);
+          for (var i = 0; i < user.followers.length; i++) {
+            if (!userfollowers.includes(user.followers[i])) {
+                userfollowers.push(user.followers[i]);
+            }
+          }
+          console.log(userfollowers);
+          res.status(200).json({results: userfollowers});
+          res.end();
+
+        } else {
+          // user does not exist
+          console.log('error getting followers');
+          res.status(400).send('error getting followers');
+          res.end();
+        }
+     })
+  });
+
+  app.get('/following', function(req, res){
+    console.log("Following in Server:\t" + req.query.userHandle);
+    var userfollowing = [];
+    User.findOne({
+      'handle': req.query.userHandle}, function(err, user) {
+        if (user) {
+          // user exists
+          console.log("Length of following:\t" + user.following.length);
+          for (var i = 0; i < user.following.length; i++) {
+            if (!userfollowing.includes(user.following[i])) {
+                userfollowing.push(user.following[i]);
+            }
+          }
+          console.log(userfollowing);
+          res.status(200).json({results: userfollowing});
+          res.end();
+
+        } else {
+          // user does not exist
+          console.log('error getting following');
+          res.status(400).send('error getting following');
+          res.end();
+        }
+     })
+  });
+
+
+ app.get('/profile', function(req, res){
+   User.findOne({'handle': req.body.handle }, function(err, user) {
+        if (user) {
+
+         var userInfo = {
+           firstname: user.firstname,
+           lastname: user.lastname,
+           bio: user.bio,
+         }
+         res.status(200).send(userInfo);
+
+         res.end();
+
+
+       } else {
+         // user does not exist
+         console.log('user not in base');
+         res.status(400).send('Email or Password does not exist');
+         res.end();
+       }
+    })
  });
 
 

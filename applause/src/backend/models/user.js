@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
+const {ObjectId} = mongoose.Schema.Types
 
 let User = new mongoose.Schema({
+    handle: {
+        type: String,
+        required: true
+    },
     firstname: {
         type: String,
         required: true
@@ -24,10 +29,10 @@ let User = new mongoose.Schema({
     reviews: {
         type: [String]
     },
-    followers: {
+    followers:{ 
         type: [String]
     },
-    following: {
+    following:{
         type: [String]
     },
     favorites: {
