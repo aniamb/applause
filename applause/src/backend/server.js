@@ -203,3 +203,11 @@ app.post('/createaccount', function(req, res) {
  })
 
 
+//LOADING INFO INTO USER PROFILE CODE
+app.get('/profile', function(req, res, err) {
+    User.findOne({$or: [
+        {'email' : req.query.email}]}).exec(function (err, user){
+           console.log(user);
+           res.status(200).json(user);
+     });
+});

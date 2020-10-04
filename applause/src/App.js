@@ -6,6 +6,10 @@ import Login from './Login'
 import ResetPassword from './ResetPassword'
 import ResetScreen from './ResetScreen';
 
+// import CreateAccount from './CreateAccount'
+// import Login from './Login'
+import Profile from './Profile'
+import EditProfile from './EditProfile'
 
 
 function App () {
@@ -23,9 +27,13 @@ function App () {
             <Route path="/login" component={Login}/>
             <Route path="/resetpassword" component={ResetPassword}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
+            <Route path="/profile" component={Profile}/>
+            <Route path="/editprofile" component={EditProfile}/>
+            {/* <Route path="/login" component={Login}/> */}
             <Route render= {() =>
                 // <Timeline />
-                <CreateAccount />
+                // <CreateAccount />
+                <Profile />
             }/>
         </Switch>
       </BrowserRouter>
