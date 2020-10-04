@@ -1,8 +1,10 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
-import CreateAccount from './CreateAccount'
-import Login from './Login'
+// import CreateAccount from './CreateAccount'
+// import Login from './Login'
+import Profile from './Profile'
+import EditProfile from './EditProfile'
 
 
 function App () {
@@ -16,11 +18,13 @@ function App () {
       </div>
       <BrowserRouter>
         <Switch>
-            <Route path="/createaccount" component={CreateAccount}/>
-            <Route path="/login" component={Login}/>
+            <Route path="/profile" component={Profile}/>
+            <Route path="/editprofile" component={EditProfile}/>
+            {/* <Route path="/login" component={Login}/> */}
             <Route render= {() =>
                 // <Timeline />
-                <CreateAccount />
+                // <CreateAccount />
+                <Profile />
             }/>
         </Switch>
       </BrowserRouter>
