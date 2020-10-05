@@ -49,6 +49,10 @@ class Feed extends Component {
                     </label>
                     <input type="submit" value="Search" />
                 </form>
+                {/* {this.state.navigate && <Redirect to={{
+                    pathname: '/search',
+                    state: {"list": this.state.data}
+                }}/>} */}
             </div>
 
         );

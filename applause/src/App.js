@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, BrowserRouter, NavLink, Redirect } from 'react-router-dom';
 import './App.css';
 import Feed from './Feed.js';
+import Search from './Search.js';
 
 function App () {
 
@@ -15,6 +16,7 @@ function App () {
       <BrowserRouter>
         <Switch>
             <Route path="/feed" component={Feed}/>
+            <Route path="/Search" component={Search}/>
             <Route render= {() =>
                 <Feed />
             }/>

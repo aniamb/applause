@@ -32,6 +32,8 @@ app.post('/searchserver', function (req,res) {
 	searchTerm = (req.body.value);
 	console.log(searchTerm);
 	res.status(200);
+	var albums = [];
+	var noDups;
 
 	if (searchTerm) {
 		api.query({
@@ -42,25 +44,33 @@ app.post('/searchserver', function (req,res) {
 			if (res.error) throw new Error(res.error);
 
 			var i;
+			
 			console.log(res.body.data.length);
 			for (i = 0; i < res.body.data.length; i++) {
 				var albumId = "Album Id:" + res.body.data[i].album.id;
 				var albumTitle = "Album Title:" + res.body.data[i].album.title;
 				var artist = "Artist:" + res.body.data[i].artist.name;
+
+				albums.push(res.body.data[i].album.title);
 				
-				if (i==0 || (res.body.data[i-1].album.id != res.body.data[i].album.id )) {
-					console.log(albumId);
-					console.log(albumTitle);
-					console.log(artist);
-					console.log(" ");
-				}
+				// if (i==0 || (res.body.data[i-1].album.id != res.body.data[i].album.id )) {
+				// 	console.log(albumId);
+				// 	console.log(albumTitle);
+				// 	console.log(artist);
+				// 	console.log(" ");
+				// }
 			}
+			
+			console.log(albums);
+			noDups = new Set(albums);
+			console.log(noDups);
+
 		});
 	}
 
     res.end();
 });
 
-console.log(searchTerm);
+
 
 
