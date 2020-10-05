@@ -1,18 +1,15 @@
 
+const crypto = require('crypto')
 const express = require('express');
+require('dotenv').config();
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
+
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 5000;
-//const MongoClient = require('mongodb').MongoClient;
 const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongodb.net/test?retryWrites=true&w=majority";
 const mongoose = require('mongoose');
-// const client = new MongoClient(uri, { useNewUrlParser: true });
-// client.connect(err => {
-//   const collection = client.db("test").collection("devices");
-//   // perform actions on the collection object
-//   client.close();
-// });
 
 let User = require('./models/user');
 app.use(cors());
@@ -20,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 
 mongoose.connect(dbConnectionString, { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
@@ -31,6 +29,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
+//createaccount
 app.post('/createaccount', function(req, res) {
    //password hash
    bcrypt.hash(req.body.password, 10, function(err, hash){
@@ -59,6 +58,7 @@ app.post('/createaccount', function(req, res) {
    });
  });
 
+ //login
  app.post('/login', function(req, res, err) {
    User.findOne({
       'email': req.body.email }, function(err, user) {
@@ -88,14 +88,54 @@ app.post('/createaccount', function(req, res) {
   })
  });
 
+ //send reset password email
  app.post('/resetpassword', function(req, res, err) {
    User.findOne({
       'email': req.body.email }, function(err, user) {
       if (user) {
           //email exists
-            console.log('user found successfully');
-            res.status(200).send(user.email);
-            res.end();
+            const token = crypto.randomBytes(20).toString('hex');
+            //updating token
+            User.findOneAndUpdate(
+               {"email" : req.body.email},
+               {$set: {"resetPasswordToken": token, "resetPasswordExpires": Date.now() + 3600000} },
+               function(err, items){
+                   if(err){
+                       res.status(400).send('Error happened finding user for token update')
+                   }else{
+                       console.log("token updated");
+                       res.status(200).send('bio updated');
+                   }
+                   res.end();
+               }
+            );
+            const transporter = nodemailer.createTransport({
+               service: "gmail",
+               auth: {
+                  user: `${REACT_APP_EMAIL}`,
+                  pass: `${REACT_APP_PASSWORD}`
+               }
+            })
+            const mailOptions = {
+               from: 'bhs.pradhann@gmail.com',
+               to: `${req.body.email}`,
+               subject: 'Link to Reset Password for your Applause account',
+               text: 
+                  'You are receiving this because you (or someone else) have requested the reset of the password for you Applause account. \n\n'
+                  + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it: \n\n'
+                  + `http://localhost:3000/reset/${token}\n\n`
+                  + 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            }
+            console.log('sending mail');
+            transporter.sendMail(mailOptions, (err, response) => {
+               if(err) {
+                  console.log('there was an error: ', err);
+               } else {
+                  console.log('recovery email sent')
+                  res.status(200).send('recovery email sent');
+                  res.end();
+               }
+            })
       } else {
           // user does not exist
           console.log('user not in base');
@@ -105,5 +145,61 @@ app.post('/createaccount', function(req, res) {
       }
   })
  });
+
+ //verify reset password link
+ app.get('/reset', (req, res, next) => {
+    console.log(req.query.resetPasswordToken);
+   User.findOne({
+         resetPasswordToken: req.query.resetPasswordToken,
+         resetPasswordExpires: {
+            $gt: Date.now()
+         }
+      
+   }).then(user => {
+      if(user == null){
+         console.log('password reset link is invalid or has expired');
+         res.json('password reset link is invalid or has expired');
+      }else{
+         console.log("found user!!!!")
+         res.status(200).send({
+            email: user.email,
+            message: 'password reset link a-ok',
+         })
+      }
+   })
+ })
+
+ app.put('/updatePasswordViaEmail', (req, res, next) => {
+   User.findOne({
+         email: req.body.email,
+   }).then(user => {
+      if(user){
+         console.log('user exists in db to update password');
+         bcrypt.hash(req.body.password, 10, function(err, hash){
+            User.findOneAndUpdate(
+               {"email" : req.body.email},
+               {$set: {"password": hash}},
+               function(err, items){
+                   if(err){
+                       res.status(400).send('Error happened updating password')
+                   }else{
+                       console.log("password updated");
+                       res.status(200).send('password updated');
+                   }
+                   res.end();
+               }
+            );
+         });
+      }else{
+         console.log('no user exists in db to update');
+         res.status(404).json('no user exists in db to update');
+      }
+   })
+
+
+
+
+
+ })
 
 

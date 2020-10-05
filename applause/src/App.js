@@ -4,6 +4,7 @@ import './App.css';
 import CreateAccount from './CreateAccount'
 import Login from './Login'
 import ResetPassword from './ResetPassword'
+import ResetScreen from './ResetScreen';
 
 
 
@@ -21,6 +22,7 @@ function App () {
             <Route path="/createaccount" component={CreateAccount}/>
             <Route path="/login" component={Login}/>
             <Route path="/resetpassword" component={ResetPassword}/>
+            <Route exact path="/reset/:token" component={ResetScreen} />
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />

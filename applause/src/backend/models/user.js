@@ -21,6 +21,12 @@ let User = new mongoose.Schema({
         type: String,
         required: true
     },
+    resetPasswordToken: {
+        type: String
+    },
+    resetPasswordExpires: {
+        type: Date
+    },
     reviews: {
         type: [String]
     },

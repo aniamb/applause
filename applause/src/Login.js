@@ -39,6 +39,7 @@ handleSubmit(event){
         axios.post('http://localhost:5000/login', loginInfo).then(response=> {
             localStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
+            this.props.history.push('/resetpassword');
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
@@ -61,7 +62,7 @@ render() {
                             onChange={this.handlePasswordChange.bind(this)} required/><br></br>
                         <br></br>
                        
-                        { this.state.errorMessage && <h5 className="error" style={{marginTop: "0", color: "red"}}> { this.state.errorMessage } </h5> }
+                        { this.state.errorMessage && <h3 className="error" style={{marginTop: "0", color: "red"}}> { this.state.errorMessage } </h3> }
                     <input className="submitButtonLogin" type="submit" value="login"/><br></br>
                 </form>
                 <br/>

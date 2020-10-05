@@ -59,6 +59,7 @@ handleSubmit(event){
           localStorage.setItem("currentUser", response.data);
           console.log('create account success');
           this.setState({isRedirect: true})
+          this.props.history.push('/login');
       })
        .catch((err)=> {
            this.setState({isRedirect: false});
@@ -95,7 +96,7 @@ render() {
                         <PasswordStrengthBar 
                             className = "passwordbar"
                             password={this.state.password}
-                            minLength={2}
+                            minLength={1}
                             scoreWordStyle = {styles.scoreWord}
                             barColors = {['#d1d1d1','#db2a33', '#f58c3b', '#177cfe', '#25943f' ]}/>
                              
@@ -106,9 +107,9 @@ render() {
                 </form>
         
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
-                {this.state.isRedirect && <Redirect to={{
+                {/* {this.state.isRedirect && <Redirect to={{
                     pathname: '/login'
-                }}/>}
+                }}/>} */}
             </div>
         </div>
 
