@@ -117,7 +117,7 @@ app.post('/createaccount', function(req, res) {
                }
             })
             const mailOptions = {
-               from: 'bhs.pradhann@gmail.com',
+               from: `${REACT_APP_EMAIL}`,
                to: `${req.body.email}`,
                subject: 'Link to Reset Password for your Applause account',
                text: 
