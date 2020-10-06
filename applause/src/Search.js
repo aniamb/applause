@@ -26,11 +26,19 @@ class Search extends Component{
 
     render() {
         let noDups = [];
-        for(let i = 0; i< this.props.location.state.albums[0].length; i++){
+        console.log(this.props.location.state.albums[0].title);
+        var length = (this.props.location.state.albums.length);
+        for(let i = 0; i< length; i++){
+            //var image = "\"" + {this.props.location.state.albums[i].art} + "\";
             noDups.push(
-                <div key={this.props.location.state.albums[0][i]} className="searchResults">
+                <div key={this.props.location.state.albums[i]} className="searchResults">
                     <h3>
-                        {this.props.location.state.albums[0][i]}
+                        Album: {this.props.location.state.albums[i].title}
+                        <br></br>
+                        Artist: {this.props.location.state.albums[i].artist}
+                        <br></br>
+                        <img src={this.props.location.state.albums[i].art}></img>
+
                     </h3>
                 </div>
             )
@@ -41,6 +49,7 @@ class Search extends Component{
               <h1> Search Results: </h1>
                 <div className="row-timeline">
                   <div className="sidebar" >
+
                   </div>
                    <div className="userOrder">
                        {noDups}

@@ -33,8 +33,16 @@ app.post('/searchserver', function (req,res1) {
 	console.log(searchTerm);
 	//res.status(200);
 	var albumTitles = [];
-	var noDups;
+	var objectsTest = [];
 	var finalVals = [];
+	var finalObjects = [];
+
+
+	function Content(title, artist, art) { 
+		this.title = title; 
+		this.artist = artist; 
+		this.art = art;
+	 }
 
 
 	api.query({
@@ -44,17 +52,28 @@ app.post('/searchserver', function (req,res1) {
 	api.end(function (res) {
 		if (res.error) throw new Error(res.error);
 		var i;
+		var k = 'value';
+		//console.log(res.body.data[0]);
 		for (i = 0; i < res.body.data.length; i++) {
 			var albumId = "Album Id:" + res.body.data[i].album.id;
 			var albumTitle = "Album Title:" + res.body.data[i].album.title;
 			var artist = "Artist:" + res.body.data[i].artist.name;
+			var albumArt = res.body.data[i].album.cover_big;
+			
+	
+
+			var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_big); 
+			objectsTest.push(val1);
 
 			albumTitles.push(res.body.data[i].album.title);
 		}
 		noDups = new Set(albumTitles);
-		//console.log(noDups);
+		var noDupObj = new Set(objectsTest);
 		finalVals = Array.from(noDups);
-		res1.status(200).json({result: finalVals});
+		finalObjects = Array.from(noDupObj);
+		//console.log(finalObjects);
+		//res1.status(200).json({result: finalVals});
+		res1.status(200).json({result: finalObjects})
 		res1.end();
 	});
 });
