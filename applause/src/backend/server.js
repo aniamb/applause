@@ -53,8 +53,9 @@ app.post('/searchserver', function (req,res1) {
 		if (res.error) throw new Error(res.error);
 		var i;
 		var k = 'value';
-		console.log(res.body.data[0]);
-		for (i = 0; i < res.body.data.length; i++) {
+		//console.log(res.body.data[0]);
+		//can yield up to 25 results, currently at 11
+		for (i = 0; i < 11; i++) {
 
 			var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
 			objectsTest.push(val1);
