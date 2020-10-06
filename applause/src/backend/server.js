@@ -27,48 +27,36 @@ api.headers({
 });
 
 //searches API for artist/album
-app.post('/searchserver', function (req,res) {
+app.post('/searchserver', function (req,res1) {
 	console.log(req.body);
 	searchTerm = (req.body.value);
 	console.log(searchTerm);
-	res.status(200);
-	var albums = [];
+	//res.status(200);
+	var albumTitles = [];
 	var noDups;
+	var finalVals = [];
 
-	if (searchTerm) {
-		api.query({
-			"q": searchTerm
-		});
-		
-		api.end(function (res) {
-			if (res.error) throw new Error(res.error);
 
-			var i;
-			
-			console.log(res.body.data.length);
-			for (i = 0; i < res.body.data.length; i++) {
-				var albumId = "Album Id:" + res.body.data[i].album.id;
-				var albumTitle = "Album Title:" + res.body.data[i].album.title;
-				var artist = "Artist:" + res.body.data[i].artist.name;
+	api.query({
+		"q": searchTerm
+	});
+	
+	api.end(function (res) {
+		if (res.error) throw new Error(res.error);
+		var i;
+		for (i = 0; i < res.body.data.length; i++) {
+			var albumId = "Album Id:" + res.body.data[i].album.id;
+			var albumTitle = "Album Title:" + res.body.data[i].album.title;
+			var artist = "Artist:" + res.body.data[i].artist.name;
 
-				albums.push(res.body.data[i].album.title);
-				
-				// if (i==0 || (res.body.data[i-1].album.id != res.body.data[i].album.id )) {
-				// 	console.log(albumId);
-				// 	console.log(albumTitle);
-				// 	console.log(artist);
-				// 	console.log(" ");
-				// }
-			}
-			
-			console.log(albums);
-			noDups = new Set(albums);
-			console.log(noDups);
-
-		});
-	}
-
-    res.end();
+			albumTitles.push(res.body.data[i].album.title);
+		}
+		noDups = new Set(albumTitles);
+		//console.log(noDups);
+		finalVals = Array.from(noDups);
+		res1.status(200).json({result: finalVals});
+		res1.end();
+	});
 });
 
 

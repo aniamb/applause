@@ -7,7 +7,9 @@ class Feed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value:''
+            value:'',
+            navigate: false,
+            albums: []
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,16 +26,18 @@ class Feed extends Component {
         const { search } = this.state; 
         event.preventDefault();
   
-        console.log("ok");
+
         axios.post('http://localhost:5000/searchserver', {
             value: this.state.value
         })
         .then(res => {
-            console.log(`statusCode: ${res.statusCode}`)
-            console.log(res)
+            console.log(res.data.result)
+            this.setState({albums: this.state.albums.concat([res.data.result])})
+            this.setState({navigate: true});
         })
         .catch(error => {
-            console.error(error)
+            console.error(error);
+            this.setState({navigate: false});
         })
     }
 
@@ -49,10 +53,10 @@ class Feed extends Component {
                     </label>
                     <input type="submit" value="Search" />
                 </form>
-                {/* {this.state.navigate && <Redirect to={{
+                {this.state.navigate && <Redirect to={{
                     pathname: '/search',
-                    state: {"list": this.state.data}
-                }}/>} */}
+                    state: {"albums": this.state.albums}
+                }}/>}
             </div>
 
         );

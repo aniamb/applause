@@ -26,11 +26,11 @@ class Search extends Component{
 
     render() {
         let noDups = [];
-        for(let i = 0; i< this.props.location.state.list[0].length; i++){
+        for(let i = 0; i< this.props.location.state.albums[0].length; i++){
             noDups.push(
-                <div key={this.props.location.state.list[0][i]} className="searchResults">
+                <div key={this.props.location.state.albums[0][i]} className="searchResults">
                     <h3>
-                        <button onClick={() => this.linkToProfile(this.props.location.state.list[0][i])} >@{this.props.location.state.list[0][i]}</button>
+                        {this.props.location.state.albums[0][i]}
                     </h3>
                 </div>
             )
@@ -39,23 +39,17 @@ class Search extends Component{
 
             <div className="Search">
               <h1> Search Results: </h1>
-                {/* <div className="row-timeline">
+                <div className="row-timeline">
                   <div className="sidebar" >
-                    <div className="links">
-                        <ul className="navLinks">
-                            <li><NavLink to="/timeline">Twistter</NavLink></li>
-                            <li><NavLink to="/userprofile">My Profile</NavLink></li>
-                        </ul>
-                    </div>
                   </div>
-                  <div className="userOrder">
-                      {userNames}
-                  </div>
-                {this.state.navigate && <Redirect to={{
+                   <div className="userOrder">
+                       {noDups}
+                   </div>
+                {/* {this.state.navigate && <Redirect to={{
                     pathname: '/genericprofile',
                     state: {"username": this.state.username}
-                }}/>}
-                </div> */}
+                }}/>} */}
+                </div>
             </div>
 
         );
