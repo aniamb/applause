@@ -25,7 +25,8 @@ class Profile extends React.Component{
     super(props);
     this.state = {
         user:user,
-        edit:false
+        edit:false,
+        isFollow: "Follow"
     }
 }
 
@@ -52,6 +53,12 @@ editProfile = () => {
     this.setState({edit:true});
 }
 
+changeFollow = () => {
+    if (this.state.isFollow == "Follow")
+        this.setState({isFollow:"Unfollow"});
+    else this.setState({isFollow:"Follow"});
+}
+
 render() {
   return (
     <div className="CreateAccount">
@@ -59,7 +66,7 @@ render() {
             <div className="left">
                 <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
                 <p>@{this.state.user.handle}</p>
-                <button>Follow</button>
+                <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
                 <div className="follow">
                     <div className="followers">{this.state.user.followers.length} followers</div>

@@ -33,6 +33,9 @@ h2 {
     position: relative;
 }
 
+.followBtn {
+    margin-top:5px;
+}
 .prof {
     /* width:15px; */
     /* size:10em; */
