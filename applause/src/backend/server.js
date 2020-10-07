@@ -36,6 +36,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
+const { Server } = require('http');
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -93,6 +94,10 @@ app.post('/searchserver', function (req,res1) {
 			var k = 'value';
 			//console.log(res.body.data[0]);
 			//can yield up to 25 results, currently set at 11
+			if (res.body.data.length === 0 ) {
+				
+			}
+
 			for (i = 0; i < res.body.data.length; i++) {
 	
 				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
