@@ -83,6 +83,7 @@ app.post('/searchserver', function (req,res1) {
 			 res1.status(200).json({result: userList});
 			 res1.end();
 		  });
+		  
 	}else {
 		api.query({
 			"q": searchTerm
@@ -92,17 +93,10 @@ app.post('/searchserver', function (req,res1) {
 			if (res.error) throw new Error(res.error);
 			var i;
 			var k = 'value';
-			//console.log(res.body.data[0]);
-			//can yield up to 25 results, currently set at 11
-			if (res.body.data.length === 0 ) {
-				
-			}
 
 			for (i = 0; i < res.body.data.length; i++) {
-	
 				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
 				objectsTest.push(val1);
-	
 				albumTitles.push(res.body.data[i].album.title);
 			}
 			noDups = new Set(albumTitles);
@@ -110,7 +104,6 @@ app.post('/searchserver', function (req,res1) {
 			finalVals = Array.from(noDups);
 			finalObjects = Array.from(noDupObj);
 	
-			//res1.status(200).json({result: finalVals});
 			res1.status(200).json({result: finalObjects})
 			res1.end();
 		});

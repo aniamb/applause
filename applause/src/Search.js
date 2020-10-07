@@ -29,12 +29,9 @@ class Search extends Component{
 
         var length = (this.props.location.state.albums.length);
 
-        
-
         if (length === 0){
             noDups.push(<h3>No results.</h3>)
         } else if (!this.props.location.state.albums[0].title) {
-
             for(let i = 0; i < length; i++){
                
                 noDups.push(
@@ -46,7 +43,6 @@ class Search extends Component{
                 )
             }
         } else {
-
             for(let i = 0; i< length; i++){
                 //var image = "\"" + {this.props.location.state.albums[i].art} + "\";
                 noDups.push(

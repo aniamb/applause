@@ -31,10 +31,7 @@ class Feed extends Component {
             value: this.state.value
         })
         .then(res => {
-            console.log(res.data.result)
-            //this.setState({albums: this.state.albums.concat([res.data.result])})
             this.state.albums = res.data.result;
-            console.log(this.state.albums);
             this.setState({navigate: true});
         })
         .catch(error => {
