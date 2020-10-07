@@ -1,0 +1,33 @@
+.Login{
+    max-width: 100%;
+    height: 100%;
+}
+p{
+    font-size: 30px;
+}
+.inputBox{
+    background-color:rgb(119,205,195);
+    margin: 0 auto;
+    border-style: solid;
+    border-color: rgb(119,205,195);
+    border-radius: 25px;
+    width: 450px;
+    height: 375px;
+    margin-top: 100px;
+    text-align: center;
+    box-shadow: 6px 6px 5px rgb(74, 124, 118);
+}
+.inputLogin {
+    height: 28px;
+    border: none;
+    width: 50%;
+}  
+.submitButtonLogin{
+    width: 125px;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
