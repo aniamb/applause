@@ -33,11 +33,13 @@ class Search extends Component{
             noDups.push(
                 <div key={this.props.location.state.albums[i]} className="searchResults">
                     <h3>
-                        Album: {this.props.location.state.albums[i].title}
+                        <i>{this.props.location.state.albums[i].title}</i>
+                         , {this.props.location.state.albums[i].artist}
                         <br></br>
-                        Artist: {this.props.location.state.albums[i].artist}
                         <br></br>
                         <img src={this.props.location.state.albums[i].art}></img>
+                        <br></br>
+                        <button>Review this Album</button>
 
                     </h3>
                 </div>

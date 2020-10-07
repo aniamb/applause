@@ -15,7 +15,7 @@ function App () {
       </div>
       <BrowserRouter>
         <Switch>
-            <Route path="/feed" component={Feed}/>
+            <Route exact path="/Feed" component={Feed}/>
             <Route path="/Search" component={Search}/>
             <Route render= {() =>
                 <Feed />
