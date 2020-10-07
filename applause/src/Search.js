@@ -26,25 +26,43 @@ class Search extends Component{
 
     render() {
         let noDups = [];
-        console.log(this.props.location.state.albums[0].title);
-        var length = (this.props.location.state.albums.length);
-        for(let i = 0; i< length; i++){
-            //var image = "\"" + {this.props.location.state.albums[i].art} + "\";
-            noDups.push(
-                <div key={this.props.location.state.albums[i]} className="searchResults">
-                    <h3>
-                        <i>{this.props.location.state.albums[i].title}</i>
-                         , {this.props.location.state.albums[i].artist}
-                        <br></br>
-                        <br></br>
-                        <img src={this.props.location.state.albums[i].art}></img>
-                        <br></br>
-                        <button>Review this Album</button>
 
-                    </h3>
-                </div>
-            )
+        var length = (this.props.location.state.albums.length);
+
+        if (!this.props.location.state.albums[0].title) {
+
+            for(let i = 0; i < length; i++){
+               
+                noDups.push(
+                    <div key={this.props.location.state.albums[i]} className="searchResults">
+                        <h3>
+                            <button onClick={() => this.linkToProfile(this.props.location.state.albums[i])} >@{this.props.location.state.albums[i]}</button>
+                        </h3>
+                    </div>
+                )
+            }
+
+        } else {
+
+            for(let i = 0; i< length; i++){
+                //var image = "\"" + {this.props.location.state.albums[i].art} + "\";
+                noDups.push(
+                    <div key={this.props.location.state.albums[i]} className="searchResults">
+                        <h3>
+                            <i>{this.props.location.state.albums[i].title}</i>
+                                , {this.props.location.state.albums[i].artist}
+                            <br></br>
+                            <br></br>
+                            <img src={this.props.location.state.albums[i].art}></img>
+                            <br></br>
+                            <button>Review this Album</button>
+
+                        </h3>
+                    </div>
+                )
+            }
         }
+
         return (
 
             <div className="Search">

@@ -58,7 +58,7 @@ app.post('/searchserver', function (req,res1) {
 	var objectsTest = [];
 	var finalVals = [];
 	var finalObjects = [];
-	var users = [];
+	var userList = [];
 
 
 
@@ -70,19 +70,17 @@ app.post('/searchserver', function (req,res1) {
 
 	 if (searchTerm.charAt(0) ==='@') {
 		searchTerm = searchTerm.substring(1);
-		User.find({"handle": { "$regex": handle, "$options": "i" } }, function(err, users){
+		User.find({"handle": { "$regex": searchTerm, "$options": "i" } }, function(err, users){
 			if (err) throw err;
 			console.log(users);
 	  
 			for (var i = 0; i < users.length; i++) {
 			  console.log(typeof(users[i].handle));
-			//  userList.push(users[i].handle.repeat(1));
 			  userList.push(users[i].handle);
-		//      console.log(userList);
 			}
-			console.log(userList);
-			res1.status(200).json({results: userList});
-			res1.end();
+			 console.log(userList);
+			 res1.status(200).json({result: userList});
+			 res1.end();
 		  });
 	}else {
 		api.query({
