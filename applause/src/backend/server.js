@@ -185,4 +185,75 @@ app.post('/createaccount', function(req, res) {
     })
  });
 
+ app.get('/unfollow', function(req, res){
+
+  let unfollowUser = null
+  User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
+      unfollowUser = newUser;
+      if (unfollowUser) {
+        console.log("Found\t" + req.query.unfollowUsername)
+      }
+  })
+
+  let mainUser = null
+  User.findOne({'handle': req.query.userHandle }, function(err, newUser) {
+      mainUser = newUser;
+      if (mainUser) {
+        console.log("Found\t" + req.query.userHandle)
+      }
+  })
+
+   User.updateOne(
+    {"handle" : req.query.userHandle},
+    {$pull : {following : req.query.unfollowUsername}},
+    function (err,result){
+      if(err){
+          console.log("Failed to unfollow genericUser");
+          res.status(400).send("Error in unfollowing user");
+          res.end();
+      }else{
+        console.log("No errors found in unfollowng!")
+          User.updateOne(
+              {"handle" : unfollowUser.handle},
+              {$pull : {followers : req.query.userHandle}},
+              function(err, results){
+                  if(err){
+                      console.log("Failed to update genericUser's followers list when unfolowing");
+                      res.status(400).send("Error occurred when following user. User may not exist");
+                      res.end();
+                  }
+                  res.status(200).send(mainUser.following);
+                  console.log(mainUser.following)
+                  res.end();
+              }
+          )
+      }
+    })
+  });
+  // User.findOne({'handle': req.query.userHandle }, function(err, user) {
+  //      if (user) {
+
+  //         for (let i = 0; i < user.following.length; i++) {
+  //           if (user.following[i] == req.query.unfollowUsername) {
+
+  //           }
+  //         }
+
+       //  var userInfo = {
+       //    firstname: user.firstname,
+       //    lastname: user.lastname,
+       //    bio: user.bio,
+       //  }
+      //   res.status(200).send(user);
+
+      //   res.end();
+
+
+      // } else {
+      //   // user does not exist
+      //   console.log('user not in base');
+      //   res.status(400).send('Email or Password does not exist');
+      //   res.end();
+      // }
+
 
