@@ -8,8 +8,12 @@ class Following extends Component{
   constructor(props){
       super(props);
       this.state = {
-          username: "",
-          currHandle: "",
+        username: "",
+        currHandle: "",
+        followingData: [],
+        followingRedirect: false,
+        navigate: false,
+        userNames: []
       }
   }
 
@@ -19,18 +23,38 @@ class Following extends Component{
     this.setState({username: username});
   };
 
+  componentDidMount() {
+    var currHandle = localStorage.getItem('currentUser');
+    axios.get('http://localhost:5000/following', {
+        params: {
+          userHandle: currHandle
+        }
+      }).then((response) => {
+        this.setState({followingData: response.data.results})
+        this.setState({followingRedirect: true});
+
+      })
+      .catch((err) => {
+       console.log('error getting info');
+       this.setState({followingRedirect: false});
+      })
+}
+
   render() {
     let userNames = [];
 
-    for(let i = 0; i< this.props.location.state.list[0].length; i++){
-        userNames.push(
-            <div key={this.props.location.state.list[0][i]} className="searchResults">
-                <h3>
-                    <button onClick={() => this.linkToProfile(this.props.location.state.list[0][i])} >@{this.props.location.state.list[0][i]}</button>
-                </h3>
-            </div>
-        )
-    }
+    console.log(this.state.followingData);
+    console.log(this.state.followingData.length);
+
+    for(let i = 0; i< this.state.followingData.length; i++){
+      userNames.push(
+          <div key={this.state.followingData[i]} className="searchResults">
+              <h3>
+                  <button onClick={() => this.linkToProfile(this.state.followingData[i])} >@{this.state.followingData[i]}</button>
+              </h3>
+          </div>
+      )
+  }
 
     return (
 

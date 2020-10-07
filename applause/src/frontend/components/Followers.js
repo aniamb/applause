@@ -10,32 +10,57 @@ class Followers extends Component{
       this.state = {
           username: "",
           currHandle: "",
-          followerData: []
+          followerData: [],
+          followerRedirect: false,
+          navigate: false,
+          userNames: []
       }
   }
 
-  linkToProfile = (username) => {
-    // console.log("THIS IS: " + username);
-    this.setState({navigate : true});
-    this.setState({username: username});
-};  
+    linkToProfile = (username) => {
+      this.setState({navigate : true});
+      this.setState({username: username});
+  };  
+
+  componentDidMount() {
+    var currHandle = localStorage.getItem('currentUser');
+    axios.get('http://localhost:5000/followers', {
+        params: {
+          userHandle: currHandle
+        }
+      }).then((response) => {
+        this.setState({followerData: response.data.results})
+        this.setState({followerRedirect: true});
+        
+      })
+      .catch((err) => {
+        console.log('error getting info');
+        this.setState({followerRedirect: false});
+
+      })
+
+  }
 
   render() {
+
     let userNames = [];
 
-    for(let i = 0; i< this.props.location.state.list[0].length; i++){
+    console.log(this.state.followerData);
+    console.log(this.state.followerData.length);
+    for(let i = 0; i< this.state.followerData.length; i++){
         userNames.push(
-            <div key={this.props.location.state.list[0][i]} className="searchResults">
+            <div key={this.state.followerData[i]} className="searchResults">
                 <h3>
-                    <button onClick={() => this.linkToProfile(this.props.location.state.list[0][i])} >@{this.props.location.state.list[0][i]}</button>
+                    <button onClick={() => this.linkToProfile(this.state.followerData[i])} >@{this.state.followerData[i]}</button>
                 </h3>
             </div>
         )
     }
-
+    
     return (
-
+      
       <div className="Followers">
+        
         <h1> Followers!</h1>
           <div className="row">
             <div className="userOrder">

@@ -122,7 +122,7 @@ app.post('/createaccount', function(req, res) {
                 userfollowers.push(user.followers[i]);
             }
           }
-          console.log(userfollowers);
+          console.log("Followers:\t" + userfollowers);
           res.status(200).json({results: userfollowers});
           res.end();
 
@@ -163,15 +163,15 @@ app.post('/createaccount', function(req, res) {
 
 
  app.get('/profile', function(req, res){
-   User.findOne({'handle': req.body.handle }, function(err, user) {
+   User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 
-         var userInfo = {
-           firstname: user.firstname,
-           lastname: user.lastname,
-           bio: user.bio,
-         }
-         res.status(200).send(userInfo);
+        //  var userInfo = {
+        //    firstname: user.firstname,
+        //    lastname: user.lastname,
+        //    bio: user.bio,
+        //  }
+         res.status(200).send(user);
 
          res.end();
 

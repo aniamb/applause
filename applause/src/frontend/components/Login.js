@@ -32,7 +32,7 @@ handleSubmit(event){
     this.setState({receivedRequest: true});
     const loginInfo = {email: this.state.email, password:this.state.password};
     axios.post('http://localhost:5000/login', loginInfo).then(response=> {
-            console.log(response.data.firstname);
+            console.log(response.data);
             localStorage.setItem("currentUser", response.data.handle);
             console.log(response.data.handle);
             console.log('login account success');
