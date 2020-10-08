@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import '../css/Profile.css';
+import './Profile.css';
 import axios from 'axios'
 // import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

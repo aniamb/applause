@@ -1,11 +1,11 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import '../css/Login.css';
+import './Login.css';
 import axios from 'axios'
 import validator from 'validator'
 
 
-class ResetPassword extends React.Component{
+class Login extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -14,33 +14,37 @@ class ResetPassword extends React.Component{
             isSubmitted: false,
             isRedirect: null,
             receivedRequest: false,
-            errorMessage: ''
+            errorMessage: '',
         }
     }
+
 componentDidMount(){
     localStorage.clear();
 }
-
 handleEmailChange(event) {
   this.setState({email: event.target.value})
+}
+handlePasswordChange(event) {
+  this.setState({password: event.target.value})
 }
 
 handleSubmit(event){
     event.preventDefault();
     event.target.reset();
     this.setState({receivedRequest: true});
-    const resetemail = {email: this.state.email};
+    const loginInfo = {email: this.state.email, password:this.state.password};
     if(!validator.isEmail(this.state.email)){
         this.setState({errorMessage: "Email Format is Incorrect"});
-    } else {
-        axios.post('http://localhost:5000/resetpassword', resetemail).then(response=> {
+    } else { 
+        axios.post('http://localhost:5000/login', loginInfo).then(response=> {
             localStorage.setItem("currentUser", response.data);
-            console.log("user exists");
-            this.setState({errorMessage: `recovery email sent to ${this.state.email}`});
+            console.log(response.data)
+            this.setState({isRedirect: true});
+            this.props.history.push('/profile');
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            // alert(err.response.data.message);
+            console.log("err:\t", err);
             this.setState({errorMessage: err.response.data.message});
         })
     }
@@ -48,25 +52,31 @@ handleSubmit(event){
  
 render() {
   return (
-    <div className="ResetPassword">
+    <div className="Login">
             <div className="inputBox">
-                <p> reset password </p>
+                <p> welcome back </p>
                 <form onSubmit = {this.handleSubmit.bind(this)}>
                         <input className="inputLogin" type="text" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
                         <br></br>
-                    {this.state.errorMessage && <h5 className="error" style={{marginTop: "0", color: "red", fontSize: "15px"}}> { this.state.errorMessage } </h5>}
-                    <input className="submitButtonLogin" type="submit" value="reset"/><br></br>
+                        <input className="inputLogin" type="password" name="password" placeholder="password" value={this.state.password}
+                            onChange={this.handlePasswordChange.bind(this)} required/><br></br>
+                        <br></br>
+                       
+                        { this.state.errorMessage && <h3 className="error" style={{marginTop: "0", color: "red"}}> { this.state.errorMessage } </h3> }
+                    <input className="submitButtonLogin" type="submit" value="login"/><br></br>
                 </form>
                 <br/>
-                <NavLink to="/login">back to login</NavLink><br></br>
-                {/* {this.state.isRedirect && <Redirect to={{
-                    pathname: '/'
-                }}/>} */}
+                <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
+                <NavLink to="/createaccount">new user?</NavLink><br></br>
+                {this.state.isRedirect && <Redirect to={{
+                    pathname: '/profile'
+                }}/>}
             </div>
         </div>
-    );
-    }
+
+  );
+}
 
 }
-export default ResetPassword;
+export default Login;

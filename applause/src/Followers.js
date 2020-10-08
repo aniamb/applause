@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import '../css/Login.css';
+import './Login.css';
 import axios from 'axios'
 
 
@@ -47,6 +47,7 @@ class Followers extends Component{
 
     console.log(this.state.followerData);
     console.log(this.state.followerData.length);
+    
     for(let i = 0; i< this.state.followerData.length; i++){
         userNames.push(
             <div key={this.state.followerData[i]} className="searchResults">

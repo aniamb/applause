@@ -2,14 +2,11 @@ import React from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import './App.css';
 import CreateAccount from './CreateAccount'
-import Login from './frontend/components/Login'
-import ResetPassword from './frontend/components/ResetPassword'
-import Profile from './frontend/components/Profile'
-import Followers from './frontend/components/Followers';
-import Following from './frontend/components/Following';
-import CreateAccount from './CreateAccount'
 import Login from './Login'
 import ResetPassword from './ResetPassword'
+import Profile from './Profile'
+import Followers from './Followers';
+import Following from './Following';
 import ResetScreen from './ResetScreen';
 
 
