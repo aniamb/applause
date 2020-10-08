@@ -32,17 +32,18 @@ class Profile extends React.Component{
 
 componentDidMount(){
     console.log("component mounted");
-
     //need to change this to use local storage
-    var lookupUser = user.email;
+    var lookupUser = sessionStorage.getItem("currentUser");
+    console.log(lookupUser);
     axios.get('http://localhost:5000/profile', {
         params: {
-            email:lookupUser
+            handle:lookupUser
         }
     })
-    .then((response) => {        
+    .then((response) => {   
         console.log("response received.");
         this.setState({user: response.data});
+        localStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');

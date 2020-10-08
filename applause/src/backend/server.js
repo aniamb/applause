@@ -49,7 +49,7 @@ app.post('/createaccount', function(req, res) {
             lastname: req.body.lastname,
             email: req.body.email,
             password: hash,
-            bio: "bio check",
+            bio: "Write something fun about yourself!",
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -203,8 +203,19 @@ app.post('/createaccount', function(req, res) {
  })
 
 
-//LOADING INFO INTO USER PROFILE CODE
+// LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {
+    console.log(req.body);
+    User.findOne({$or: [
+        {'handle' : req.query.handle}]}).exec(function (err, user){
+           console.log(user);
+           res.status(200).json(user);
+     });
+});
+
+//LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
+app.get('/fillProfile', function(req, res, err) {
+    console.log(req.body);
     User.findOne({$or: [
         {'email' : req.query.email}]}).exec(function (err, user){
            console.log(user);
@@ -214,7 +225,7 @@ app.get('/profile', function(req, res, err) {
 
 //Updating user profile fields
 app.post('/editprofile', function(req, res, err) {
-    console.log(req.body);
+    console.log(req);
     User.findOneAndUpdate(
         {"email":req.body.currUserEmail},
         {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
