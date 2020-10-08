@@ -66,8 +66,7 @@ app.post('/createaccount', function(req, res) {
           //email exists
           if(bcrypt.compareSync(req.body.password, user.password)) {
               // Passwords match
-              console.log('user found successfully');
-              res.status(200).send(user.handle);
+               res.status(200).send(user.handle);
               res.end();
           } else {
               // Passwords don't match

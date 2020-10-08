@@ -64,11 +64,12 @@ handleSubmit(event){
 
       })
        .catch((err)=> {
+         console.log(err);
            this.setState({isRedirect: false});
            console.log('create account fail');
            //alert(err.response.data.message);
-          //  console.log(err.response.data)
-          //  this.setState({errorMessage: err.response.data.message});
+          // console.log(err.response.data.message)
+         this.setState({errorMessage: err.response.data.message});
        })
       }
 }
@@ -86,13 +87,10 @@ render() {
                 <form onSubmit={this.handleSubmit.bind(this)}>
                         <input className="inputCreate" type="text" name="firstname" placeholder="first name" value={this.state.firstname}
                             onChange={this.handleFirstNameChange.bind(this)} required/><br></br>
-                        <br></br>
                         <input className="inputCreate" type="text" name="lastname" placeholder="last name" value={this.state.lastname}
                             onChange={this.handleLastNameChange.bind(this)} required/><br></br>
-                        <br></br>
                         <input className="inputCreate" type="text" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
-                        <br></br>
                         <input className="inputCreate" type="password" name="password" placeholder="password" value={this.state.password}
                             onChange={this.handlePasswordChange.bind(this)} required/><br></br>
                         <PasswordStrengthBar 
