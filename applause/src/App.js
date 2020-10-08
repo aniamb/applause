@@ -7,7 +7,8 @@ import CreateAccount from './CreateAccount'
 import Login from './Login'
 import ResetPassword from './ResetPassword'
 import ResetScreen from './ResetScreen';
-
+import Profile from './Profile'
+import EditProfile from './EditProfile'
 
 
 function App () {
@@ -27,9 +28,12 @@ function App () {
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route exact path="/Feed" component={Feed}/>
             <Route path="/Search" component={Search}/>
+            <Route path="/profile" component={Profile}/>
+            <Route path="/editprofile" component={EditProfile}/>
             <Route render= {() =>
                 // <Timeline />
-                <Feed />
+                <CreateAccount />
+                // <Profile />
             }/>
         </Switch>
       </BrowserRouter>
