@@ -39,11 +39,12 @@ class EditProfile extends React.Component{
 
 componentDidMount(){
     console.log("component mounted");
+    console.log(localStorage.getItem("currentUser"));
 
     var localEmail = localStorage.getItem('currentUser');
     //need to change this to use local storage
     // var lookupUser = user.email;
-    localEmail="pujam123@gmail.com";
+    // localEmail="pujam123@gmail.com";
     axios.get('http://localhost:5000/profile', {
         params: {
             email:localEmail
@@ -84,7 +85,7 @@ handleSubmit(event){
     event.target.reset();
 
     var currUserEmail = localStorage.getItem('currentUser');
-    currUserEmail = "pujam123@gmail.com";
+    // currUserEmail = "pujam123@gmail.com";
     const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
     axios.post('http://localhost:5000/editprofile', updateInfo). then(response => {
         console.log("Edited profile successfully.");
