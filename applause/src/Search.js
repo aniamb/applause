@@ -37,7 +37,7 @@ class Search extends Component{
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
                         <h3>
-                            <button onClick={() => this.linkToProfile(this.props.location.state.albums[i])} >@{this.props.location.state.albums[i]}</button>
+                            <button>@{this.props.location.state.albums[i]}</button>
                         </h3>
                     </div>
                 )
