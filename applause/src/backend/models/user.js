@@ -1,3 +1,4 @@
+
 const mongoose = require("mongoose");
 
 let User = new mongoose.Schema({
@@ -18,7 +19,17 @@ let User = new mongoose.Schema({
         required: true
     },
     bio: {
+        type: String,
+        required: true
+    },
+    handle: {
+        type: String,
+    },
+    resetPasswordToken: {
         type: String
+    },
+    resetPasswordExpires: {
+        type: Date
     },
     reviews: {
         type: [String]

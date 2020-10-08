@@ -47,3 +47,22 @@ app.get('/profile', function(req, res, err) {
            res.status(200).json(user);
      });
 });
+
+//Updating user profile fields
+app.post('/editprofile', function(req, res, err) {
+    console.log(req.body);
+    User.findOneAndUpdate(
+        {"email":req.body.currUserEmail},
+        {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
+        {new:true},
+        function(err,items){
+            if(err){
+                res.status(400).send('Error occured when editing profile.')
+            }else{
+                console.log("Successfully updated profile.");
+                res.status(200).send('Profile update.d');
+            }
+            res.end();
+        }
+    )
+});
