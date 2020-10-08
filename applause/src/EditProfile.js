@@ -87,7 +87,7 @@ handleSubmit(event){
     var currUserEmail = localStorage.getItem('currentUser');
     // currUserEmail = "pujam123@gmail.com";
     const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
-    axios.post('http://localhost:5000/editprofile', updateInfo). then(response => {
+    axios.post('http://localhost:5000/editprofile', updateInfo).then(response => {
         console.log("Edited profile successfully.");
     }).catch((err) => {
         console.log("Edit profile failed.");

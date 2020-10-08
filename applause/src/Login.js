@@ -61,7 +61,6 @@ render() {
                 <form onSubmit = {this.handleSubmit.bind(this)}>
                         <input className="inputLogin" type="text" name="email" placeholder ="email" value={this.state.email}
                             onChange={this.handleEmailChange.bind(this)} required/><br></br>
-                        <br></br>
                         <input className="inputLogin" type="password" name="password" placeholder="password" value={this.state.password}
                             onChange={this.handlePasswordChange.bind(this)} required/><br></br>
                         <br></br>
