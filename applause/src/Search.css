@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
+
+div.searchResults {
+    border: 3px solid black;
+    text-align: center;
+  }
+  
+  div.sidebar {
+    border: 3px solid black;
+  }
+  
+  .userOrder {
+    flex-direction: column;
+    width: 100%
+  }
+  
+  .Search h1{
+    text-align: center;
+  }
+
+  .Search {
+    text-align: center;
+    font-family: 'Reem Kufi';
+  }

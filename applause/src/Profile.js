@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import './Profile.css';
 import axios from 'axios'
-// import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const user =
     {
@@ -34,21 +34,19 @@ class Profile extends React.Component{
 }
 
 componentDidMount(){
-    var currHandle = localStorage.getItem('currentUser');
     console.log("component mounted");
-    console.log(currHandle)
-    // //need to change this to use local storage
-    // var lookupUser = user.email;
+    //need to change this to use local storage
+    var lookupUser = sessionStorage.getItem("currentUser");
+    console.log(lookupUser);
     axios.get('http://localhost:5000/profile', {
         params: {
-            // email:lookupUser
-            userHandle: currHandle
+            handle:lookupUser
         }
     })
-    .then((response) => {        
-        console.log(response)
-        console.log("response received.\t" + response.data);
+    .then((response) => {   
+        console.log("response received.");
         this.setState({user: response.data});
+        localStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
@@ -78,7 +76,7 @@ render() {
     <div className="CreateAccount">
         <div className="container">
             <div className="left">
-                {/* <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/> */}
+                <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
                 <p>@{this.state.user.handle}</p>
                 <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>

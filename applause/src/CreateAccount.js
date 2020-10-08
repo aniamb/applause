@@ -60,14 +60,16 @@ handleSubmit(event){
           localStorage.setItem("currentUser", response.data);
           console.log('create account success');
           this.setState({isRedirect: true})
-          this.props.history.push('/login');
+          // this.props.history.push('/login');
+          // this.props.history.push('/editprofile');
+
       })
        .catch((err)=> {
            this.setState({isRedirect: false});
            console.log('create account fail');
            //alert(err.response.data.message);
-           console.log(err.response.data.message)
-           this.setState({errorMessage: err.response.data.message});
+          //  console.log(err.response.data)
+          //  this.setState({errorMessage: err.response.data.message});
        })
       }
 }
@@ -109,11 +111,8 @@ render() {
         
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/profile'
+                    pathname: '/editprofile'
                 }}/>}
-                {/* {this.state.isRedirect && <Redirect to={{
-                    pathname: '/login'
-                }}/>} */}
             </div>
         </div>
 

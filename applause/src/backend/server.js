@@ -25,8 +25,92 @@ db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded());
+
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+var unirest = require("unirest");
+const { useImperativeHandle } = require('react');
+const { Server } = require('http');
+
+var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
+//var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
+
+var searchTerm;
+
+api.headers({
+	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+	"useQueryString": true
+});
+
+//searches API for artist/album
+app.post('/searchserver', function (req,res1) {
+	console.log(req.body);
+	searchTerm = (req.body.value);
+	console.log(searchTerm);
+
+	var albumTitles = [];
+	var objectsTest = [];
+	var finalVals = [];
+	var finalObjects = [];
+	var userList = [];
+
+
+
+	function Content(title, artist, art) { 
+		this.title = title; 
+		this.artist = artist; 
+		this.art = art;
+	 }
+
+	 if (searchTerm.charAt(0) ==='@') {
+		searchTerm = searchTerm.substring(1);
+		User.find({"handle": { "$regex": searchTerm, "$options": "i" } }, function(err, users){
+			if (err) throw err;
+			console.log(users);
+	  
+			for (var i = 0; i < users.length; i++) {
+			  console.log(typeof(users[i].handle));
+			  userList.push(users[i].handle);
+			}
+			 console.log(userList);
+			 res1.status(200).json({result: userList});
+			 res1.end();
+		  });
+		  
+	}else {
+		api.query({
+			"q": searchTerm
+		});
+		
+		api.end(function (res) {
+			if (res.error) throw new Error(res.error);
+			var i;
+			var k = 'value';
+
+			for (i = 0; i < res.body.data.length; i++) {
+				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
+				objectsTest.push(val1);
+				albumTitles.push(res.body.data[i].album.title);
+			}
+			noDups = new Set(albumTitles);
+			var noDupObj = new Set(objectsTest);
+			finalVals = Array.from(noDups);
+			finalObjects = Array.from(noDupObj);
+	
+			res1.status(200).json({result: finalObjects})
+			res1.end();
+		});
+	}
+
+	
+});
+
 
 //createaccount
 app.post('/createaccount', function(req, res) {
@@ -48,8 +132,7 @@ app.post('/createaccount', function(req, res) {
             lastname: req.body.lastname,
             email: req.body.email,
             password: hash,
-            bio: "bio check",
-            handle: req.body.handle
+            bio: "Write something fun about yourself!",
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -341,3 +424,41 @@ app.post('/createaccount', function(req, res) {
  })
 
 
+// LOADING INFO INTO USER PROFILE CODE
+app.get('/profile', function(req, res, err) {
+    console.log(req.body);
+    User.findOne({$or: [
+        {'handle' : req.query.handle}]}).exec(function (err, user){
+           console.log(user);
+           res.status(200).json(user);
+     });
+});
+
+//LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
+app.get('/fillProfile', function(req, res, err) {
+    console.log(req.body);
+    User.findOne({$or: [
+        {'email' : req.query.email}]}).exec(function (err, user){
+           console.log(user);
+           res.status(200).json(user);
+     });
+});
+
+//Updating user profile fields
+app.post('/editprofile', function(req, res, err) {
+    console.log(req);
+    User.findOneAndUpdate(
+        {"email":req.body.currUserEmail},
+        {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
+        {new:true},
+        function(err,items){
+            if(err){
+                res.status(400).send('Error occured when editing profile.')
+            }else{
+                console.log("Successfully updated profile.");
+                res.status(200).send('Profile update.d');
+            }
+            res.end();
+        }
+    )
+});

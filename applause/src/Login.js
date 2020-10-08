@@ -37,10 +37,12 @@ handleSubmit(event){
         this.setState({errorMessage: "Email Format is Incorrect"});
     } else { 
         axios.post('http://localhost:5000/login', loginInfo).then(response=> {
-            localStorage.setItem("currentUser", response.data);
-            console.log(response.data)
+            console.log(response.data);
+            sessionStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
+            // this.props.history.push('/resetpassword');
             this.props.history.push('/profile');
+
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
