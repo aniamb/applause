@@ -56,6 +56,8 @@ componentDidMount(){
             console.log(this.state.lastname);
             console.log(this.state.firstname);
             console.log(this.state.bio);
+        sessionStorage.setItem("currentUser", response.data.handle);
+        
     })
     .catch((err) => {
         console.log('error getting info');
@@ -90,7 +92,7 @@ handleSubmit(event){
     const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
     axios.post('http://localhost:5000/editprofile', updateInfo). then(response => {
         console.log("Edited profile successfully.");
-        localStorage.setItem("currentUser", this.state.handle);
+        sessionStorage.setItem("currentUser", this.state.handle);
         this.props.history.push('/profile');
     }).catch((err) => {
         console.log("Edit profile failed.");

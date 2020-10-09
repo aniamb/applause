@@ -6,7 +6,6 @@ import Search from './Search.js';
 import CreateAccount from './CreateAccount'
 import Login from './Login'
 import ResetPassword from './ResetPassword'
-import Profile from './Profile'
 import Followers from './Followers';
 import Following from './Following';
 import ResetScreen from './ResetScreen';

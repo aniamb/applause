@@ -275,6 +275,7 @@ app.post('/createaccount', function(req, res) {
 
 
  app.get('/profile', function(req, res){
+   console.log(req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 

@@ -24,7 +24,8 @@ class Following extends Component{
   };
 
   componentDidMount() {
-    var currHandle = localStorage.getItem('currentUser');
+    var currHandle = sessionStorage.getItem('currentUser');
+    console.log(currHandle);
     axios.get('http://localhost:5000/following', {
         params: {
           userHandle: currHandle

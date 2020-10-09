@@ -40,7 +40,7 @@ componentDidMount(){
     console.log(lookupUser);
     axios.get('http://localhost:5000/profile', {
         params: {
-            handle:lookupUser
+            userHandle:lookupUser
         }
     })
     .then((response) => {   
