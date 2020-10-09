@@ -41,7 +41,7 @@ handleSubmit(event){
             sessionStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
             // this.props.history.push('/resetpassword');
-            this.props.history.push('/profile');
+           // this.props.history.push('/profile');
 
         })
         .catch((err)=> {

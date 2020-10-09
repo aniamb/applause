@@ -158,6 +158,11 @@ app.post('/createaccount', function(req, res) {
               message: 'Password Does Not Match Existing User'});
               res.end();
             }
+         }else{
+            res.status(400).send({
+               message: 'No Existing Account With That Email'
+            });
+            res.end();
          }
       })
  });
