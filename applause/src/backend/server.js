@@ -446,19 +446,38 @@ app.get('/fillProfile', function(req, res, err) {
 
 //Updating user profile fields
 app.post('/editprofile', function(req, res, err) {
-    console.log(req);
-    User.findOneAndUpdate(
-        {"email":req.body.currUserEmail},
-        {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
-        {new:true},
-        function(err,items){
-            if(err){
-                res.status(400).send('Error occured when editing profile.')
-            }else{
-                console.log("Successfully updated profile.");
-                res.status(200).send('Profile update.d');
+    User.findOne({$or: [
+        {'handle': req.body.handle}]}).exec(function (err, user){
+            if(user && user.email!=req.body.currUserEmail){
+                console.log('Handle already in use');
+                res.status(400).send({
+                   message: 'Handle In Use'
+                });
+                res.end();
+            } else {
+                User.findOneAndUpdate(
+                    {"email":req.body.currUserEmail},
+                    {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
+                    {new:true},
+                    function(err,items){
+                        if(err){
+                            res.status(400).send('Error occured when editing profile.')
+                        }else{
+                            console.log("Successfully updated profile.");
+                            res.status(200).send('Profile update.d');
+                        }
+                        res.end();
+                    }
+                )
             }
-            res.end();
-        }
-    )
+        })
 });
+
+// Delete Account
+app.post('/delete', function(req, res, err) {
+    console.log(req.body.currUser);
+    User.deleteOne({'handle': req.body.currUser}).exec(function(err){
+        console.log("Account successfully deleted.")
+        res.status(200).send('Deleting account worked');
+    })
+})

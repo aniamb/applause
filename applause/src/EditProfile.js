@@ -29,7 +29,8 @@ class EditProfile extends React.Component{
         handle:"",
         bio:"",
         // user:user,
-        edit:false
+        edit:false,
+        errorMessage:'',
     }
     this.handleHandleChange = this.handleHandleChange.bind(this);
     this.handleFirstnameChange = this.handleFirstnameChange.bind(this);
@@ -39,8 +40,9 @@ class EditProfile extends React.Component{
 
 componentDidMount(){
     console.log("component mounted");
-
-    var localEmail = localStorage.getItem('currentUser');
+    console.log(this.props.location.state.email);
+    // var localEmail = localStorage.getItem('currentUser');
+    var localEmail = this.props.location.state.email;
     //need to change this to use local storage
     // var lookupUser = user.email;
     // localEmail="pujam123@gmail.com";
@@ -53,9 +55,6 @@ componentDidMount(){
         console.log("response received.");
         this.setState({handle: response.data.handle, firstname: response.data.firstname, 
             lastname: response.data.lastname, bio: response.data.bio});
-            console.log(this.state.lastname);
-            console.log(this.state.firstname);
-            console.log(this.state.bio);
         sessionStorage.setItem("currentUser", response.data.handle);
         
     })
@@ -88,14 +87,28 @@ handleSubmit(event){
     event.preventDefault();
     event.target.reset();
 
-    var currUserEmail = localStorage.getItem('currentUser');
+    // var currUserEmail = localStorage.getItem('currentUser');
+    var currUserEmail = this.props.location.state.email;
     const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
     axios.post('http://localhost:5000/editprofile', updateInfo).then(response => {
         console.log("Edited profile successfully.");
         sessionStorage.setItem("currentUser", this.state.handle);
         this.props.history.push('/profile');
     }).catch((err) => {
+        console.log(err);
         console.log("Edit profile failed.");
+        this.setState({errorMessage: err.response.data.message});
+    })
+}
+
+deleteAccount(event){
+    event.preventDefault();
+    const deleteAct = {currUser: sessionStorage.getItem("currentUser")};
+    axios.post('http://localhost:5000/delete', deleteAct).then(response => {
+        console.log("Deleted Account Successfully");
+        this.props.history.push('/createaccount');
+    }).catch((err) => {
+        console.log("Error deleting account");
     })
 }
 
@@ -107,7 +120,8 @@ render() {
                 <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <label>Handle</label>
-                    <input type="text" id="username" value={this.state.handle} onChange={this.handleHandleChange.bind(this)}/> 
+                    <input type="text" id="username" value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
+                    {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <br></br>
 
                     <label>First Name</label>
@@ -119,12 +133,14 @@ render() {
                     <br></br>
 
                     <label>Bio</label>
-                    <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)}/>
+                    <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
                     
                     <input className="submit" type="submit" value="Save Changes"/>
                 </form>
             </div>
         </div>
+        <input type="button" value="Delete Account" onClick={this.deleteAccount.bind(this)}/>
+        {/* {this.state.wantDelete ? <> : null} */}
     </div>
 
   );
