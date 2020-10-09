@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter, NavLink, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
 import './App.css';
 import Feed from './Feed.js';
 import Search from './Search.js';
@@ -14,12 +14,12 @@ import EditProfile from './EditProfile'
 
 
 function App () {
-
+  
   return (
     <div className="App">
       <div className="App-header">
           <div style={{ textDecoration: "none", fontSize: "70px" }}>
-           applause
+          applause
             </div>
       </div>
       <BrowserRouter>
@@ -31,8 +31,8 @@ function App () {
             <Route path="/following" component={Following}/>
             <Route path="/profile" component={Profile}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
-            <Route exact path="/Feed" component={Feed}/>
-            <Route path="/Search" component={Search}/>
+            <Route path="/feed" component={Feed}/>
+            <Route path="/search" component={Search}/>
             <Route path="/profile" component={Profile}/>
             <Route path="/editprofile" component={EditProfile}/>
             <Route render= {() =>

@@ -44,11 +44,11 @@ class Feed extends Component {
     render () {
 
         return (
-            <div>
+            <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <label>
-                        Search for Music: 
-                        <input type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
+                        Search: 
+                        <input className = "searchBox" type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
                     </label>
                     <input type="submit" value="Search" />
                 </form>

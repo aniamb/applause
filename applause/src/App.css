@@ -21,3 +21,13 @@
   padding: 8px;
   
 }
+
+.searchBox {
+  outline: solid black !important;
+  outline-width: 1px !important;
+}
+
+.headerLink{
+  text-decoration: none;
+  color: black;
+}

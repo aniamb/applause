@@ -98,7 +98,7 @@ app.post('/searchserver', function (req,res1) {
 				objectsTest.push(val1);
 				albumTitles.push(res.body.data[i].album.title);
 			}
-			noDups = new Set(albumTitles);
+			var noDups = new Set(albumTitles);
 			var noDupObj = new Set(objectsTest);
 			finalVals = Array.from(noDups);
 			finalObjects = Array.from(noDupObj);
