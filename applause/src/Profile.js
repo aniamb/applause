@@ -88,7 +88,12 @@ render() {
                 </div>
                 <h2>{this.state.user.bio}</h2>
                 <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
-                {this.state.edit ? <Redirect to='/editprofile'/> : null}
+                {/* {this.state.edit ? <Redirect to='/editprofile'/> : null} */}
+                {this.state.edit ? <Redirect to={{
+                    pathname: '/editprofile',
+                    state: {email: this.state.user.email}
+                }}/>: null}
+
 
             </div>
             <div className="right">This is where the user's own reviews would be!</div>

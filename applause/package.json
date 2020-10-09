@@ -20,10 +20,11 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-native-elements": "^2.3.2",
+    "react-password-strength-bar": "^0.3.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "reactjs-popup": "^2.0.4",
     "unirest": "^0.6.0",
-    "react-password-strength-bar": "^0.3.2",
     "validator": "^13.1.17"
   },
   "scripts": {

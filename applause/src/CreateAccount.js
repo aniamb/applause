@@ -109,7 +109,8 @@ render() {
         
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/editprofile'
+                    pathname: '/editprofile',
+                    state: {email:this.state.email}
                 }}/>}
             </div>
         </div>
