@@ -13,6 +13,7 @@ class CreateAccount extends React.Component{
     this.state = {
         firstname: '',
         lastname: '',
+        handle: '',
         email: '',
         password: '',
         passwordConfirm: '',
@@ -55,7 +56,7 @@ handleSubmit(event){
       this.setState({errorMessage: "Passwords Don't Match"});
   }else{
       axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
-          console.log(this.state.firstname);
+          console.log(registerInfo.firstname);
           localStorage.setItem("currentUser", response.data);
           console.log('create account success');
           this.setState({isRedirect: true})

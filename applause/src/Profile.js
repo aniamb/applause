@@ -26,23 +26,27 @@ class Profile extends React.Component{
     this.state = {
         user:user,
         edit:false,
-        isFollow: "Follow"
+        isFollow: "Follow",
+        userHandle: null,
+        followerRedirect: false,
+        followingRedirect: false,
     }
 }
 
 componentDidMount(){
     console.log("component mounted");
-
     //need to change this to use local storage
-    var lookupUser = user.email;
+    var lookupUser = sessionStorage.getItem("currentUser");
+    console.log(lookupUser);
     axios.get('http://localhost:5000/profile', {
         params: {
-            email:lookupUser
+            userHandle:lookupUser
         }
     })
-    .then((response) => {        
+    .then((response) => {   
         console.log("response received.");
         this.setState({user: response.data});
+        localStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
@@ -51,6 +55,14 @@ componentDidMount(){
 
 editProfile = () => {
     this.setState({edit:true});
+}
+
+followerRedirectFunc = () => {
+  this.setState({followerRedirect:true});
+}
+
+followingRedirectFunc = () => {
+  this.setState({followingRedirect:true});
 }
 
 changeFollow = () => {
@@ -69,8 +81,10 @@ render() {
                 <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
                 <div className="follow">
-                    <div className="followers">{this.state.user.followers.length} followers</div>
-                    <div className="following">{this.state.user.following.length} following</div>
+                    <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
+                      {this.state.followerRedirect ? <Redirect to='/followers'/> : null}
+                    <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
+                    {this.state.followingRedirect ? <Redirect to='/following'/> : null}
                 </div>
                 <h2>{this.state.user.bio}</h2>
                 <button className = "edit" onClick={this.editProfile}>Edit Profile</button>

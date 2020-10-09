@@ -1,4 +1,3 @@
-
 const crypto = require('crypto')
 const express = require('express');
 require('dotenv').config();
@@ -26,8 +25,92 @@ db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.urlencoded());
+
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+var unirest = require("unirest");
+const { useImperativeHandle } = require('react');
+const { Server } = require('http');
+
+var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
+//var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
+
+var searchTerm;
+
+api.headers({
+	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+	"useQueryString": true
+});
+
+//searches API for artist/album
+app.post('/searchserver', function (req,res1) {
+	console.log(req.body);
+	searchTerm = (req.body.value);
+	console.log(searchTerm);
+
+	var albumTitles = [];
+	var objectsTest = [];
+	var finalVals = [];
+	var finalObjects = [];
+	var userList = [];
+
+
+
+	function Content(title, artist, art) { 
+		this.title = title; 
+		this.artist = artist; 
+		this.art = art;
+	 }
+
+	 if (searchTerm.charAt(0) ==='@') {
+		searchTerm = searchTerm.substring(1);
+		User.find({"handle": { "$regex": searchTerm, "$options": "i" } }, function(err, users){
+			if (err) throw err;
+			console.log(users);
+	  
+			for (var i = 0; i < users.length; i++) {
+			  console.log(typeof(users[i].handle));
+			  userList.push(users[i].handle);
+			}
+			 console.log(userList);
+			 res1.status(200).json({result: userList});
+			 res1.end();
+		  });
+		  
+	}else {
+		api.query({
+			"q": searchTerm
+		});
+		
+		api.end(function (res) {
+			if (res.error) throw new Error(res.error);
+			var i;
+			var k = 'value';
+
+			for (i = 0; i < res.body.data.length; i++) {
+				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
+				objectsTest.push(val1);
+				albumTitles.push(res.body.data[i].album.title);
+			}
+			noDups = new Set(albumTitles);
+			var noDupObj = new Set(objectsTest);
+			finalVals = Array.from(noDups);
+			finalObjects = Array.from(noDupObj);
+	
+			res1.status(200).json({result: finalObjects})
+			res1.end();
+		});
+	}
+
+	
+});
+
 
 //createaccount
 app.post('/createaccount', function(req, res) {
@@ -49,7 +132,7 @@ app.post('/createaccount', function(req, res) {
             lastname: req.body.lastname,
             email: req.body.email,
             password: hash,
-            bio: "bio check",
+            bio: "Write something fun about yourself!",
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -62,29 +145,21 @@ app.post('/createaccount', function(req, res) {
  app.post('/login', function(req, res, err) {
    User.findOne({
       'email': req.body.email }, function(err, user) {
-      if (user) {
+         if (user) {
           //email exists
-          if(bcrypt.compareSync(req.body.password, user.password)) {
+            if(bcrypt.compareSync(req.body.password, user.password)) {
               // Passwords match
                res.status(200).send(user.handle);
               res.end();
-          } else {
+            } else {
               // Passwords don't match
               console.log('password mismatch');
               res.status(400).send({
-               message: 'Password Does Not Match Existing User'
-            });
+              message: 'Password Does Not Match Existing User'});
               res.end();
-          }
-      } else {
-          // user does not exist
-          console.log('user not in base');
-          res.status(400).send({
-            message: 'There is No Account With This Email'
-         });
-         res.end();
-      }
-  })
+            }
+         }
+      })
  });
 
  //send reset password email
@@ -145,6 +220,153 @@ app.post('/createaccount', function(req, res) {
   })
  });
 
+ app.get('/followers', function(req, res){
+    console.log("Followers in Server:\t" + req.query.userHandle);
+    var userfollowers = [];
+    User.findOne({
+      'handle': req.query.userHandle}, function(err, user) {
+        if (user) {
+          // user exists
+          console.log("Length of followers:\t" + user.followers.length);
+          for (var i = 0; i < user.followers.length; i++) {
+            if (!userfollowers.includes(user.followers[i])) {
+                userfollowers.push(user.followers[i]);
+            }
+          }
+          console.log("Followers:\t" + userfollowers);
+          res.status(200).json({results: userfollowers});
+          res.end();
+
+        } else {
+          // user does not exist
+          console.log('error getting followers');
+          res.status(400).send('error getting followers');
+          res.end();
+        }
+     })
+  });
+
+  app.get('/following', function(req, res){
+    console.log("Following in Server:\t" + req.query.userHandle);
+    var userfollowing = [];
+    User.findOne({
+      'handle': req.query.userHandle}, function(err, user) {
+        if (user) {
+          // user exists
+          console.log("Length of following:\t" + user.following.length);
+          for (var i = 0; i < user.following.length; i++) {
+            if (!userfollowing.includes(user.following[i])) {
+                userfollowing.push(user.following[i]);
+            }
+          }
+          console.log(userfollowing);
+          res.status(200).json({results: userfollowing});
+          res.end();
+
+        } else {
+          // user does not exist
+          console.log('error getting following');
+          res.status(400).send('error getting following');
+          res.end();
+        }
+     })
+  });
+
+
+ app.get('/profile', function(req, res){
+   console.log(req.query.userHandle);
+   User.findOne({'handle': req.query.userHandle }, function(err, user) {
+        if (user) {
+
+        //  var userInfo = {
+        //    firstname: user.firstname,
+        //    lastname: user.lastname,
+        //    bio: user.bio,
+        //  }
+         res.status(200).send(user);
+
+         res.end();
+
+
+       } else {
+         // user does not exist
+         console.log('user not in base');
+         res.status(400).send('Email or Password does not exist');
+         res.end();
+       }
+    })
+ });
+
+ app.get('/unfollow', function(req, res){
+
+  let unfollowUser = null
+  User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
+      unfollowUser = newUser;
+      if (unfollowUser) {
+        console.log("Found\t" + req.query.unfollowUsername)
+      }
+  })
+
+  let mainUser = null
+  User.findOne({'handle': req.query.userHandle }, function(err, newUser) {
+      mainUser = newUser;
+      if (mainUser) {
+        console.log("Found\t" + req.query.userHandle)
+      }
+  })
+
+   User.updateOne(
+    {"handle" : req.query.userHandle},
+    {$pull : {following : req.query.unfollowUsername}},
+    function (err,result){
+      if(err){
+          console.log("Failed to unfollow genericUser");
+          res.status(400).send("Error in unfollowing user");
+          res.end();
+      }else{
+        console.log("No errors found in unfollowng!")
+          User.updateOne(
+              {"handle" : unfollowUser.handle},
+              {$pull : {followers : req.query.userHandle}},
+              function(err, results){
+                  if(err){
+                      console.log("Failed to update genericUser's followers list when unfolowing");
+                      res.status(400).send("Error occurred when following user. User may not exist");
+                      res.end();
+                  }
+                  res.status(200).send(mainUser.following);
+                  console.log(mainUser.following)
+                  res.end();
+              }
+          )
+      }
+    })
+  });
+  // User.findOne({'handle': req.query.userHandle }, function(err, user) {
+  //      if (user) {
+
+  //         for (let i = 0; i < user.following.length; i++) {
+  //           if (user.following[i] == req.query.unfollowUsername) {
+
+  //           }
+  //         }
+
+       //  var userInfo = {
+       //    firstname: user.firstname,
+       //    lastname: user.lastname,
+       //    bio: user.bio,
+       //  }
+      //   res.status(200).send(user);
+
+      //   res.end();
+
+
+      // } else {
+      //   // user does not exist
+      //   console.log('user not in base');
+      //   res.status(400).send('Email or Password does not exist');
+      //   res.end();
+      // }
  //verify reset password link
  app.get('/reset', (req, res, next) => {
     console.log(req.query.resetPasswordToken);
@@ -202,8 +424,19 @@ app.post('/createaccount', function(req, res) {
  })
 
 
-//LOADING INFO INTO USER PROFILE CODE
+// LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {
+    console.log(req.body);
+    User.findOne({$or: [
+        {'handle' : req.query.handle}]}).exec(function (err, user){
+           console.log(user);
+           res.status(200).json(user);
+     });
+});
+
+//LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
+app.get('/fillProfile', function(req, res, err) {
+    console.log(req.body);
     User.findOne({$or: [
         {'email' : req.query.email}]}).exec(function (err, user){
            console.log(user);
@@ -213,7 +446,7 @@ app.get('/profile', function(req, res, err) {
 
 //Updating user profile fields
 app.post('/editprofile', function(req, res, err) {
-    console.log(req.body);
+    console.log(req);
     User.findOneAndUpdate(
         {"email":req.body.currUserEmail},
         {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},

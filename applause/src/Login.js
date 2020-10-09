@@ -38,8 +38,7 @@ handleSubmit(event){
     } else { 
         axios.post('http://localhost:5000/login', loginInfo).then(response=> {
             console.log(response.data);
-            sessionStorage.setItem("currentUser", "puja");
-            console.log(localStorage.getItem("currentUser"));
+            sessionStorage.setItem("currentUser", response.data);
             this.setState({isRedirect: true});
             // this.props.history.push('/resetpassword');
             this.props.history.push('/profile');
@@ -47,7 +46,7 @@ handleSubmit(event){
         })
         .catch((err)=> {
             this.setState({isRedirect: false});
-            console.log(err);
+            console.log("err:\t", err);
             this.setState({errorMessage: err.response.data.message});
         })
     }
@@ -72,7 +71,7 @@ render() {
                 <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
                 <NavLink to="/createaccount">new user?</NavLink><br></br>
                 {this.state.isRedirect && <Redirect to={{
-                    pathname: '/resetpassword'
+                    pathname: '/profile'
                 }}/>}
             </div>
         </div>
