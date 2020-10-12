@@ -1,16 +1,16 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
 import './App.css';
-import Feed from './Feed.js';
-import Search from './Search.js';
-import CreateAccount from './CreateAccount'
-import Login from './Login'
-import ResetPassword from './ResetPassword'
-import Followers from './Followers';
-import Following from './Following';
-import ResetScreen from './ResetScreen';
-import Profile from './Profile'
-import EditProfile from './EditProfile'
+import Feed from './frontend/components/Feed.js';
+import Search from './frontend/components/Search.js';
+import CreateAccount from './frontend/components/CreateAccount'
+import Login from './frontend/components/Login'
+import ResetPassword from './frontend/components/ResetPassword'
+import Followers from './frontend/components/Followers';
+import Following from './frontend/components/Following';
+import ResetScreen from './frontend/components/ResetScreen';
+import Profile from './frontend/components/Profile'
+import EditProfile from './frontend/components/EditProfile'
 
 
 function App () {

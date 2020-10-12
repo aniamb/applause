@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import './App.css';
-import './Search.css'
+import '../../App.css';
+import '../styles/Search.css'
 import { NavLink, Redirect} from 'react-router-dom'
 // import Form from 'react-bootstrap/Form'
 //import FormControl from 'react-bootstrap/FormControl'

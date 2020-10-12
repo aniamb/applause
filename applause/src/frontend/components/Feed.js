@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import axios from 'axios'
-import './App.css';
+import '../../App.css';
 
 class Feed extends Component {
     constructor(props) {

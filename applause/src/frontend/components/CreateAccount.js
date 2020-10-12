@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import PasswordStrengthBar from 'react-password-strength-bar'
-import './CreateAccount.css';
+import '../styles/CreateAccount.css';
 import axios from 'axios'
 import validator from 'validator';
 

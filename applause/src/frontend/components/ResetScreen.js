@@ -1,5 +1,5 @@
 import React from 'react';
-import './Login.css';
+import '../styles/Login.css';
 import { NavLink, Redirect} from 'react-router-dom'
 import PasswordStrengthBar from 'react-password-strength-bar'
 import axios from 'axios'

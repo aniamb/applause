@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
-import './Login.css';
+import '../styles/Login.css';
 import axios from 'axios'
 import validator from 'validator'
 
