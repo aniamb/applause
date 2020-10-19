@@ -46,10 +46,10 @@ class Feed extends Component {
         return (
             <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <label>
+                <label>
                         Search: 
                         <input className = "searchBox" type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
-                    </label>
+                </label>
                     <input type="submit" value="Search" />
                 </form>
                 {this.state.navigate && <Redirect to={{

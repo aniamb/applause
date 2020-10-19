@@ -10,28 +10,36 @@ class Search extends Component{
         super(props);
         this.state = {
             navigate: false, // only navigates to /search again
-            username: ""
+
         }
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleSearch = (ev) => {
         this.setState({searchTerm: ev.target.value});
     };
 
-    // linkToProfile = (username) => {
-    //     // console.log("THIS IS: " + username);
-    //     this.setState({navigate : true});
-    //     this.setState({username: username});
-    // };
+    handleSubmit(event) {
+        //#alert('Search Value was: ' + this.state.value);
+    
+            const { search } = this.state; 
+            event.preventDefault()
+            this.props.history.push('/albumpage');
+           // <Redirect to="/albumpage" />
+            console.log("hi");
+        }
+
 
     render() {
         let noDups = [];
 
         var length = (this.props.location.state.albums.length);
 
+        //no results
         if (length === 0){
             noDups.push(<h3>No results.</h3>)
         } else if (!this.props.location.state.albums[0].title) {
+            //users
             for(let i = 0; i < length; i++){
                
                 noDups.push(
@@ -44,7 +52,7 @@ class Search extends Component{
             }
         } else {
             for(let i = 0; i< length; i++){
-                //var image = "\"" + {this.props.location.state.albums[i].art} + "\";
+                //albums
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
                         <h3>
@@ -54,7 +62,11 @@ class Search extends Component{
                             <br></br>
                             <img src={this.props.location.state.albums[i].art}></img>
                             <br></br>
-                            <button>Review this Album</button>
+                            <div>
+                                <form onSubmit={this.handleSubmit.bind(this)}>
+                                    <input type="submit" value="Review this Album" />
+                                </form>
+                            </div>
 
                         </h3>
                     </div>
@@ -74,7 +86,7 @@ class Search extends Component{
                        {noDups}
                    </div>
                 {/* {this.state.navigate && <Redirect to={{
-                    pathname: '/genericprofile',
+                    pathname: '/albumpage',
                     state: {"username": this.state.username}
                 }}/>} */}
                 </div>
