@@ -25,7 +25,6 @@ class Search extends Component{
             const { search } = this.state; 
             event.preventDefault()
             this.props.history.push('/albumpage');
-           // <Redirect to="/albumpage" />
             console.log("hi");
         }
 
