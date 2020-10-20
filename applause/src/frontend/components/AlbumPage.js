@@ -33,9 +33,10 @@ render() {
                 <img src={exampleImg}></img>
                 <br></br>
                 <input type="submit" value="Review this Album" />
+                <h4> Learn more on Genius</h4>
 
             </div>
-            <div className="right">This is where the user's own reviews would be!</div>
+            <div className="right">Album-related reviews here</div>
         </div>
     </div>
 
