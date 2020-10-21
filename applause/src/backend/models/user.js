@@ -27,8 +27,9 @@ let User = new mongoose.Schema({
         type: String,
         required: true
     },
-    handle: {
+    visibility: {
         type: String,
+        required: true
     },
     resetPasswordToken: {
         type: String

@@ -1,10 +1,10 @@
-.CreateAccount{
+.EditProfile{
     max-width: 100%;
     height: 100%;
 }
 
 form{
-    margin-top:15px;
+    margin-top: 5px;
 }
 
 input[type=text]{
@@ -20,10 +20,6 @@ textarea {
     margin:5px;
 }
 
-.submit {
-    margin:10px;
-}
-
 h1{
     margin:0;
     margin-top:10px;
@@ -34,11 +30,12 @@ h2 {
 }
 .container > div {
     width:30%;
-    height:360px;
+    height:450px;
     background:rgb(119,205,195);
     margin:auto;
     border-radius: 25px;
     margin:35px;
+    box-shadow: 6px 6px 5px rgb(74, 124, 118);
 }
 
 .container {
@@ -49,4 +46,15 @@ h2 {
 
 .left{
     position: relative;
+}
+
+.button{
+    width: 110spx;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 13px;
+    margin: 10px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
 }

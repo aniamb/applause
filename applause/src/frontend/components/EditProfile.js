@@ -31,11 +31,13 @@ class EditProfile extends React.Component{
         // user:user,
         edit:false,
         errorMessage:'',
+        visibility: ""
     }
     this.handleHandleChange = this.handleHandleChange.bind(this);
     this.handleFirstnameChange = this.handleFirstnameChange.bind(this);
     this.handleLastnameChange = this.handleLastnameChange.bind(this);
     this.handleBioChange = this.handleBioChange.bind(this);
+    this.handleOptionChange = this.handleOptionChange.bind(this);
 }
 
 componentDidMount(){
@@ -54,8 +56,9 @@ componentDidMount(){
     .then((response) => {        
         console.log("response received.");
         this.setState({handle: response.data.handle, firstname: response.data.firstname, 
-            lastname: response.data.lastname, bio: response.data.bio});
+            lastname: response.data.lastname, bio: response.data.bio, visibility: response.data.visibility});
         sessionStorage.setItem("currentUser", response.data.handle);
+        console.log("visibiliy = " + this.state.visibility)
         
     })
     .catch((err) => {
@@ -83,13 +86,18 @@ handleBioChange(event) {
     this.setState({bio: event.target.value});
 }
 
+handleOptionChange(event) {
+    this.setState({visibility: event.target.value});
+    console.log(this.state.visibility);
+}
+
 handleSubmit(event){
     event.preventDefault();
     event.target.reset();
 
     // var currUserEmail = localStorage.getItem('currentUser');
     var currUserEmail = this.props.location.state.email;
-    const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
+    const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail, visibility: this.state.visibility}
     axios.post('http://localhost:5000/editprofile', updateInfo).then(response => {
         console.log("Edited profile successfully.");
         sessionStorage.setItem("currentUser", this.state.handle);
@@ -114,7 +122,7 @@ deleteAccount(event){
 
 render() {
   return (
-    <div className="CreateAccount">
+    <div className="EditProfile">
         <div className="container">
             <div className="left">
                 <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
@@ -134,12 +142,20 @@ render() {
 
                     <label>Bio</label>
                     <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
-                    
-                    <input className="submit" type="submit" value="Save Changes"/>
+                    <br></br>
+
+                    <label>Profile</label>
+                        <input type="radio" id="public" name="visibility" value="public" checked={this.state.visibility === 'public'} onChange = {this.handleOptionChange.bind(this)}/>
+                        <label for="public">public</label>
+                        <input type="radio" id="private" name="visibility" value="private" checked={this.state.visibility === 'private'} onChange = {this.handleOptionChange.bind(this)}/>
+                        <label for="private">private</label><br/>  
+
+                    <input className="submit button" type="submit" value="Save Changes"/>
                 </form>
+                <input className = "button" type="button" value="Delete Account" onClick={this.deleteAccount.bind(this)}/>
             </div>
         </div>
-        <input type="button" value="Delete Account" onClick={this.deleteAccount.bind(this)}/>
+        
         {/* {this.state.wantDelete ? <> : null} */}
     </div>
 

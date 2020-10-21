@@ -133,6 +133,7 @@ app.post('/createaccount', function(req, res) {
             email: req.body.email,
             password: hash,
             bio: "Write something fun about yourself!",
+            visibility: "public"
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -451,6 +452,7 @@ app.get('/fillProfile', function(req, res, err) {
 
 //Updating user profile fields
 app.post('/editprofile', function(req, res, err) {
+   console.log(req.body.visibility)
     User.findOne({$or: [
         {'handle': req.body.handle}]}).exec(function (err, user){
             if(user && user.email!=req.body.currUserEmail){
@@ -462,7 +464,7 @@ app.post('/editprofile', function(req, res, err) {
             } else {
                 User.findOneAndUpdate(
                     {"email":req.body.currUserEmail},
-                    {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
+                    {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio, visibility:req.body.visibility}},
                     {new:true},
                     function(err,items){
                         if(err){
