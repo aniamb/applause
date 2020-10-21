@@ -9,21 +9,28 @@ class Followers extends Component{
       super(props);
       this.state = {
           username: "",
-          currHandle: "",
+          currHandle: null,
           followerData: [],
           followerRedirect: false,
           navigate: false,
-          userNames: []
+          userNames: [],
+          hand: ""
       }
   }
 
-    linkToProfile = (username) => {
+  linkToProfile = (username) => {
       this.setState({navigate : true});
       this.setState({username: username});
   };  
 
   componentDidMount() {
-    var currHandle = localStorage.getItem('currentUser');
+    var currHandle = null;
+    
+    if (this.props.location.state.hand == "") {
+      currHandle = localStorage.getItem('currentUser');
+    } else {
+      currHandle = this.props.location.state.hand;
+    }
     axios.get('http://localhost:5000/followers', {
         params: {
           userHandle: currHandle
@@ -45,6 +52,7 @@ class Followers extends Component{
 
     let userNames = [];
 
+
     console.log(this.state.followerData);
     console.log(this.state.followerData.length);
     
@@ -57,7 +65,7 @@ class Followers extends Component{
             </div>
         )
     }
-    
+
     return (
       
       <div className="Followers">
@@ -68,7 +76,7 @@ class Followers extends Component{
                 {userNames}
             </div>
           {this.state.navigate && <Redirect to={{
-              pathname: '/profile',
+              pathname: '/viewprofile',
               state: {"username": this.state.username}
           }}/>}
           </div>

@@ -277,21 +277,30 @@ app.post('/createaccount', function(req, res) {
      })
   });
 
-
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 
-        //  var userInfo = {
-        //    firstname: user.firstname,
-        //    lastname: user.lastname,
-        //    bio: user.bio,
-        //  }
          res.status(200).send(user);
-
          res.end();
 
+       } else {
+         // user does not exist
+         console.log('user not in base');
+         res.status(400).send('Email or Password does not exist');
+         res.end();
+       }
+    })
+ });
+
+ app.get('/viewprofile', function(req, res){
+   console.log(req.query.userHandle);
+   User.findOne({'handle': req.query.userHandle }, function(err, user) {
+        if (user) {
+
+         res.status(200).send(user);
+         res.end();
 
        } else {
          // user does not exist
@@ -347,31 +356,7 @@ app.post('/createaccount', function(req, res) {
       }
     })
   });
-  // User.findOne({'handle': req.query.userHandle }, function(err, user) {
-  //      if (user) {
 
-  //         for (let i = 0; i < user.following.length; i++) {
-  //           if (user.following[i] == req.query.unfollowUsername) {
-
-  //           }
-  //         }
-
-       //  var userInfo = {
-       //    firstname: user.firstname,
-       //    lastname: user.lastname,
-       //    bio: user.bio,
-       //  }
-      //   res.status(200).send(user);
-
-      //   res.end();
-
-
-      // } else {
-      //   // user does not exist
-      //   console.log('user not in base');
-      //   res.status(400).send('Email or Password does not exist');
-      //   res.end();
-      // }
  //verify reset password link
  app.get('/reset', (req, res, next) => {
     console.log(req.query.resetPasswordToken);

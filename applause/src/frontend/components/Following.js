@@ -13,7 +13,8 @@ class Following extends Component{
         followingData: [],
         followingRedirect: false,
         navigate: false,
-        userNames: []
+        userNames: [],
+        hand: ""
       }
   }
 
@@ -42,7 +43,14 @@ class Following extends Component{
 }
 
 unfollow = (username) => {
-  var currHandle = localStorage.getItem('currentUser');
+  var currHandle = null;
+
+  if (this.props.location.state.hand == "") {
+    currHandle = localStorage.getItem('currentUser');
+  } else {
+    currHandle = this.props.location.state.hand;
+  }
+  
   axios.get('http://localhost:5000/unfollow', {
       params: {
         userHandle: currHandle,
@@ -92,10 +100,9 @@ unfollow = (username) => {
                 {userNames}
             </div>
           {this.state.navigate && <Redirect to={{
-              pathname: '/profile',
+              pathname: '/viewprofile',
               state: {"username": this.state.username}
           }}/>}
-          {/* <button onClick={}>Unfollow!</button> */}
           </div>
       </div>
 

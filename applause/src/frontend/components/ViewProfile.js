@@ -20,7 +20,7 @@ const user =
         "bio": "Lover of Pop, Harry Styles, and Country Music"
     }
 
-class Profile extends React.Component{
+class ViewProfile extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -35,30 +35,26 @@ class Profile extends React.Component{
 }
 
 componentDidMount(){
-    console.log("component mounted");
+    console.log("component mounted at view profile");
     //need to change this to use local storage
-    var lookupUser = sessionStorage.getItem("currentUser");
-    console.log(lookupUser);
-    axios.get('http://localhost:5000/profile', {
+    // console.log(lookupUser);
+    axios.get('http://localhost:5000/viewprofile', {
         params: {
-            userHandle:lookupUser
+            userHandle: this.props.location.state.username
         }
     })
     .then((response) => {   
         console.log("response received.");
         this.setState({user: response.data});
-        localStorage.setItem("currentUser", this.state.user.handle);
+        // localStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
     });
 }
 
-editProfile = () => {
-    this.setState({edit:true});
-}
-
 followerRedirectFunc = () => {
+    console.log(this.state.user.handle);
   this.setState({followerRedirect:true});
 }
 
@@ -81,25 +77,22 @@ render() {
                 <p>@{this.state.user.handle}</p>
                 <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
+                
                 <div className="follow">
-                    <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
-                    {this.state.followerRedirect && <Redirect to={{
+                    
+                    <div className="followers" onClick={this.followerRedirectFunc}> {this.state.user.followers.length} followers</div>
+                        {this.state.followerRedirect && <Redirect to={{
                             pathname: '/followers',
-                            state: {"hand": localStorage.getItem('currentUser')}
-                    }}/>}
+                            state: {"hand": this.state.user.handle}
+                        }}/>}
+                    
                     <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
-                    {this.state.followingRedirect && <Redirect to={{
-                            pathname: '/following',
-                            state: {"hand": localStorage.getItem('currentUser')}
-                    }}/>}
+                        {this.state.followingRedirect && <Redirect to={{
+                                pathname: '/following',
+                                state: {"hand": this.state.user.handle}
+                        }}/>}
                 </div>
                 <h2>{this.state.user.bio}</h2>
-                <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
-                {this.state.edit ? <Redirect to={{
-                    pathname: '/editprofile',
-                    state: {email: this.state.user.email}
-                }}/>: null}
-
 
             </div>
             <div className="right">This is where the user's own reviews would be!</div>
@@ -110,4 +103,4 @@ render() {
 }
 
 }
-export default Profile
+export default ViewProfile
