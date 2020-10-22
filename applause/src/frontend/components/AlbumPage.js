@@ -1,8 +1,8 @@
-// import React from 'react';
-// import { NavLink, Redirect} from 'react-router-dom'
-// import '../styles/Profile.css';
-// import axios from 'axios'
-// import exampleImg from './gkmc.jpg';
+import React from 'react';
+import { NavLink, Redirect} from 'react-router-dom'
+import '../styles/Profile.css';
+import axios from 'axios'
+import exampleImg from './gkmc.jpg';
 
 
 
@@ -49,11 +49,19 @@
 // export default AlbumPage;
 
 
-import React from 'react';
 
-const AlbumPage = (props) => {
-    console.log(props);
-    console.log(props.name);
-      return <h1>{this.props.name}</h1>
+
+class AlbumPage extends React.Component {
+  render() {
+    return (
+      <h1>Name: {this.props.name}</h1>
+    );
   }
+}
+
+// const AlbumPage = (props) => {
+//     console.log(props);
+//     console.log(props.name);
+//       return <h1>{this.props.name}</h1>
+//   }
 export default AlbumPage;

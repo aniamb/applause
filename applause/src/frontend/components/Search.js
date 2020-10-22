@@ -31,6 +31,7 @@ class Search extends Component{
 
 
     render() {
+
         let noDups = [];
         var title;
         var artist;
@@ -81,17 +82,13 @@ class Search extends Component{
             }
         }
 
+
         return (
 
             <div className="Search">
               <h1> Search Results: </h1>
-              
                 <div className="row-timeline">
-                  <div className="sidebar" >
-
-                  </div>
                    <div className="userOrder">
-                     
                        {noDups}
                    </div>
                 {/* {this.state.navigate && <Redirect to={{
