@@ -96,7 +96,14 @@ class Search extends Component{
                     state: {"username": this.state.username}
                 }}/>} */}
                 </div>
+                <div>
+                            <AlbumPage name="Joe Goldberg" />
+                            <AlbumPage name="Mrs Maisel" />
             </div>
+
+            </div>
+
+            
 
         );
     }
