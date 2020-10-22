@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import '../../App.css';
-import '../styles/Search.css'
+import '../styles/Search.css';
 import { NavLink, Redirect} from 'react-router-dom'
-// import Form from 'react-bootstrap/Form'
-//import FormControl from 'react-bootstrap/FormControl'
+import AlbumPage from './AlbumPage.js';
+
+
 
 class Search extends Component{
     constructor(props){
@@ -31,7 +32,8 @@ class Search extends Component{
 
     render() {
         let noDups = [];
-
+        var title;
+        var artist;
         var length = (this.props.location.state.albums.length);
 
         //no results
@@ -52,8 +54,12 @@ class Search extends Component{
         } else {
             for(let i = 0; i< length; i++){
                 //albums
+                title = this.props.location.state.albums[i].title;
+                artist = this.props.location.state.albums[i].artist;
+                //console.log(name);
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
+                        var name = this.props.location.state.albums[i].title;
                         <h3>
                             <i>{this.props.location.state.albums[i].title}</i>
                                 , {this.props.location.state.albums[i].artist}
@@ -61,6 +67,8 @@ class Search extends Component{
                             <br></br>
                             <img src={this.props.location.state.albums[i].art}></img>
                             <br></br>
+                            
+                           
                             <div>
                                 <form onSubmit={this.handleSubmit.bind(this)}>
                                     <input type="submit" value="Review this Album" />
@@ -77,11 +85,13 @@ class Search extends Component{
 
             <div className="Search">
               <h1> Search Results: </h1>
+              
                 <div className="row-timeline">
                   <div className="sidebar" >
 
                   </div>
                    <div className="userOrder">
+                     
                        {noDups}
                    </div>
                 {/* {this.state.navigate && <Redirect to={{
