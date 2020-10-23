@@ -26,6 +26,7 @@ class Profile extends React.Component{
     this.state = {
         user:user,
         edit:false,
+        logout:false,
         isFollow: "Follow",
         userHandle: null,
         followerRedirect: false,
@@ -56,6 +57,12 @@ componentDidMount(){
 
 editProfile = () => {
     this.setState({edit:true});
+}
+
+logout = () => {
+    this.setState({logout:true});
+    localStorage.clear();
+    sessionStorage.clear();
 }
 
 followerRedirectFunc = () => {
@@ -98,6 +105,10 @@ render() {
                 {this.state.edit ? <Redirect to={{
                     pathname: '/editprofile',
                     state: {email: this.state.user.email}
+                }}/>: null}
+                <button className = "logout" onClick={this.logout}>Logout</button>
+                {this.state.logout ? <Redirect to={{
+                    pathname: '/login'
                 }}/>: null}
 
 
