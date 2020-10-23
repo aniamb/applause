@@ -18,11 +18,17 @@ class Search extends Component{
         this.setState({searchTerm: ev.target.value});
     };
 
-    // linkToProfile = (username) => {
-    //     // console.log("THIS IS: " + username);
-    //     this.setState({navigate : true});
-    //     this.setState({username: username});
-    // };
+    whichUser = (username) => {
+        if (username == localStorage.getItem('currentUser')) {
+          return "/profile";
+        } else {
+          return '/viewprofile';
+        }
+    };
+
+    linkToProfile = () => {
+        this.setState({navigate : true});
+    };
 
     render() {
         let noDups = [];
@@ -37,7 +43,12 @@ class Search extends Component{
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
                         <h3>
-                            <button>@{this.props.location.state.albums[i]}</button>
+                            {/* albums[i] stores users and album names  */}
+                            <button onClick={() => this.linkToProfile()}>@{this.props.location.state.albums[i]}</button>
+                            {this.state.navigate && <Redirect to={{
+                                pathname: this.whichUser(this.props.location.state.albums[i]),
+                                state: {"username": this.props.location.state.albums[i]}
+                            }}/>}
                         </h3>
                     </div>
                 )

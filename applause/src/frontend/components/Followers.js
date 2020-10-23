@@ -18,6 +18,14 @@ class Followers extends Component{
       }
   }
 
+  whichUser = (username) => {
+    if (username == localStorage.getItem('currentUser')) {
+      return "/profile";
+    } else {
+      return '/viewprofile';
+    }
+  };
+
   linkToProfile = (username) => {
       this.setState({navigate : true});
       this.setState({username: username});
@@ -25,12 +33,15 @@ class Followers extends Component{
 
   componentDidMount() {
     var currHandle = null;
-    
+
     if (this.props.location.state.hand == "") {
       currHandle = localStorage.getItem('currentUser');
+      console.log(currHandle);
     } else {
       currHandle = this.props.location.state.hand;
+      console.log(currHandle);
     }
+    
     axios.get('http://localhost:5000/followers', {
         params: {
           userHandle: currHandle
@@ -75,8 +86,9 @@ class Followers extends Component{
             <div className="userOrder">
                 {userNames}
             </div>
+          
           {this.state.navigate && <Redirect to={{
-              pathname: '/viewprofile',
+              pathname: this.whichUser(this.state.username),
               state: {"username": this.state.username}
           }}/>}
           </div>

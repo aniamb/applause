@@ -25,7 +25,15 @@ class Following extends Component{
   };
 
   componentDidMount() {
-    var currHandle = sessionStorage.getItem('currentUser');
+    // var currHandle = sessionStorage.getItem('currentUser');
+    var currHandle = null;
+
+    if (this.props.location.state.hand == "") {
+      currHandle = localStorage.getItem('currentUser');
+    } else {
+      currHandle = this.props.location.state.hand;
+    }
+
     console.log(currHandle);
     axios.get('http://localhost:5000/following', {
         params: {
@@ -69,6 +77,14 @@ unfollow = (username) => {
     })
 }
 
+whichUser = (username) => {
+  if (username == localStorage.getItem('currentUser')) {
+    return "/profile";
+  } else {
+    return '/viewprofile';
+  }
+};
+
 
 
   render() {
@@ -100,7 +116,7 @@ unfollow = (username) => {
                 {userNames}
             </div>
           {this.state.navigate && <Redirect to={{
-              pathname: '/viewprofile',
+              pathname: this.whichUser(this.state.username),
               state: {"username": this.state.username}
           }}/>}
           </div>
