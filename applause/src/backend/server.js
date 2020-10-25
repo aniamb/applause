@@ -36,6 +36,7 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
 const { Server } = require('http');
+const { default: Review } = require('../frontend/components/Review');
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -111,6 +112,28 @@ app.post('/searchserver', function (req,res1) {
 	
 });
 
+//createreview
+app.post('/createreview', function(req, res) {
+   Review.create({
+      album : req.body.album,
+      artists: req.body.artists,
+      rating: req.body.rating,
+      username: req.body.username,
+      content: req.body.content,
+   })
+   res.status(200).send("Created new review!");
+   res.end();
+});
+
+
+//deletereview
+app.post('/deletereview', function(req, res, err) {
+   console.log(req.body.username);
+   Review.deleteOne({'username': req.body.username}).exec(function(err){
+       console.log("Review successfully deleted.")
+       res.status(200).send('Deleting account worked');
+   })
+})
 
 //createaccount
 app.post('/createaccount', function(req, res) {

@@ -11,6 +11,7 @@ import Following from './frontend/components/Following';
 import ResetScreen from './frontend/components/ResetScreen';
 import Profile from './frontend/components/Profile'
 import EditProfile from './frontend/components/EditProfile'
+import Review from './frontend/components/Review2'
 
 
 function App () {
@@ -30,6 +31,7 @@ function App () {
             <Route path="/followers" component={Followers}/>
             <Route path="/following" component={Following}/>
             <Route path="/profile" component={Profile}/>
+            <Route path="/review" component={Review}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>

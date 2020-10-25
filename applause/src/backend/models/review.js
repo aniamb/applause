@@ -12,10 +12,6 @@ let Review = new mongoose.Schema({
     rating: {
         type: Number
     },
-    user: {
-        type: String,
-        required: true
-    },
     likes: {
         type: Number
     },
