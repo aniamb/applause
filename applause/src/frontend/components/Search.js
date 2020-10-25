@@ -22,14 +22,6 @@ class Search extends Component{
         this.setState({searchTerm: ev.target.value});
     };
 
-    // handleSubmit(event) {
-    //     //#alert('Search Value was: ' + this.state.value);
-    
-    //         const { search } = this.state; 
-    //         event.preventDefault()
-    //         this.props.history.push('/albumpage/');
-    //         console.log("hi");
-    //     }
 
     sendName (text) {
         return event => {

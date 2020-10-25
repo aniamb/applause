@@ -49,19 +49,5 @@ render() {
 }
 
 }
-// export default AlbumPage;
 
-
-  // render() {
-  //   return (
-  //     <h1>Name: {this.props.name}</h1>
-  //   );
-  // }
-
-
-// const AlbumPage = (props) => {
-//     console.log(props);
-//     console.log(props.name);
-//       return <h1>{this.props.name}</h1>
-//   }
 export default AlbumPage;
