@@ -36,6 +36,7 @@ class Search extends Component{
         let noDups = [];
         var title;
         var artist;
+        var image;
         var length = (this.props.location.state.albums.length);
 
         //no results
@@ -57,8 +58,9 @@ class Search extends Component{
             for(let i = 0; i< length; i++){
                 //albums
                 title = this.props.location.state.albums[i].title;
-                console.log(title);
+                //console.log(title);
                 artist = this.props.location.state.albums[i].artist;
+                image = this.props.location.state.albums[i].art;
                 //console.log(name);
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
@@ -71,7 +73,7 @@ class Search extends Component{
                             <br></br>
                            
                             <div>
-                                <form onSubmit={this.sendName(title + "/" + artist)}>
+                                <form onSubmit={this.sendName(title + "/" + artist + "/" + image)}>
                                     <input type="submit" value="Review this Album" />
                                 </form>
                             </div>

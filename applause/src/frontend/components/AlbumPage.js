@@ -13,7 +13,8 @@ class AlbumPage extends React.Component{
     this.state = {
         name:'',
         albumName:'',
-        artistName:''
+        artistName:'',
+        albumArt:'',
     }
 
   
@@ -23,18 +24,21 @@ class AlbumPage extends React.Component{
   console.log(this.props.match.params.albumName);
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
+  this.setState({albumArt: this.props.match.params.albumArt});
   
 }
 
 render() {
-
+    var albumArt;
+    albumArt = this.state.albumName;
+    console.log(albumArt);
     return (
       <div className="CreateAccount">
           <div className="container">
               <div className="left">
                   <h1>{this.state.albumName}</h1>
                   <h2>{this.state.artistName}</h2>
-                  <img src={exampleImg}></img>
+                  {/* <img src={this.state.image}></img> */}
                   <br></br>
                   <input type="submit" value="Review this Album" />
                   <h4> Learn more on Genius</h4>
