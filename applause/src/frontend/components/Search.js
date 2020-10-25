@@ -10,25 +10,34 @@ class Search extends Component{
     constructor(props){
         super(props);
         this.state = {
+            albumName:'',
+            name:'',
             navigate: false, // only navigates to /search again
 
         }
-        this.handleSubmit = this.handleSubmit.bind(this);
+
     }
 
     handleSearch = (ev) => {
         this.setState({searchTerm: ev.target.value});
     };
 
-    handleSubmit(event) {
-        //#alert('Search Value was: ' + this.state.value);
+    // handleSubmit(event) {
+    //     //#alert('Search Value was: ' + this.state.value);
     
-            const { search } = this.state; 
-            event.preventDefault()
-            this.props.history.push('/albumpage');
-            console.log("hi");
-        }
+    //         const { search } = this.state; 
+    //         event.preventDefault()
+    //         this.props.history.push('/albumpage/');
+    //         console.log("hi");
+    //     }
 
+    sendName (text) {
+        return event => {
+          event.preventDefault()
+          this.props.history.push('/albumpage/'+ text);
+          console.log(text)
+        }
+      }
 
     render() {
 
@@ -56,11 +65,11 @@ class Search extends Component{
             for(let i = 0; i< length; i++){
                 //albums
                 title = this.props.location.state.albums[i].title;
+                console.log(title);
                 artist = this.props.location.state.albums[i].artist;
                 //console.log(name);
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
-                        var name = this.props.location.state.albums[i].title;
                         <h3>
                             <i>{this.props.location.state.albums[i].title}</i>
                                 , {this.props.location.state.albums[i].artist}
@@ -68,10 +77,9 @@ class Search extends Component{
                             <br></br>
                             <img src={this.props.location.state.albums[i].art}></img>
                             <br></br>
-                            
                            
                             <div>
-                                <form onSubmit={this.handleSubmit.bind(this)}>
+                                <form onSubmit={this.sendName(title + "/" + artist)}>
                                     <input type="submit" value="Review this Album" />
                                 </form>
                             </div>
@@ -97,8 +105,7 @@ class Search extends Component{
                 }}/>} */}
                 </div>
                 <div>
-                            <AlbumPage name="Joe Goldberg" />
-                            <AlbumPage name="Mrs Maisel" />
+
             </div>
 
             </div>
