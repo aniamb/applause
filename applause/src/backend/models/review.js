@@ -29,3 +29,6 @@ let Review = new mongoose.Schema({
         type: Boolean
     }
 });
+
+var reviewModel = mongoose.model('Review', Review);
+module.exports = reviewModel;

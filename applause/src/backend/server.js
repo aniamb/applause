@@ -11,6 +11,7 @@ const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongo
 const mongoose = require('mongoose');
 
 let User = require('./models/user');
+let Reviews = require('./models/review')
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -114,9 +115,9 @@ app.post('/searchserver', function (req,res1) {
 
 //createreview
 app.post('/createreview', function(req, res) {
-   Review.create({
+   Reviews.create({
       album : req.body.album,
-      artists: req.body.artists,
+      artist: req.body.artist,
       rating: req.body.rating,
       username: req.body.username,
       content: req.body.content,
@@ -129,7 +130,7 @@ app.post('/createreview', function(req, res) {
 //deletereview
 app.post('/deletereview', function(req, res, err) {
    console.log(req.body.username);
-   Review.deleteOne({'username': req.body.username}).exec(function(err){
+   Reviews.deleteOne({'username': req.body.username}).exec(function(err){
        console.log("Review successfully deleted.")
        res.status(200).send('Deleting account worked');
    })

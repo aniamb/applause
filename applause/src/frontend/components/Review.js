@@ -1,6 +1,5 @@
 import React from 'react';
-
-import axios from 'axios'
+import axios from 'axios';
 
 
 
@@ -24,7 +23,7 @@ handleAlbumChange(event) {
   this.setState({album: event.target.value})
 }
 handleArtistChange(event) {
-  this.setState({lastname: event.target.value})
+  this.setState({artist: event.target.value})
 }
 handleRatingChange(event) {
   this.setState({rating: event.target.value})
@@ -44,8 +43,8 @@ handleSubmit(event){
   })
   .catch((err)=> {
     console.log('create review fail');
-    console.log(err.response.data.message)
-    this.setState({errorMessage: err.response.data.message});
+    // console.log(err.response.data.message)
+    // this.setState({errorMessage: err.response.data.message});
   })
 }
 render() {

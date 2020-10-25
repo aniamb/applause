@@ -11,7 +11,7 @@ import Following from './frontend/components/Following';
 import ResetScreen from './frontend/components/ResetScreen';
 import Profile from './frontend/components/Profile'
 import EditProfile from './frontend/components/EditProfile'
-import Review from './frontend/components/Review2'
+import Review from './frontend/components/Review'
 
 
 function App () {
