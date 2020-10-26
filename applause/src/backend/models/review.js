@@ -27,6 +27,9 @@ let Review = new mongoose.Schema({
     },
     private: {
         type: Boolean
+    },
+    time: {
+        type: Date,
     }
 });
 

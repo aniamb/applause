@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
+
+.Review{
+    max-width: 100%;
+    max-height: 100%;
+    font-family: 'Reem Kufi';
+}
+.reviewTitle{
+    margin-top: 40px;
+}
+
+p.pReview{
+    font-size: 40px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-family: 'Reem Kufi';
+}
+.inputBoxReview{
+    background-color: rgb(119,205,195);
+    margin: 0 auto;
+    border-style: solid;
+    border-color: rgb(119,205,195);
+    border-radius: 25px;
+    width: 1200px;
+    height: 600px;
+    margin-top: 25px;
+    text-align: center;
+    box-shadow: 6px 6px 5px rgb(74, 124, 118);
+}
+
+.inputCreateReview {
+    height: 21px;
+    border: none;
+    width: 300px;
+} 
+
+.actualReview {
+    height: 75%;
+    width: 80%;
+    border-style: solid;
+    border-color: rgb(119,205,195);
+    border-radius: 20px;
+    margin-top: 40px;
+    resize: none;
+    font-size: 20px;
+}
+
+.reviewForm{
+    display: flex;
+    height: 550px;
+
+}
+.column {
+    width: 400px;
+}
+
+
+.double-column {
+    justify-content: center;
+    flex: 1;
+    margin: 0 auto;
+  }
+
+.submitButtonReview{
+    float: right;
+    margin-top: 0px;
+    margin-right: 80px;
+    width: 125px;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+.options{
+    float: right;
+    margin-right: 20px;
+}
+.bottomRow{
+    width: 100%;
+    display: inline-block;
+}
+.albumArt{
+    margin-top: 60px;
+}
+h1.albumName{
+    margin-top: 0;
+}
+h3.artistName{
+    margin-top: 0;
+    margin-bottom: 10px;
+}
