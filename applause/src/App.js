@@ -12,6 +12,8 @@ import ResetScreen from './frontend/components/ResetScreen';
 import Profile from './frontend/components/Profile'
 import EditProfile from './frontend/components/EditProfile'
 import AlbumPage from './frontend/components/AlbumPage'
+import ArtistPage from './frontend/components/ArtistPage'
+
 
 
 function App () {
@@ -37,6 +39,7 @@ function App () {
             <Route path="/profile" component={Profile}/>
             <Route path="/editprofile" component={EditProfile}/>
             <Route exact path="/albumpage/:albumName/:artistName/" component ={AlbumPage}/>
+            <Route exact path="/albumpage/:artistName" component ={ArtistPage}/>
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />

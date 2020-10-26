@@ -31,6 +31,14 @@ class Search extends Component{
         }
       }
 
+      sendArtist (text) {
+        return event => {
+          event.preventDefault()
+          this.props.history.push('/artistpage/'+ text);
+          console.log(text)
+        }
+      }
+
     render() {
 
         let noDups = [];
@@ -80,10 +88,10 @@ class Search extends Component{
                             </div>
 
                             <div>
-                                {/* <form onSubmit={this.sendName(title + "/" + artist )}> */}
-                                 {/* + "/" + "\"" + image + "\"" */}
+                                <form onSubmit={this.sendName(artist)}>
+                                 
                                     <input type="submit" value="Learn about Artist" />
-                                {/* </form> */}
+                                </form>
                             </div>
 
                         </h3>
