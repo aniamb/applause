@@ -74,9 +74,16 @@ class Search extends Component{
                            
                             <div>
                                 <form onSubmit={this.sendName(title + "/" + artist )}>
-                                // + "/" + "\"" + image + "\""
-                                    <input type="submit" value="Review this Album" />
+                                 {/* + "/" + "\"" + image + "\"" */}
+                                    <input type="submit" value="Learn about Album" />
                                 </form>
+                            </div>
+
+                            <div>
+                                {/* <form onSubmit={this.sendName(title + "/" + artist )}> */}
+                                 {/* + "/" + "\"" + image + "\"" */}
+                                    <input type="submit" value="Learn about Artist" />
+                                {/* </form> */}
                             </div>
 
                         </h3>
