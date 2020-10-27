@@ -39,12 +39,6 @@ render() {
 
                   <h3> Average Score: </h3>
 
-                  <input type="submit" value="Listen to Later" />
-                  <br></br>
-                  <input type="submit" value="Review Later" />
-                  <br></br>
-                  <input type="submit" value="Review this Album" />
-                  <br></br>
 
                  
 
