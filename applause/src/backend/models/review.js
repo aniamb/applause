@@ -7,7 +7,10 @@ let Review = new mongoose.Schema({
         required: true
     },
     artists: {
-        type: [String]
+        type: String
+    },
+    image: {
+        type: String
     },
     rating: {
         type: Number
