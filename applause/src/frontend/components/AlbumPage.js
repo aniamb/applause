@@ -1,11 +1,5 @@
 import React from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
-import axios from 'axios'
-import exampleImg from './gkmc.jpg';
-
-
-
 
 class AlbumPage extends React.Component{
   constructor(props) {
@@ -26,6 +20,11 @@ class AlbumPage extends React.Component{
   this.setState({artistName: this.props.match.params.artistName});
   this.setState({albumArt: this.props.match.params.albumArt});
   
+}
+
+handleReviewSubmit(event){
+    event.preventDefault();
+    this.props.history.push('/review/'+ this.state.albumName +'/'+ this.state.artistName);
 }
 
 render() {
@@ -53,9 +52,9 @@ render() {
 
                   <input type="submit" value="Listen to Later" />
                   <br></br>
-                  <input type="submit" value="Review Later" />
+                  <input type="submit" value="Review Later"/>
                   <br></br>
-                  <input type="submit" value="Review this Album" />
+                  <input type="submit" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
                   <br></br>
                   <a href={link} >Learn more on Genius</a>
                  
