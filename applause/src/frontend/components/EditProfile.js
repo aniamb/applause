@@ -18,6 +18,7 @@ const user =
         "favorites":{},
         "groups":{},
         "bio": "Lover of Pop, Harry Styles, and Country Music",
+        "file": null
     }
 
 class EditProfile extends React.Component{
