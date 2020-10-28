@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import '../styles/Login.css';
 import axios from 'axios'
 
@@ -19,7 +19,7 @@ class Followers extends Component{
   }
 
   whichUser = (username) => {
-    if (username == localStorage.getItem('currentUser')) {
+    if (username === localStorage.getItem('currentUser')) {
       return "/profile";
     } else {
       return '/viewprofile';
@@ -34,7 +34,7 @@ class Followers extends Component{
   componentDidMount() {
     var currHandle = null;
 
-    if (this.props.location.state.hand == "") {
+    if (this.props.location.state.hand === "") {
       currHandle = localStorage.getItem('currentUser');
       console.log(currHandle);
     } else {
@@ -86,7 +86,6 @@ class Followers extends Component{
             <div className="userOrder">
                 {userNames}
             </div>
-          
           {this.state.navigate && <Redirect to={{
               pathname: this.whichUser(this.state.username),
               state: {"username": this.state.username}

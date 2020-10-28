@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import '../styles/Login.css';
 import axios from 'axios'
 
@@ -28,7 +28,7 @@ class Following extends Component{
     // var currHandle = sessionStorage.getItem('currentUser');
     var currHandle = null;
 
-    if (this.props.location.state.hand == "") {
+    if (this.props.location.state.hand === "") {
       currHandle = localStorage.getItem('currentUser');
     } else {
       currHandle = this.props.location.state.hand;
@@ -53,7 +53,7 @@ class Following extends Component{
 unfollow = (username) => {
   var currHandle = null;
 
-  if (this.props.location.state.hand == "") {
+  if (this.props.location.state.hand === "") {
     currHandle = localStorage.getItem('currentUser');
   } else {
     currHandle = this.props.location.state.hand;
@@ -78,7 +78,7 @@ unfollow = (username) => {
 }
 
 whichUser = (username) => {
-  if (username == localStorage.getItem('currentUser')) {
+  if (username === localStorage.getItem('currentUser')) {
     return "/profile";
   } else {
     return '/viewprofile';

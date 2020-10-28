@@ -133,6 +133,7 @@ app.post('/createaccount', function(req, res) {
             email: req.body.email,
             password: hash,
             bio: "Write something fun about yourself!",
+            meta_data: "avatar.png"
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -434,33 +435,75 @@ app.get('/fillProfile', function(req, res, err) {
      });
 });
 
+const path = require("path");
+console.log(path);
+console.log(__dirname);
+app.use(express.static(path.join(__dirname, "../public/")));
+// app.use(express.static("../public"));
+
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+   destination: function(req, file, cb){
+      cb(null, "../public/");
+   },
+   filename: function(req, file, cb){
+      cb(null,"IMAGE-" + Date.now().toString() + "-" + file.originalname);
+   }
+ });
+
+ const fileFilter = (req, file, cb) => {
+   if (file.mimetype === "image/jpeg" || file.mimetype === "image/jpg" || file.mimetype === "image/png") {
+      cb(null, true);
+   } else {
+      cb(null, false);
+   }
+ }
+
+ const upload = multer({
+   storage: storage,
+   limits:{fileSize: 1024*1024*1024},
+   fileFilter: fileFilter
+ })
+
+
+app.post('/uploadpicture', upload.single("file"), function(req, res, err) {    
+   console.log(req.file);
+   if (req.file === null || req.file === undefined) {
+      res.status(200).send("../public/avatar.png")
+   } else {
+      res.status(200).send(req.file.path.toString());
+   }
+   console.log(req.file.path);
+});
+
 //Updating user profile fields
 app.post('/editprofile', function(req, res, err) {
-    User.findOne({$or: [
-        {'handle': req.body.handle}]}).exec(function (err, user){
-            if(user && user.email!=req.body.currUserEmail){
-                console.log('Handle already in use');
-                res.status(400).send({
-                   message: 'Handle In Use'
-                });
-                res.end();
-            } else {
-                User.findOneAndUpdate(
-                    {"email":req.body.currUserEmail},
-                    {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio}},
-                    {new:true},
-                    function(err,items){
-                        if(err){
-                            res.status(400).send('Error occured when editing profile.')
-                        }else{
-                            console.log("Successfully updated profile.");
-                            res.status(200).send('Profile update.d');
-                        }
-                        res.end();
-                    }
-                )
-            }
-        })
+   User.findOne({$or: [
+      {'handle': req.body.handle}]}).exec(function (err, user){
+          if(user && user.email!=req.body.currUserEmail){
+              console.log('Handle already in use');
+              res.status(400).send({
+                 message: 'Handle In Use'
+              });
+              res.end();
+          } else {
+              User.findOneAndUpdate(
+                  {"email":req.body.currUserEmail},
+                  {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio, meta_data:req.body.meta_data}},
+                  {new:true},
+                  function(err,items){
+                      if(err){
+                          res.status(400).send('Error occured when editing profile.')
+                      }else{
+                          console.log("Successfully updated profile.");
+                          res.status(200).send('Profile update.d');
+                      }
+                      res.end();
+                  }
+              )
+          }
+      })
 });
 
 // Delete Account

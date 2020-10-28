@@ -17,7 +17,7 @@ const user =
         "following":{},
         "favorites":{},
         "groups":{},
-        "bio": "Lover of Pop, Harry Styles, and Country Music"
+        "bio": "Lover of Pop, Harry Styles, and Country Music",
     }
 
 class EditProfile extends React.Component{
@@ -31,11 +31,14 @@ class EditProfile extends React.Component{
         // user:user,
         edit:false,
         errorMessage:'',
+        file: null,
+        path: ""
     }
     this.handleHandleChange = this.handleHandleChange.bind(this);
     this.handleFirstnameChange = this.handleFirstnameChange.bind(this);
     this.handleLastnameChange = this.handleLastnameChange.bind(this);
     this.handleBioChange = this.handleBioChange.bind(this);
+    this.handlePictureChange = this.handlePictureChange.bind(this);
 }
 
 componentDidMount(){
@@ -54,7 +57,7 @@ componentDidMount(){
     .then((response) => {        
         console.log("response received.");
         this.setState({handle: response.data.handle, firstname: response.data.firstname, 
-            lastname: response.data.lastname, bio: response.data.bio});
+            lastname: response.data.lastname, bio: response.data.bio, });
         sessionStorage.setItem("currentUser", response.data.handle);
         
     })
@@ -83,21 +86,47 @@ handleBioChange(event) {
     this.setState({bio: event.target.value});
 }
 
+handlePictureChange(event) {
+    this.setState({file: event.target.files[0]})
+}
+
 handleSubmit(event){
     event.preventDefault();
     event.target.reset();
 
     // var currUserEmail = localStorage.getItem('currentUser');
     var currUserEmail = this.props.location.state.email;
-    const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail}
-    axios.post('http://localhost:5000/editprofile', updateInfo).then(response => {
-        console.log("Edited profile successfully.");
-        sessionStorage.setItem("currentUser", this.state.handle);
-        this.props.history.push('/profile');
+
+      const formData = new FormData();
+      formData.append("file",this.state.file);
+
+      console.log("Form\t" + formData)
+
+      const config = {
+          headers: {
+              'content-type': 'multipart/form-data'
+          }
+      };
+
+    // Calls the server for uploading a picture
+      axios.post('http://localhost:5000/uploadpicture', formData).then(response => {
+        console.log(response.data);
+        // Get's the path from the server to then be posted to the user's meta_data schema
+        this.setState({path: response.data});
+        const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail, meta_data: "../" + response.data};
+        
+        axios.post('http://localhost:5000/editprofile', updateInfo).then(r => {
+            console.log("Edited profile successfully.");
+            sessionStorage.setItem("currentUser", this.state.handle);
+            this.props.history.push('/profile');
+        }).catch((err) => {
+            console.log(err);
+            console.log("Edit profile failed.");
+            this.setState({errorMessage: err.r.data.message});
+        })
     }).catch((err) => {
         console.log(err);
-        console.log("Edit profile failed.");
-        this.setState({errorMessage: err.response.data.message});
+        console.log("Profile Picture Upload failed.");
     })
 }
 
@@ -119,6 +148,9 @@ render() {
             <div className="left">
                 <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
                 <form onSubmit={this.handleSubmit.bind(this)}>
+                    <input type="file" className="custom-file-input" name="myImage" onChange= {this.handlePictureChange} />
+                    {console.log(this.state.file)}
+                    {/* <button className="upload-button" type="submit">Upload to DB</button> */}
                     <label>Handle</label>
                     <input type="text" id="username" value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
                     {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}

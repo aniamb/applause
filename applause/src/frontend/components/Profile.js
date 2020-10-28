@@ -1,9 +1,8 @@
 import React from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom';
+import { Avatar } from '@material-ui/core';
 import '../styles/Profile.css';
 import axios from 'axios'
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const user =
     {
@@ -17,7 +16,8 @@ const user =
         "following":{},
         "favorites":{},
         "groups":{},
-        "bio": "Lover of Pop, Harry Styles, and Country Music"
+        "bio": "Lover of Pop, Harry Styles, and Country Music",
+        "meta_data": "avatar.png"
     }
 
 class Profile extends React.Component{
@@ -31,15 +31,16 @@ class Profile extends React.Component{
         userHandle: null,
         followerRedirect: false,
         followingRedirect: false,
-        hand: ""
+        hand: "",
+        path:""
     }
 }
 
-componentDidMount(){
+async componentDidMount(){
     console.log("component mounted");
     //need to change this to use local storage
     var lookupUser = sessionStorage.getItem("currentUser");
-    console.log(lookupUser);
+    console.log(lookupUser); 
     axios.get('http://localhost:5000/profile', {
         params: {
             userHandle:lookupUser
@@ -48,10 +49,14 @@ componentDidMount(){
     .then((response) => {   
         console.log("response received.");
         this.setState({user: response.data});
+        if (response.data.meta_data !== "") {
+          this.setState({path: response.data.meta_data.split("/")[3]});
+        }
         localStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
+        console.log(err);
     });
 }
 
@@ -74,17 +79,40 @@ followingRedirectFunc = () => {
 }
 
 changeFollow = () => {
-    if (this.state.isFollow == "Follow")
+    if (this.state.isFollow === "Follow")
         this.setState({isFollow:"Unfollow"});
     else this.setState({isFollow:"Follow"});
 }
 
+
+importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
+
 render() {
+
+  let images = this.importAll(require.context('../../public/', false));
+
   return (
     <div className="CreateAccount">
         <div className="container">
             <div className="left">
-                <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
+               <Avatar 
+                    style={{
+                        marginLeft: "25px",
+                        marginTop: "55px",
+                        display: 'flex',
+                        verticalAlign:"middle",
+                        marginBottom: "-115px",
+                        width: "100px",
+                        height: "100px",
+                    }} 
+                    variant="circle"
+                    src={images[this.state.path]}
+                    alt={this.state.user.firstname + " " + this.state.user.lastname}
+                />
                 <p>@{this.state.user.handle}</p>
                 <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
