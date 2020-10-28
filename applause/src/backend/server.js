@@ -277,6 +277,22 @@ app.post('/createaccount', function(req, res) {
      })
   });
 
+  //LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
+app.get('/getartistreveiws', function(req, res, err) {
+   console.log(req.query.artistName)
+   Review.findOne({'artists': req.query.artistName }, function(err, review) {
+      if (review) {
+         res.status(200).set(review)
+         res.end();
+      }else {
+         res.status(400).send('No Reviews Found');
+         res.end();
+      }
+   
+
+   })
+});
+
 
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
