@@ -281,10 +281,14 @@ app.post('/createaccount', function(req, res) {
 
   //get reviews associated with an artist
 app.get('/getartistreviews', function(req, res, err) {
+   console.log("hi");
    console.log(req.query.artistName)
-   Review.findOne({'artists': req.query.artistName }, function(err, review) {
+   console.log("no");
+   Review.find({'artists': req.query.artistName }, function(err, review) {
+      console.log('yooooo');
       if (review) {
-         res.status(200).set(review)
+         console.log(review);
+         res.status(200).json({results: review})
          res.end();
       }else {
          res.status(400).send('No Reviews Found');

@@ -23,10 +23,12 @@ class ArtistPage extends React.Component{
 
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
+  console.log(this.props.match.params.artistName)
+  
   
     axios.get('http://localhost:5000/getartistreviews', {
         params: {
-            artistName: this.artistName
+            artistName: this.props.match.params.artistName
         }
     })
     .then(res => {
