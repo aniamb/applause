@@ -47,6 +47,8 @@ class AlbumPage extends React.Component{
 
 }
 
+
+
 render() {
     var albumArt;
     albumArt = this.state.image;
@@ -102,7 +104,10 @@ render() {
                   <br></br>
                   <input type="submit" value="Review this Album" />
                   <br></br>
-                  <a href={link} >Learn more on Genius</a>
+                  <a href={link} target="_blank">Learn more on Genius</a>
+
+                 
+
                  
 
               </div>
