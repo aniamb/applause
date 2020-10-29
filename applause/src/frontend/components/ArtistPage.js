@@ -53,6 +53,7 @@ render() {
    for (let i = 0; i < reviewHolder.length; i++) {
         allReviews.push (
         <div>
+            <h2>Username: {reviewHolder[i].username}</h2>
             <h2>Album: {reviewHolder[i].album}</h2>
             <h2>Artist: {reviewHolder[i].artists}</h2>
             <h2>Rating: {reviewHolder[i].rating}</h2>

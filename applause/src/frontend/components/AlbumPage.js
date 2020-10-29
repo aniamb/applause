@@ -15,6 +15,7 @@ class AlbumPage extends React.Component{
         albumName:'',
         artistName:'',
         albumArt:'',
+        reviews:[]
     }
 
   
@@ -48,16 +49,31 @@ class AlbumPage extends React.Component{
 render() {
     var albumArt;
     albumArt = this.state.image;
-    console.log(albumArt);
     var artName;
     artName = this.state.artistName;
     artName = artName.replaceAll(" ", "-");
-    console.log("Name: " + artName);
     var albName;
     albName = this.state.albumName;
     albName = albName.replaceAll(" ", "-");
-    console.log(albName);
     var link = "https://genius.com/albums/" + artName + "/" + albName;
+    
+    let allReviews = [];
+    let reviewHolder = this.state.reviews;
+    
+ 
+    for (let i = 0; i < reviewHolder.length; i++) {
+         allReviews.push (
+         <div>
+             <h2>Username: {reviewHolder[i].username}</h2>
+             <h2>Album: {reviewHolder[i].album}</h2>
+             <h2>Artist: {reviewHolder[i].artists}</h2>
+             <h2>Rating: {reviewHolder[i].rating}</h2>
+             <br></br>
+         </div>
+         
+         )
+    };
+
     return (
       <div className="CreateAccount">
           <div className="container">
@@ -78,7 +94,9 @@ render() {
                  
 
               </div>
-              <div className="right">Album-related reviews here</div>
+              <div className="right">Album-related reviews here
+              {allReviews}
+              </div>
           </div>
       </div>
 
