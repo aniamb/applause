@@ -26,6 +26,23 @@ class AlbumPage extends React.Component{
   this.setState({artistName: this.props.match.params.artistName});
   this.setState({albumArt: this.props.match.params.albumArt});
   
+    
+  axios.get('http://localhost:5000/getalbumreviews', {
+        params: {
+            albumName: this.props.match.params.albumName
+        }
+    })
+    .then(res => {
+        console.log("Status is: " + res.status);
+        console.log(res.data.results);
+        this.setState({reviews: res.data.results});
+        //this.setState({navigate: true});
+    })
+    .catch(error => {
+        console.error(error);
+        //this.setState({navigate: false});
+    })  
+
 }
 
 render() {
