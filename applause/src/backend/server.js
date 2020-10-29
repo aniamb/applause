@@ -282,7 +282,7 @@ app.post('/createaccount', function(req, res) {
   //get reviews associated with an artist
 app.get('/getartistreviews', function(req, res, err) {
    console.log(req.query.artistName)
-   Review.find({'artists': req.query.artistName }, function(err, review) {
+   Review.find({'artists': req.query.artistName, 'private': false }, function(err, review) {
       if (review) {
          console.log(review);
          res.status(200).json({results: review})
@@ -297,7 +297,7 @@ app.get('/getartistreviews', function(req, res, err) {
   //get reviews associated with an album
   app.get('/getalbumreviews', function(req, res, err) {
    console.log(req.query.albumName)
-   Review.find({'album': req.query.albumName }, function(err, review) {
+   Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
       console.log('yooooo');
       if (review) {
          console.log(review);

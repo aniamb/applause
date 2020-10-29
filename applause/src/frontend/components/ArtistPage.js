@@ -69,7 +69,6 @@ render() {
 
                   <h2>{this.state.artistName}</h2>
                   {/* <img src={this.state.image}></img> */}
-
               </div>
               <div className="right">
               {allReviews}
