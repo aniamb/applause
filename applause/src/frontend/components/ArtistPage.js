@@ -15,6 +15,7 @@ class ArtistPage extends React.Component{
         albumName:'',
         artistName:'',
         albumArt:'',
+        reviews:[]
     }
 
   
@@ -23,6 +24,21 @@ class ArtistPage extends React.Component{
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
   
+    axios.get('http://localhost:5000/getartistreviews', {
+        params: {
+            artistName: this.artistName
+        }
+    })
+    .then(res => {
+        console.log("Status is: " + res.status);
+        console.log(res.data.results);
+        this.setState({reviews: res.data.results});
+        //this.setState({navigate: true});
+    })
+    .catch(error => {
+        console.error(error);
+        //this.setState({navigate: false});
+    })
 
   
 }

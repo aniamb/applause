@@ -11,6 +11,8 @@ const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongo
 const mongoose = require('mongoose');
 
 let User = require('./models/user');
+let Review = require('./models/review.js');
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -277,8 +279,8 @@ app.post('/createaccount', function(req, res) {
      })
   });
 
-  //LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
-app.get('/getartistreveiws', function(req, res, err) {
+  //get reviews associated with an artist
+app.get('/getartistreviews', function(req, res, err) {
    console.log(req.query.artistName)
    Review.findOne({'artists': req.query.artistName }, function(err, review) {
       if (review) {
