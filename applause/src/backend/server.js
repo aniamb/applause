@@ -340,6 +340,22 @@ app.post('/createaccount', function(req, res) {
     })
  });
 
+ app.get('/reviews', function(req, res){
+   console.log(req.query.userHandle);
+   console.log("GETTING REVIEWS");
+   Reviews.find({'username': req.query.userHandle }, function(err, reviews) {
+      if (reviews) {
+         res.status(200).send(reviews);
+         res.end();
+      } else {
+         console.log('no reviews for this user');
+         res.status(400).send('no reviews for this user');
+         res.end();
+      }
+   })
+
+ });
+
  app.get('/unfollow', function(req, res){
 
   let unfollowUser = null

@@ -4,6 +4,7 @@ import '../styles/Profile.css';
 import axios from 'axios'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { lookup } from 'dns';
 
 const user =
     {
@@ -28,6 +29,7 @@ class Profile extends React.Component{
         edit:false,
         isFollow: "Follow",
         userHandle: null,
+        reviews: [],
         followerRedirect: false,
         followingRedirect: false,
     }
@@ -51,6 +53,7 @@ componentDidMount(){
     .catch((err) => {
         console.log('error getting info');
     });
+    this.getReviews();
 }
 
 editProfile = () => {
@@ -70,6 +73,26 @@ changeFollow = () => {
         this.setState({isFollow:"Unfollow"});
     else this.setState({isFollow:"Follow"});
 }
+
+getReviews = () => {
+    var lookupUser = sessionStorage.getItem("currentUser");
+    console.log("lookup user is" + lookupUser)
+    axios.get('http://localhost:5000/reviews', {
+        params: {
+            userHandle:lookupUser
+        }
+    })
+    .then((response) => {
+        const data = response.data;
+        this.setState({ reviews: data });
+        console.log('Retrieved reviews!');
+        console.log(data); // reviews are in console
+    })
+    .catch(() => {
+        alert("Error retrieving reviews");
+    });
+}
+
 
 render() {
   return (
