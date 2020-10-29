@@ -83,6 +83,7 @@ p.pReview{
 }
 .albumArt{
     margin-top: 60px;
+    height: 250px;
 }
 h1.albumName{
     margin-top: 0;
