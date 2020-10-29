@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {ObjectId} = mongoose.Schema.Types
 
 
 let Review = new mongoose.Schema({
@@ -33,3 +34,6 @@ let Review = new mongoose.Schema({
         type: Boolean
     }
 });
+
+var reviewModel = mongoose.model('Review', Review);
+module.exports = reviewModel;

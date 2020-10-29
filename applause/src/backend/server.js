@@ -11,7 +11,7 @@ const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongo
 const mongoose = require('mongoose');
 
 let User = require('./models/user');
-let Review = require('./models/review.js');
+let Review = require('./models/review');
 
 app.use(cors());
 app.use(bodyParser.json());
