@@ -29,7 +29,6 @@ class EditProfile extends React.Component{
         lastname:"",
         handle:"",
         bio:"",
-        // user:user,
         edit:false,
         errorMessage:'',
         file: null,
@@ -153,7 +152,7 @@ render() {
                     {console.log(this.state.file)}
                     {/* <button className="upload-button" type="submit">Upload to DB</button> */}
                     <label>Handle</label>
-                    <input type="text" id="username" value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
+                    <input type="text" id="username" required value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
                     {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <br></br>
 
