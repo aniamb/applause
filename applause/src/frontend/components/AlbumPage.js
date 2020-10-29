@@ -15,7 +15,8 @@ class AlbumPage extends React.Component{
         albumName:'',
         artistName:'',
         albumArt:'',
-        reviews:[]
+        reviews:[],
+        rating:''
     }
 
   
@@ -59,9 +60,14 @@ render() {
     
     let allReviews = [];
     let reviewHolder = this.state.reviews;
+    let aggregateScore;
+    var ratingWO = 0;
     
  
     for (let i = 0; i < reviewHolder.length; i++) {
+
+        ratingWO += reviewHolder[i].rating;
+        console.log(ratingWO);
          allReviews.push (
          <div>
              <h2>Username: {reviewHolder[i].username}</h2>
@@ -70,9 +76,15 @@ render() {
              <h2>Rating: {reviewHolder[i].rating}</h2>
              <br></br>
          </div>
-         
          )
     };
+   ratingWO = ratingWO/(reviewHolder.length);
+   console.log(ratingWO.toFixed(2));
+
+   this.rating = ratingWO.toFixed(2);
+   console.log(this.rating);
+    
+    //aggregateScore = rating;
 
     return (
       <div className="CreateAccount">
@@ -83,7 +95,7 @@ render() {
                   {/* <img src={this.state.image}></img> */}
 
                   <h3> Average Score:</h3>
-
+                    <h3>{this.rating}</h3>
                   <input type="submit" value="Listen to Later" />
                   <br></br>
                   <input type="submit" value="Review Later" />
