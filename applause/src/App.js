@@ -40,7 +40,7 @@ function App () {
             <Route path="/profile" component={Profile}/>
             <Route path="/editprofile" component={EditProfile}/>
             <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
-            <Route exact path="/artistpage/:artistName/:albumId" component ={ArtistPage}/>
+            <Route exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />

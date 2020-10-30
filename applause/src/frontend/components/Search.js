@@ -96,7 +96,7 @@ class Search extends Component{
                             </div>
 
                             <div>
-                                <form onSubmit={this.sendArtist(artist + "/" + albumId)}>
+                                <form onSubmit={this.sendArtist(artist)}>
                                  
                                     <input type="submit" value="Learn about Artist" />
                                 </form>

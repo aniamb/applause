@@ -22,7 +22,7 @@ class ArtistPage extends React.Component{
 
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
-  this.setState({albumId: this.props.match.params.albumId});
+
 
   
   
