@@ -145,6 +145,7 @@ render() {
                     <img className ="albumPic" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
+                        {/* overall album rating */}
                         <StarRatings
                                 className="starRating"
                                 rating= {4.3}
@@ -156,6 +157,7 @@ render() {
                                 starSpacing = "1px"
                                 name='rating'
                             />
+                            {/* add total rating */}
                             <p className="totalRatings">(10)</p>
                         <br></br>
                         <br></br>
@@ -171,6 +173,7 @@ render() {
             </div>
             <div className="albumReviews">
                 <div className="albumReviewScroll">
+                    {/* review cards */}
                     <div className="albumCard">
                         <figure className="albumReview">
                             <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
