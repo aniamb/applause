@@ -13,6 +13,7 @@ class ArtistPage extends React.Component{
         albumArt:'',
     }
 
+  
 }
 
  componentDidMount () {
