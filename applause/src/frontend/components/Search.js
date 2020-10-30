@@ -46,6 +46,7 @@ class Search extends Component{
         var artist;
         var image;
         var length = (this.props.location.state.albums.length);
+        var artistImage;
 
         //no results
         if (length === 0){
@@ -69,8 +70,10 @@ class Search extends Component{
                 //console.log(title);
                 artist = this.props.location.state.albums[i].artist;
                 image = this.props.location.state.albums[i].art;
-                //console.log(image);
+                artistImage = this.props.location.state.albums[i].artistImage;
+               
                 sessionStorage.setItem(title, image);
+                //sessionStorage.setItem(artist, artistImage);
                
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">

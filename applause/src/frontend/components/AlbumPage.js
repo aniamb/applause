@@ -67,6 +67,7 @@ render() {
     
     albumArt = sessionStorage.getItem(this.state.albumName);
     console.log(albumArt);
+    //sessionStorage.clear();
  
  
     for (let i = 0; i < reviewHolder.length; i++) {

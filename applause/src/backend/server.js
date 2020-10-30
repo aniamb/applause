@@ -64,10 +64,11 @@ app.post('/searchserver', function (req,res1) {
 
 
 
-	function Content(title, artist, art) { 
+	function Content(title, artist, art, artistImage) { 
 		this.title = title; 
 		this.artist = artist; 
-		this.art = art;
+      this.art = art;
+      this.artistImage = artistImage;
 	 }
 
 	 if (searchTerm.charAt(0) ==='@') {
@@ -96,15 +97,18 @@ app.post('/searchserver', function (req,res1) {
 			var k = 'value';
 
 			for (i = 0; i < res.body.data.length; i++) {
-				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
-				objectsTest.push(val1);
+            
+				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
+
+            objectsTest.push(val1);
 				albumTitles.push(res.body.data[i].album.title);
 			}
 			var noDups = new Set(albumTitles);
 			var noDupObj = new Set(objectsTest);
 			finalVals = Array.from(noDups);
 			finalObjects = Array.from(noDupObj);
-	
+         console.log(finalObjects);
+         
 			res1.status(200).json({result: finalObjects})
 			res1.end();
 		});

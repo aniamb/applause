@@ -15,6 +15,7 @@ class ArtistPage extends React.Component{
         albumName:'',
         artistName:'',
         albumArt:'',
+        artistPic:'',
         reviews:[]
     }
 
@@ -48,7 +49,8 @@ class ArtistPage extends React.Component{
 render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
-   
+   var artistPic = sessionStorage.getItem(this.state.artistName);
+   //sessionStorage.clear();
 
    for (let i = 0; i < reviewHolder.length; i++) {
         allReviews.push (
@@ -66,7 +68,7 @@ render() {
       <div className="CreateAccount">
           <div className="container">
               <div className="left">
-
+                 <img src={artistPic}/>
                   <h2>{this.state.artistName}</h2>
                   {/* <img src={this.state.image}></img> */}
               </div>

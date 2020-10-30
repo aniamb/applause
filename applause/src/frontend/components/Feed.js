@@ -32,6 +32,7 @@ class Feed extends Component {
         })
         .then(res => {
             this.state.albums = res.data.result;
+            console.log(res.data.result);
             this.setState({navigate: true});
         })
         .catch(error => {
