@@ -51,30 +51,36 @@ render() {
 
    for (let i = 0; i < reviewHolder.length; i++) {
         allReviews.push (
-        <div>
-            <h2>Username: {reviewHolder[i].username}</h2>
-            <h2>Album: {reviewHolder[i].album}</h2>
-            <h2>Artist: {reviewHolder[i].artists}</h2>
-            <h2>Rating: {reviewHolder[i].rating}</h2>
-            <br></br>
-        </div>
+
+
+        <div className="card">
+        <figure className="albumReview">
+          <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+          <figcaption>
+            <StarRatings
+                className="starRating"
+                rating= {4}
+                starRatedColor="yellow"
+                starHoverColor="yellow"
+                isSelectble = "true"
+                numberOfStars={5}
+                starDimension = "30px"
+                starSpacing = "1px"
+                name='rating'
+            />
+          </figcaption>
+        </figure>
+        <div className="reviewContent">
+          <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artists}</b></p>
+          <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
+          <p className="reviewInfo">{reviewHolder[i].content}</p>
+        </div>    
+    </div>
         
         )
    }
     return (
-      // <div className="CreateAccount">
-      //     <div className="container">
-      //         <div className="left">
-      //            <img src={artistPic}/>
-      //             <h2>{this.state.artistName}</h2>
-      //             {/* <img src={this.state.image}></img> */}
-      //         </div>
-      //         <div className="right">
-      //         {allReviews}
-                  
-      //       </div>
-              
-      //     </div>
+
       <div className="ArtistPage">
         <div className="artistHeader">
           <img className="artistPic" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
@@ -135,190 +141,7 @@ render() {
           <div className="artistReviews">
             <div className="artistReviewScroll">
               <h2 className="sectionTitle">top reviews</h2> 
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
-              <div className="card">
-                  <figure className="albumReview">
-                    <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                    <figcaption>
-                      <StarRatings
-                          className="starRating"
-                          rating= {4}
-                          starRatedColor="yellow"
-                          starHoverColor="yellow"
-                          isSelectble = "true"
-                          numberOfStars={5}
-                          starDimension = "30px"
-                          starSpacing = "1px"
-                          name='rating'
-                      />
-                    </figcaption>
-                  </figure>
-                  <div className="reviewContent">
-                    <p className="reviewAlbum"><b>Kid Krow, Conan Gray</b></p>
-                    <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                    <p className="reviewInfo">this album was so dope yall</p>
-                  </div>    
-              </div>
+              {allReviews}
           </div> 
         </div>
         </div>
