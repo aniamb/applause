@@ -1,6 +1,7 @@
 import React from 'react';
 import '../styles/ArtistPage.css'
 import StarRatings from 'react-star-ratings';
+import axios from 'axios';
 
 
 class ArtistPage extends React.Component{

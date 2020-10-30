@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/AlbumPage.css';
 import StarRatings from 'react-star-ratings';
 import Genius from '../styles/genius.png'
+import axios from 'axios'
 
 class AlbumPage extends React.Component{
   constructor(props) {
