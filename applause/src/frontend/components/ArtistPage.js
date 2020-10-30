@@ -58,8 +58,6 @@ render() {
     //var albumIden = {reviewHolder[i].albumId };
 
         allReviews.push (
-
-
         <div className="card">
         <figure className="albumReview">
           <img src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="Avatar"/>
