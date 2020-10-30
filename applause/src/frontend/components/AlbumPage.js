@@ -27,7 +27,7 @@ class AlbumPage extends React.Component{
   console.log(this.props.match.params.albumName);
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
-  //this.setState({albumArt: this.props.match.params.albumArt});
+  //this.setState({albumArt: this.props.match.params.albumArt}); 
   this.setState({albumId: this.props.match.params.albumId});
   
     
