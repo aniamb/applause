@@ -51,7 +51,7 @@ class AlbumPage extends React.Component{
 
 render() {
     var albumArt;
-    albumArt = this.state.image;
+   // albumArt = this.state.image;
     var artName;
     artName = this.state.artistName;
     artName = artName.replaceAll(" ", "-");
@@ -65,6 +65,9 @@ render() {
     let aggregateScore;
     var ratingWO = 0;
     
+    albumArt = sessionStorage.getItem(this.state.albumName);
+    console.log(albumArt);
+ 
  
     for (let i = 0; i < reviewHolder.length; i++) {
 
@@ -81,21 +84,21 @@ render() {
          )
     };
    ratingWO = ratingWO/(reviewHolder.length);
-   console.log(ratingWO.toFixed(2));
+
 
    this.rating = ratingWO.toFixed(2);
-   console.log(this.rating);
+
     
     //aggregateScore = rating;
-
+    console.log(albumArt);
     return (
       <div className="CreateAccount">
           <div className="container">
               <div className="left">
+
+                  <img src={albumArt}/>
                   <h1>{this.state.albumName}</h1>
                   <h2>{this.state.artistName}</h2>
-                  {/* <img src={this.state.image}></img> */}
-
                   <h3> Average Score:</h3>
                     <h3>{this.rating}</h3>
                   <input type="submit" value="Listen to Later" />

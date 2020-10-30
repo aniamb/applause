@@ -69,10 +69,14 @@ class Search extends Component{
                 //console.log(title);
                 artist = this.props.location.state.albums[i].artist;
                 image = this.props.location.state.albums[i].art;
-                //console.log(name);
+                //console.log(image);
+                sessionStorage.setItem(title, image);
+               
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
+                        
                         <h3>
+                      
                             <i>{this.props.location.state.albums[i].title}</i>
                                 , {this.props.location.state.albums[i].artist}
                             <br></br>
@@ -84,6 +88,7 @@ class Search extends Component{
                                 <form onSubmit={this.sendName(title + "/" + artist )}>
                                  {/* + "/" + "\"" + image + "\"" */}
                                     <input type="submit" value="Learn about Album" />
+
                                 </form>
                             </div>
 
