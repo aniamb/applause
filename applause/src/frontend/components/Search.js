@@ -73,7 +73,7 @@ class Search extends Component{
                 artistImage = this.props.location.state.albums[i].artistImage;
                
                 sessionStorage.setItem(title, image);
-                //sessionStorage.setItem(artist, artistImage);
+                sessionStorage.setItem(artist, artistImage);
                
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
