@@ -324,7 +324,7 @@ app.post('/createaccount', function(req, res) {
   //get reviews associated with an artist
 app.get('/getartistreviews', function(req, res, err) {
    console.log(req.query.artistName)
-   Review.find({'artists': req.query.artistName, 'private': false }, function(err, review) {
+   Review.find({'artist': req.query.artistName, 'private': false }, function(err, review) {
       if (review) {
          console.log(review);
          res.status(200).json({results: review})

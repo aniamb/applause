@@ -13,6 +13,7 @@ class ArtistPage extends React.Component{
         artistName:'',
         albumArt:'',
         artistPic:'',
+        albumId:'',
         reviews:[]
     }
 
@@ -21,7 +22,8 @@ class ArtistPage extends React.Component{
 
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
-  console.log(this.props.match.params.artistName)
+  this.setState({albumId: this.props.match.params.albumId});
+
   
   
     axios.get('http://localhost:5000/getartistreviews', {
@@ -47,15 +49,19 @@ render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
    var artistPic = sessionStorage.getItem(this.state.artistName);
+   var albumArt = sessionStorage.getItem(this.state.albumId);
+   console.log(sessionStorage.getItem(this.state.albumId));
 
 
    for (let i = 0; i < reviewHolder.length; i++) {
+    var albumArt = sessionStorage.getItem(this.state.albumId);
+    console.log(sessionStorage.getItem(this.state.albumId));
         allReviews.push (
 
 
         <div className="card">
         <figure className="albumReview">
-          <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+          <img src={albumArt} alt="Avatar"/>
           <figcaption>
             <StarRatings
                 className="starRating"
@@ -71,7 +77,7 @@ render() {
           </figcaption>
         </figure>
         <div className="reviewContent">
-          <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artists}</b></p>
+          <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p>
           <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
           <p className="reviewInfo">{reviewHolder[i].content}</p>
         </div>    
@@ -83,7 +89,7 @@ render() {
 
       <div className="ArtistPage">
         <div className="artistHeader">
-          <img className="artistPic" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
+          <img className="artistPic" src={artistPic} alt=""></img>
           <div className="artistDiv"><h1 className="artistName2">{this.state.artistName}</h1></div>
         </div>
         <br></br>

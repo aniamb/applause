@@ -7,7 +7,7 @@ let Review = new mongoose.Schema({
         type: String,
         required: true
     },
-    artists: {
+    artist: {
         type: String
     },
     image: {
