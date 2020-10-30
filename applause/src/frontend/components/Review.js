@@ -53,6 +53,7 @@ handleSubmit(event){
   axios.post('http://localhost:5000/createreview', reviewInfo).then(response=> {
     console.log(response.data);
     console.log('create review success');
+    this.props.history.push('/albumpage/'+ this.state.album + '/' + this.state.artist);
   })
   .catch((err)=> {
     console.log('create review fail');
