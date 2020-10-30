@@ -11,6 +11,8 @@ class AlbumPage extends React.Component{
         albumName:'',
         artistName:'',
         albumArt:'',
+        isReviewLater: 'Review Later',
+        isListenToLater: 'Listen to Later'
     }
 }
  componentDidMount () {
@@ -23,6 +25,18 @@ class AlbumPage extends React.Component{
 handleReviewSubmit(event){
     event.preventDefault();
     this.props.history.push('/review/'+ this.state.albumName +'/'+ this.state.artistName);
+}
+
+changeReviewLater = () => {
+    if (this.state.isReviewLater === "Review Later")
+        this.setState({isReviewLater:"Added to Review Later!"});
+    else this.setState({isReviewLater:"Review Later"});
+}
+
+changeListenLater = () => {
+    if (this.state.isListenToLater === "Listen to Later")
+        this.setState({isListenToLater:"Added to Listen to Later!"});
+    else this.setState({isListenToLater:"Listen to Later"});
 }
 render() {
     var albumArt;
@@ -67,8 +81,8 @@ render() {
                         <br></br>
                         <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
                         <div className="forLater">
-                            <input type="submit" value="Review Later"/>
-                            <input type="submit" value="Listen to Later" />
+                            <input type="submit" value={this.state.isReviewLater} onClick={this.changeReviewLater}/>
+                            <input type="submit" value={this.state.isListenToLater} onClick={this.changeListenLater}/>
                         </div>                        
                 </div>
             </div>
