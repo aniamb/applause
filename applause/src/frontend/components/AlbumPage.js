@@ -46,7 +46,8 @@ class AlbumPage extends React.Component{
 }
 handleReviewSubmit(event){
     event.preventDefault();
-    this.props.history.push('/review/'+ this.state.albumName +'/'+ this.state.artistName);
+    console.log(this.state.albumId);
+    this.props.history.push('/review/'+ this.state.albumName +'/'+ this.state.artistName + '/' + this.state.albumId);
 }
 
 changeReviewLater = () => {

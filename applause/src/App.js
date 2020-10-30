@@ -33,7 +33,7 @@ function App () {
             <Route path="/followers" component={Followers}/>
             <Route path="/following" component={Following}/>
             <Route path="/profile" component={Profile}/>
-            <Route path="/review/:album/:artist" component={Review}/>
+            <Route path="/review/:album/:artist/:albumId" component={Review}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>

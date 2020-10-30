@@ -9,6 +9,7 @@ class Review extends React.Component{
     this.state = {
         album: '',
         artist: '',
+        albumId: '',
         rating: 0,
         content: '',
         username: '',
@@ -20,7 +21,8 @@ class Review extends React.Component{
 componentDidMount(){
   this.setState({username: sessionStorage.getItem("currentUser"),
                 album: this.props.match.params.album,
-                artist: this.props.match.params.artist
+                artist: this.props.match.params.artist,
+                albumId: this.props.match.params.albumId
   });
 }
 handleAlbumChange(event) {
@@ -61,6 +63,12 @@ handleSubmit(event){
   })
 }
 render() {
+
+  var albumId = this.state.albumId;
+  var albumArt;
+  albumArt = sessionStorage.getItem(albumId);
+    console.log(albumArt);
+
   return (
     <div className="Review">
       <div className="reviewTitle">
@@ -69,7 +77,7 @@ render() {
             <div className="inputBoxReview">
                 <form className = "reviewForm" onSubmit={this.handleSubmit.bind(this)}>
                   <div className="column">
-                  <img className="albumArt" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
+                  <img className="albumArt" src={albumArt} alt=""></img>
                         <h1 className="albumName">{this.state.album}</h1>
                         <h3 className="artistName">{this.state.artist}</h3>
                         <StarRatings
