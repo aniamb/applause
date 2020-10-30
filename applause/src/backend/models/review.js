@@ -8,14 +8,13 @@ let Review = new mongoose.Schema({
         required: true
     },
     artists: {
-        type: [String]
+        type: String
+    },
+    image: {
+        type: String
     },
     rating: {
         type: Number
-    },
-    user: {
-        type: String,
-        required: true
     },
     likes: {
         type: Number
@@ -32,6 +31,9 @@ let Review = new mongoose.Schema({
     },
     private: {
         type: Boolean
+    },
+    time: {
+        type: Date,
     }
 });
 

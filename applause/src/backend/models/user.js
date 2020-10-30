@@ -27,8 +27,9 @@ let User = new mongoose.Schema({
         type: String,
         required: true
     },
-    handle: {
+    visibility: {
         type: String,
+        required: true
     },
     resetPasswordToken: {
         type: String
@@ -36,7 +37,10 @@ let User = new mongoose.Schema({
     resetPasswordExpires: {
         type: Date
     },
-    reviews: {
+    private_reviews: {
+        type: [String]
+    },
+    public_reviews: {
         type: [String]
     },
     followers:{ 
@@ -51,6 +55,7 @@ let User = new mongoose.Schema({
     groups: {
         type: [String]
     }
+
 
 });
 var userModel = mongoose.model('User', User);

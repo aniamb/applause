@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import '../../App.css';
 import '../styles/Search.css';
-import { NavLink, Redirect} from 'react-router-dom'
-import AlbumPage from './AlbumPage.js';
 
 
 
@@ -98,7 +96,7 @@ class Search extends Component{
                             </div>
 
                             <div>
-                                <form onSubmit={this.sendName(artist)}>
+                                <form onSubmit={this.sendArtist(artist)}>
                                  
                                     <input type="submit" value="Learn about Artist" />
                                 </form>
