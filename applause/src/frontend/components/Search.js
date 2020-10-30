@@ -47,6 +47,7 @@ class Search extends Component{
         var image;
         var length = (this.props.location.state.albums.length);
         var artistImage;
+        var albumId;
 
         //no results
         if (length === 0){
@@ -71,9 +72,10 @@ class Search extends Component{
                 artist = this.props.location.state.albums[i].artist;
                 image = this.props.location.state.albums[i].art;
                 artistImage = this.props.location.state.albums[i].artistImage;
-               
-                sessionStorage.setItem(title, image);
-                sessionStorage.setItem(artist, artistImage);
+                albumId = this.props.location.state.albums[i].id;
+                console.log(albumId);
+
+             
                
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
@@ -88,7 +90,7 @@ class Search extends Component{
                             <br></br>
                            
                             <div>
-                                <form onSubmit={this.sendName(title + "/" + artist )}>
+                                <form onSubmit={this.sendName(title + "/" + artist + "/" + albumId )}>
                                  {/* + "/" + "\"" + image + "\"" */}
                                     <input type="submit" value="Learn about Album" />
 
@@ -105,7 +107,11 @@ class Search extends Component{
                         </h3>
                     </div>
                 )
+
+                sessionStorage.setItem(albumId, image);
+                sessionStorage.setItem(artist, artistImage);
             }
+     
         }
 
 

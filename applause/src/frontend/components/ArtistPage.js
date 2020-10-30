@@ -50,7 +50,7 @@ render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
    var artistPic = sessionStorage.getItem(this.state.artistName);
-   //sessionStorage.clear();
+
 
    for (let i = 0; i < reviewHolder.length; i++) {
         allReviews.push (

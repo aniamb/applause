@@ -14,6 +14,7 @@ class AlbumPage extends React.Component{
         name:'',
         albumName:'',
         artistName:'',
+        albumId:'',
         albumArt:'',
         reviews:[],
         rating:''
@@ -26,7 +27,8 @@ class AlbumPage extends React.Component{
   console.log(this.props.match.params.albumName);
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
-  this.setState({albumArt: this.props.match.params.albumArt});
+  //this.setState({albumArt: this.props.match.params.albumArt});
+  this.setState({albumId: this.props.match.params.albumId});
   
     
   axios.get('http://localhost:5000/getalbumreviews', {
@@ -51,23 +53,25 @@ class AlbumPage extends React.Component{
 
 render() {
     var albumArt;
-   // albumArt = this.state.image;
     var artName;
+    var albName;
+    var albumId = this.state.albumId;
+   
     artName = this.state.artistName;
     artName = artName.replaceAll(" ", "-");
-    var albName;
+    
     albName = this.state.albumName;
     albName = albName.replaceAll(" ", "-");
     var link = "https://genius.com/albums/" + artName + "/" + albName;
     
+    
     let allReviews = [];
     let reviewHolder = this.state.reviews;
-    let aggregateScore;
     var ratingWO = 0;
     
-    albumArt = sessionStorage.getItem(this.state.albumName);
+    albumArt = sessionStorage.getItem(albumId);
     console.log(albumArt);
-    //sessionStorage.clear();
+   
  
  
     for (let i = 0; i < reviewHolder.length; i++) {

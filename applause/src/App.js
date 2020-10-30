@@ -38,7 +38,7 @@ function App () {
             <Route path="/search" component={Search}/>
             <Route path="/profile" component={Profile}/>
             <Route path="/editprofile" component={EditProfile}/>
-            <Route exact path="/albumpage/:albumName/:artistName/" component ={AlbumPage}/>
+            <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <Route exact path="/albumpage/:artistName" component ={ArtistPage}/>
             <Route render= {() =>
                 // <Timeline />

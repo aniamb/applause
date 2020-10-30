@@ -64,7 +64,8 @@ app.post('/searchserver', function (req,res1) {
 
 
 
-	function Content(title, artist, art, artistImage) { 
+	function Content(id, title, artist, art, artistImage) { 
+      this.id = id;
 		this.title = title; 
 		this.artist = artist; 
       this.art = art;
@@ -98,7 +99,7 @@ app.post('/searchserver', function (req,res1) {
 
 			for (i = 0; i < res.body.data.length; i++) {
             
-				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
+				var val1 = new Content(res.body.data[i].album.id, res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
 
             objectsTest.push(val1);
 				albumTitles.push(res.body.data[i].album.title);
