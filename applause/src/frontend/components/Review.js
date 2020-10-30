@@ -51,7 +51,7 @@ handleSubmit(event){
   } else {
     privateBoolean = true;
   }
-  const reviewInfo = {album: this.state.album, artist: this.state.artist, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: Date.now()}
+  const reviewInfo = {album: this.state.album, artist: this.state.artist, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: Date.now(), albumId: this.state.albumId}
   axios.post('http://localhost:5000/createreview', reviewInfo).then(response=> {
     console.log(response.data);
     console.log('create review success');

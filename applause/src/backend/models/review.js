@@ -34,6 +34,9 @@ let Review = new mongoose.Schema({
     },
     time: {
         type: Date,
+    },
+    albumId: {
+        type: Number,
     }
 });
 

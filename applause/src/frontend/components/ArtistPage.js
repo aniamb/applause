@@ -55,17 +55,18 @@ render() {
 
    for (let i = 0; i < reviewHolder.length; i++) {
     var albumArt = sessionStorage.getItem(this.state.albumId);
-    console.log(sessionStorage.getItem(this.state.albumId));
+    //var albumIden = {reviewHolder[i].albumId };
+
         allReviews.push (
 
 
         <div className="card">
         <figure className="albumReview">
-          <img src={albumArt} alt="Avatar"/>
+          <img src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="Avatar"/>
           <figcaption>
             <StarRatings
                 className="starRating"
-                rating= {4}
+                rating= {reviewHolder[i].rating}
                 starRatedColor="yellow"
                 starHoverColor="yellow"
                 isSelectble = "true"
