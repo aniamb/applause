@@ -88,13 +88,30 @@ render() {
         ratingWO += reviewHolder[i].rating;
         console.log(ratingWO);
          allReviews.push (
-         <div>
-             <h2>Username: {reviewHolder[i].username}</h2>
-             <h2>Album: {reviewHolder[i].album}</h2>
-             <h2>Artist: {reviewHolder[i].artists}</h2>
-             <h2>Rating: {reviewHolder[i].rating}</h2>
-             <br></br>
-         </div>
+
+            <div className="albumCard">
+                    <figure className="albumReview">
+                        <img src={albumArt} alt="Avatar"/>
+                            <figcaption>
+                                <StarRatings
+                            className="starRating"
+                            rating= {reviewHolder[i].rating}
+                            starRatedColor="rgb(243,227, 0)"
+                            starHoverColor="rgb(243,227, 0)"
+                            isSelectble = "true"
+                            numberOfStars={5}
+                            starDimension = "30px"
+                            starSpacing = "1px"
+                            name='rating'
+                        />
+                            </figcaption>
+                    </figure>
+                    <div className="reviewContent">
+                        <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
+                        <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
+                        <p className="reviewInfo">{reviewHolder[i].content}</p>
+                    </div>    
+                </div>
          )
     };
    ratingWO = ratingWO/(reviewHolder.length);
@@ -106,35 +123,7 @@ render() {
     //aggregateScore = rating;
     console.log(albumArt);
     return (
-    //   <div className="CreateAccount">
-    //       <div className="container">
-    //           <div className="left">
 
-    //               <img src={albumArt}/>
-    //               <h1>{this.state.albumName}</h1>
-    //               <h2>{this.state.artistName}</h2>
-    //               <h3> Average Score:</h3>
-    //                 <h3>{this.rating}</h3>
-    //               <input type="submit" value="Listen to Later" />
-    //               <br></br>
-    //               <input type="submit" value="Review Later" />
-    //               <br></br>
-    //               <input type="submit" value="Review this Album" />
-    //               <br></br>
-    //               <a href={link} target="_blank">Learn more on Genius</a>
-
-                 
-
-                 
-
-    //           </div>
-    //           <div className="right">Album-related reviews here
-    //           {allReviews}
-    //           </div>
-    //     </div>
-    //     </div>
-
-        // hello
       <div className="AlbumPage">
         <div className = "albumHolder">
             <div className="albumInfo">
@@ -142,13 +131,13 @@ render() {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <img className ="albumPic" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+                    <img className ="albumPic" src={albumArt} alt="Avatar"/>
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
                         {/* overall album rating */}
                         <StarRatings
                                 className="starRating"
-                                rating= {4.3}
+                                rating= {4.33}
                                 starRatedColor="rgb(243,227, 0)"
                                 starHoverColor="rgb(243,227, 0)"
                                 isSelectble = "true"
@@ -158,7 +147,7 @@ render() {
                                 name='rating'
                             />
                             {/* add total rating */}
-                            <p className="totalRatings">(10)</p>
+                            <p className="totalRatings">({reviewHolder.length})</p>
                         <br></br>
                         <br></br>
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
@@ -174,169 +163,7 @@ render() {
             <div className="albumReviews">
                 <div className="albumReviewScroll">
                     {/* review cards */}
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-                    <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {4}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                        </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@janedoe 6:00pm 01/01/2020</p> 
-                            <p className="reviewInfo">this album was so dope yall</p>
-                        </div>    
-                    </div>
-               
-               
+                    {allReviews}
                 </div> 
             </div>
         </div>
