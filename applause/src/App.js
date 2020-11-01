@@ -33,7 +33,7 @@ function App () {
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>
-            <Route path="/profile" component={Profile}/>
+            {/* <Route path="/profile" component={Profile}/> */}
             <Route path="/editprofile" component={EditProfile}/>
             <Route render= {() =>
                 // <Timeline />

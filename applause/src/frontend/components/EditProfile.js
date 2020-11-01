@@ -133,7 +133,7 @@ render() {
                     <br></br>
 
                     <label>Bio</label>
-                    <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
+                    <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="50"/>
                     
                     <input className="submit" type="submit" value="Save Changes"/>
                 </form>
