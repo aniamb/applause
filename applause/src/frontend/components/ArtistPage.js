@@ -49,8 +49,8 @@ render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
    var artistPic = sessionStorage.getItem(this.state.artistName);
-   var albumArt = sessionStorage.getItem(this.state.albumId);
-   console.log(sessionStorage.getItem(this.state.albumId));
+   let allAlbums = [];
+   
 
    if (reviewHolder.length === 0) {
             allReviews.push (
@@ -60,7 +60,8 @@ render() {
 
    for (let i = 0; i < reviewHolder.length; i++) {
     var albumArt = sessionStorage.getItem(this.state.albumId);
-    //var albumIden = {reviewHolder[i].albumId };
+    console.log(reviewHolder[i]);
+
 
         allReviews.push (
         <div className="card">
@@ -88,6 +89,13 @@ render() {
     </div>
         
         )
+
+        allAlbums.push (
+          <div className="album">
+          <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
+          <p>{reviewHolder[i].album}</p>
+        </div>
+        )
    }
   }
     return (
@@ -103,7 +111,8 @@ render() {
           <div className="allAlbums">
             <h2 className="sectionTitle">albums</h2> 
             <div className="grid">
-              <div className="album">
+              {allAlbums}
+              {/* <div className="album">
                 <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
                 <p>kid krow</p>
               </div>
@@ -146,7 +155,7 @@ render() {
               <div className="album">
                 <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
                 <p>kid krow</p>
-              </div>
+              </div> */}
               </div>
             </div>
           <div className="artistReviews">
