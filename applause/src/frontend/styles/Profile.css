@@ -17,7 +17,6 @@ h2 {
 .container > div {
     width:30%;
     height:450px;
-    background:rgb(119,205,195);
     margin:auto;
     border-radius: 25px;
     margin:35px;
@@ -31,8 +30,12 @@ h2 {
 
 .left{
     position: relative;
+    /* background:rgb(119,205,195); */
 }
 
+.right{
+    position: relative;
+}
 .followBtn {
     margin-top:5px;
 }
@@ -41,6 +44,12 @@ h2 {
     /* size:10em; */
     font-size:90px;
     margin-top:30px;
+}
+
+.trash{
+    position: relative;
+    bottom: 0;
+    right: 0;
 }
 
 .follow {

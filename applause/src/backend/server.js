@@ -142,11 +142,13 @@ app.post('/createreview', function(req, res) {
 
 //deletereview [WIP]
 app.post('/deletereview', function(req, res, err) {
-   console.log(req.body.username);
-   Reviews.deleteOne({'username': req.body.username}).exec(function(err){
-       console.log("Review successfully deleted.")
-       res.status(200).send('Deleting account worked');
-   })
+   console.log(req.body.params.id);
+   Reviews.findByIdAndRemove(req.body.params.id.toString().trim(), function (err) {
+      if(err) console.log(err);
+      console.log("Successful deletion");
+    });
+    res.status(200).send("Deleted review");
+    res.end();
 })
 
 //createaccount

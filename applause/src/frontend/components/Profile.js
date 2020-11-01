@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 import { lookup } from 'dns';
@@ -57,6 +57,7 @@ componentDidMount(){
     this.getReviews();
 }
 
+
 editProfile = () => {
     this.setState({edit:true});
 }
@@ -94,11 +95,37 @@ getReviews = () => {
     });
 }
 
+deleteReview(reviewId) {
+    console.log("DELETING REVIEW")
+    console.log(reviewId)
+    axios.post('http://localhost:5000/deletereview', {
+        params: {
+            id: reviewId
+        }
+    })
+    .then((response) => {
+        const data = response.data;
+        console.log('Successfully deleted review');
+        this.getReviews();
+    })
+    .catch(() => {
+        alert("Error deleting reviews");
+    });
+}
 
 render() {
   let reviewList = [];
   let reviewsHolder = this.state.reviews;
   for (let i = 0; i < reviewsHolder.length; i++) {
+      let date = new Date(reviewsHolder[i].time);
+ 
+        date.setHours(date.getHours()+2);
+        var isPM = date.getHours() >= 12;
+        var isMidday = date.getHours() == 12;
+        var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
+            date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
+        let time_format = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate() + ' ' + time;
+
       reviewList.push(
                     <div className="albumCard">
                         <figure className="albumReview">
@@ -119,8 +146,9 @@ render() {
                         </figure>
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artists}</b></p>
-                            <p className="reviewHandle">@{reviewsHolder[i].username} {reviewsHolder[i].time}</p> 
+                            <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
                             <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                            
                         </div>    
                     </div>
       )
@@ -149,8 +177,10 @@ render() {
 
 
             </div>
-            <div className="right">
-                This is where the user's own reviews would be!
+            
+        </div>
+        <div className="right">
+                {/* This is where the user's own reviews would be! */}
                 <div className="albumReviews">
                     <div className="albumReviewScroll">
                         {reviewList}
@@ -158,7 +188,6 @@ render() {
 
                 </div>
             </div>
-        </div>
        
     </div>
 
