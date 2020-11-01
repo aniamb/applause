@@ -77,48 +77,63 @@ render() {
     
     let allReviews = [];
     let reviewHolder = this.state.reviews;
+    var reviewHolderLength = reviewHolder.length;
     var ratingWO = 0;
     
     albumArt = sessionStorage.getItem(albumId);
     console.log(albumArt);
+
    
- 
- 
-    for (let i = 0; i < reviewHolder.length; i++) {
+    if (reviewHolderLength === 0) {
+        allReviews.push (
+            <h2>This album current has no reviews.</h2>
+        )
+    } else {
 
-        ratingWO += reviewHolder[i].rating;
-        console.log(ratingWO);
-         allReviews.push (
 
-            <div className="albumCard">
-                    <figure className="albumReview">
-                        <img src={albumArt} alt="Avatar"/>
-                            <figcaption>
-                                <StarRatings
-                            className="starRating"
-                            rating= {reviewHolder[i].rating}
-                            starRatedColor="rgb(243,227, 0)"
-                            starHoverColor="rgb(243,227, 0)"
-                            isSelectble = "true"
-                            numberOfStars={5}
-                            starDimension = "30px"
-                            starSpacing = "1px"
-                            name='rating'
-                        />
-                            </figcaption>
-                    </figure>
-                    <div className="reviewContent">
-                        <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                        <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
-                        <p className="reviewInfo">{reviewHolder[i].content}</p>
-                    </div>    
-                </div>
-         )
-    };
+        for (let i = 0; i < reviewHolder.length; i++) {
+
+            ratingWO += reviewHolder[i].rating;
+
+
+
+
+                allReviews.push (
+
+                <div className="albumCard">
+                        <figure className="albumReview">
+                            <img src={albumArt} alt="Avatar"/>
+                                <figcaption>
+                                    <StarRatings
+                                className="starRating"
+                                rating= {reviewHolder[i].rating}
+                                starRatedColor="rgb(243,227, 0)"
+                                starHoverColor="rgb(243,227, 0)"
+                                isSelectble = "true"
+                                numberOfStars={5}
+                                starDimension = "30px"
+                                starSpacing = "1px"
+                                name='rating'
+                            />
+                                </figcaption>
+                        </figure>
+                        <div className="reviewContent">
+                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
+                            <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
+                            <p className="reviewInfo">{reviewHolder[i].content}</p>
+                        </div>    
+                    </div>
+                )
+            
+        }
+    }
    ratingWO = ratingWO/(reviewHolder.length);
 
 
-   this.rating = ratingWO.toFixed(2);
+
+
+   this.rating = ratingWO;
+   console.log(this.rating);
 
     
     //aggregateScore = rating;
@@ -138,7 +153,7 @@ render() {
                         {/* overall album rating */}
                         <StarRatings
                                 className="starRating"
-                                rating= {4.33}
+                                rating= {0}
                                 starRatedColor="rgb(243,227, 0)"
                                 starHoverColor="rgb(243,227, 0)"
                                 isSelectble = "true"

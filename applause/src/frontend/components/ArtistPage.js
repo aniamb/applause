@@ -52,6 +52,11 @@ render() {
    var albumArt = sessionStorage.getItem(this.state.albumId);
    console.log(sessionStorage.getItem(this.state.albumId));
 
+   if (reviewHolder.length === 0) {
+            allReviews.push (
+            <h2>This artist currently has no reviews.</h2>
+        )
+   } else {
 
    for (let i = 0; i < reviewHolder.length; i++) {
     var albumArt = sessionStorage.getItem(this.state.albumId);
@@ -84,6 +89,7 @@ render() {
         
         )
    }
+  }
     return (
 
       <div className="ArtistPage">
