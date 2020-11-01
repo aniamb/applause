@@ -93,6 +93,25 @@ h2 {
     cursor: pointer;
 }
 
+.musicGroups{
+    display: flex;
+    justify-content: center;
+}
+
+#box,.group {
+    width: calc(100vw/10);
+    height: calc(100vw/10);
+    background-color:#e5e5e5;
+    margin:0px 10px;
+    border: none;
+    outline: none;
+}
+
+.groups{
+    display:flex;
+    justify-content: center;
+}
+
 /* MEDIA QUERIES */
 @media screen and (max-width:700px) {
     h1{
@@ -111,4 +130,38 @@ h2 {
     .follow>div{
         margin:5px;
     }
+}
+
+@media(max-width:600px){
+
+    .container2{
+        flex-direction: column;
+    }
+
+    .container2 > div{
+        width:100%;
+        margin: 15px 10px;
+    }
+
+    .edit {
+        font-size:2vw;
+    }
+
+    .musicGroups{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .groups {
+        flex-direction: column;
+        justify-content: center;
+    }
+    #box,.group {
+        width: calc(100vw/4);
+        height: calc(100vw/4);
+        justify-content: center;
+        justify-self: center;
+        margin:10px 0px;
+    }
+
 }

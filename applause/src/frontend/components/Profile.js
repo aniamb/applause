@@ -20,6 +20,11 @@ const user =
         "bio": ""
     }
 
+    const Box = () => 
+    <div id = "box">
+        <input type="text" size="5"/>
+    </div>;
+
 class Profile extends React.Component{
   constructor(props) {
     super(props);
@@ -30,6 +35,8 @@ class Profile extends React.Component{
         userHandle: null,
         followerRedirect: false,
         followingRedirect: false,
+        components: [],
+        text: "Hello to you"
     }
 }
 
@@ -71,7 +78,17 @@ changeFollow = () => {
     else this.setState({isFollow:"Follow"});
 }
 
+renderGroup() {
+    const newComponents = [...this.state.components, Box];
+
+    this.setState({
+      components: newComponents
+    });
+}
+
 render() {
+    const { components, text } = this.state;
+
   return (
     <div className="Profile">
         <div className="container2">
@@ -96,6 +113,19 @@ render() {
             </div>
             <div className="right">This is where the user's own reviews would be!</div>
         </div>
+        <div className="musicGroups">
+            <button
+                className="group"
+                onClick={this.renderGroup.bind(this)}>
+                    Create Group
+            </button>
+            <div className="groups">
+                    {components.length !== 0 &&
+                    components.map((Box, i) => <div><Box/></div>)}
+            </div>
+
+        </div>
+
     </div>
 
   );
