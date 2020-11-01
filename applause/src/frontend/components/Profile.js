@@ -4,6 +4,7 @@ import '../styles/Profile.css';
 import axios from 'axios'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import StarRatings from 'react-star-ratings';
 import { lookup } from 'dns';
 
 const user =
@@ -95,6 +96,35 @@ getReviews = () => {
 
 
 render() {
+  let reviewList = [];
+  let reviewsHolder = this.state.reviews;
+  for (let i = 0; i < reviewsHolder.length; i++) {
+      reviewList.push(
+                    <div className="albumCard">
+                        <figure className="albumReview">
+                            <img class="resize" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+                            <figcaption>
+                                <StarRatings
+                            className="starRating"
+                            rating= {reviewsHolder[i].rating}
+                            starRatedColor="rgb(243,227, 0)"
+                            starHoverColor="rgb(243,227, 0)"
+                            isSelectble = "true"
+                            numberOfStars={5}
+                            starDimension = "30px"
+                            starSpacing = "1px"
+                            name='rating'
+                        />
+                            </figcaption>
+                        </figure>
+                        <div className="reviewContent">
+                            <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artists}</b></p>
+                            <p className="reviewHandle">@{reviewsHolder[i].username} {reviewsHolder[i].time}</p> 
+                            <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                        </div>    
+                    </div>
+      )
+  }
   return (
     <div className="CreateAccount">
         <div className="container">
@@ -119,8 +149,17 @@ render() {
 
 
             </div>
-            <div className="right">This is where the user's own reviews would be!</div>
+            <div className="right">
+                This is where the user's own reviews would be!
+                <div className="albumReviews">
+                    <div className="albumReviewScroll">
+                        {reviewList}
+                    </div>
+
+                </div>
+            </div>
         </div>
+       
     </div>
 
   );

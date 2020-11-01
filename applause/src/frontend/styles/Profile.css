@@ -57,3 +57,57 @@ h2 {
     bottom: 10px;
     right: 15px;
 }
+
+.albumReviews {
+    justify-content: center;
+    flex: 55%;
+    margin-left: 50px; 
+}
+
+.albumReviewScroll{
+    height: 900px;
+    overflow: auto;
+}
+
+.albumCard {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    background-color: rgb(253, 253, 253);
+    display: flex;
+    padding: 6px;
+    height: 190px;
+    margin-bottom: 15px;
+}
+
+.albumCard:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+ 
+.albumReview{
+    margin: 0;
+    padding-top: 2px;
+}
+
+.reviewHandle{
+    text-align: left;
+    font-size: 15px;
+    line-height: 5px;
+}
+
+.reviewInfo{
+    line-height: 40px;
+    font-size: 25px;
+}
+
+.reviewContent {
+    padding: 2px 16px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.resize {
+    width: 150px;
+    height: auto;
+}
+
