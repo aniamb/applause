@@ -33,7 +33,7 @@ let Review = new mongoose.Schema({
         type: Boolean
     },
     time: {
-        type: Date,
+        type: String,
     },
     albumId: {
         type: Number,

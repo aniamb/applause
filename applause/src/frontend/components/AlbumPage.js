@@ -119,7 +119,9 @@ render() {
                         </figure>
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@{reviewHolder[i].username} {reviewHolder[i].time}</p> 
+                            <p className="reviewHandle">@{reviewHolder[i].username} </p> 
+                            <br></br>
+                           <p className="reviewHandle">Posted: {reviewHolder[i].time}</p> 
                             <p className="reviewInfo">{reviewHolder[i].content}</p>
                         </div>    
                     </div>
