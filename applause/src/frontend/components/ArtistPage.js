@@ -20,6 +20,8 @@ class ArtistPage extends React.Component{
   
 }
 
+
+
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
 
@@ -32,7 +34,7 @@ class ArtistPage extends React.Component{
         }
     })
     .then(res => {
-        console.log("Status is: " + res.status);
+
         console.log(res.data.results);
         this.setState({reviews: res.data.results});
         //this.setState({navigate: true});
@@ -50,6 +52,7 @@ render() {
    let reviewHolder = this.state.reviews;
    var artistPic = sessionStorage.getItem(this.state.artistName);
    let allAlbums = [];
+  
    
 
    if (reviewHolder.length === 0) {
@@ -60,7 +63,6 @@ render() {
 
    for (let i = 0; i < reviewHolder.length; i++) {
     var albumArt = sessionStorage.getItem(this.state.albumId);
-    console.log(reviewHolder[i]);
 
 
         allReviews.push (
@@ -90,13 +92,29 @@ render() {
         
         )
 
-        allAlbums.push (
-          <div className="album">
-          <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
-          <p>{reviewHolder[i].album}</p>
-        </div>
-        )
+        // var flag = 0
+        // for (let j = 0; j < reviewHolder.length; j++) {
+        //   if (reviewHolder[i].album === reviewHolder[j].album) {
+        //     console.log(reviewHolder[i].album);
+        //     console.log(reviewHolder[j].album);
+        //     flag = 1;
+        //     console.log(flag);
+        //   }
+        // }
+        // console.log(flag);
+
+        // if (flag === 1) {
+          allAlbums.push (
+            <div className="album">
+            <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
+            <p>{reviewHolder[i].album}</p>
+          </div>
+          )
+        // }
+
    }
+
+  
   }
     return (
 
@@ -112,50 +130,6 @@ render() {
             <h2 className="sectionTitle">albums</h2> 
             <div className="grid">
               {allAlbums}
-              {/* <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div>
-              <div className="album">
-                <img className="albumgrid" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
-                <p>kid krow</p>
-              </div> */}
               </div>
             </div>
           <div className="artistReviews">
