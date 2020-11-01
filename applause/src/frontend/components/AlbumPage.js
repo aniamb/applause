@@ -94,10 +94,7 @@ render() {
         for (let i = 0; i < reviewHolder.length; i++) {
 
             ratingWO += reviewHolder[i].rating;
-
-
-
-
+            
                 allReviews.push (
 
                 <div className="albumCard">
@@ -129,17 +126,10 @@ render() {
             
         }
     }
-   ratingWO = ratingWO/(reviewHolder.length);
+   
+    ratingWO = ratingWO/(reviewHolder.length);
+    console.log(ratingWO);
 
-
-
-
-   this.rating = ratingWO;
-   console.log(this.rating);
-
-    
-    //aggregateScore = rating;
-    console.log(albumArt);
     return (
 
       <div className="AlbumPage">
@@ -152,6 +142,7 @@ render() {
                     <img className ="albumPic" src={albumArt} alt="Avatar"/>
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
+
                         {/* overall album rating */}
                         <StarRatings
                                 className="starRating"

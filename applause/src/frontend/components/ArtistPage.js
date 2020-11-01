@@ -52,6 +52,7 @@ render() {
    let reviewHolder = this.state.reviews;
    var artistPic = sessionStorage.getItem(this.state.artistName);
    let allAlbums = [];
+   let albumCheck = new Array(3);
   
    
 
@@ -94,6 +95,27 @@ render() {
         
         )
 
+        
+        for (let j = 0; j < reviewHolder.length; j++) {
+
+          
+         if (albumCheck.includes(reviewHolder[i].album)) {
+
+          }else {
+            console.log(albumCheck.includes(reviewHolder[i].album));
+            allAlbums.push (
+              <div className="album">
+              <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
+              <p>{reviewHolder[i].album}</p>
+            </div>
+            )
+
+            albumCheck.push(reviewHolder[i].album);
+          }
+
+         // console.log(albumCheck);
+        }
+
         // var flag = 0
         // for (let j = 0; j < reviewHolder.length; j++) {
         //   if (reviewHolder[i].album === reviewHolder[j].album) {
@@ -106,12 +128,12 @@ render() {
         // console.log(flag);
 
         // if (flag === 1) {
-          allAlbums.push (
-            <div className="album">
-            <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
-            <p>{reviewHolder[i].album}</p>
-          </div>
-          )
+          // allAlbums.push (
+          //   <div className="album">
+          //   <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
+          //   <p>{reviewHolder[i].album}</p>
+          // </div>
+          // )
         // }
 
    }
