@@ -89,6 +89,7 @@
 .albumReview{
     margin: 0;
     padding-top: 3px;
+    /* overflow: auto; */
 }
   /* Add some padding inside the card container */
 .reviewContent {
@@ -106,5 +107,5 @@
 .reviewInfo{
     line-height: 40px;
     font-size: 25px;
-    overflow: auto;
+
 }

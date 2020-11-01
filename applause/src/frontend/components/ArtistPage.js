@@ -16,17 +16,11 @@ class ArtistPage extends React.Component{
         albumId:'',
         reviews:[]
     }
-
   
 }
 
-
-
  componentDidMount () {
   this.setState({artistName: this.props.match.params.artistName});
-
-
-  
   
     axios.get('http://localhost:5000/getartistreviews', {
         params: {
@@ -113,28 +107,7 @@ render() {
             albumCheck.push(reviewHolder[i].album);
           }
 
-         // console.log(albumCheck);
         }
-
-        // var flag = 0
-        // for (let j = 0; j < reviewHolder.length; j++) {
-        //   if (reviewHolder[i].album === reviewHolder[j].album) {
-        //     console.log(reviewHolder[i].album);
-        //     console.log(reviewHolder[j].album);
-        //     flag = 1;
-        //     console.log(flag);
-        //   }
-        // }
-        // console.log(flag);
-
-        // if (flag === 1) {
-          // allAlbums.push (
-          //   <div className="album">
-          //   <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
-          //   <p>{reviewHolder[i].album}</p>
-          // </div>
-          // )
-        // }
 
    }
 
