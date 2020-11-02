@@ -41,6 +41,14 @@ class ArtistPage extends React.Component{
   
 }
 
+toAlbum (text) {
+  return event => {
+    event.preventDefault()
+    this.props.history.push('/albumpage/'+ text);
+    console.log(text)
+  }
+}
+
 render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
@@ -99,7 +107,7 @@ render() {
             console.log(albumCheck.includes(reviewHolder[i].album));
             allAlbums.push (
               <div className="album">
-              <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt=""></img>
+              <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="" onClick={this.toAlbum(reviewHolder[i].album + "/" + reviewHolder[i].artist + "/" + reviewHolder[i].albumId )}></img>
               <p>{reviewHolder[i].album}</p>
             </div>
             )
