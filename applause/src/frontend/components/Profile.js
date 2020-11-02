@@ -1,11 +1,10 @@
 import React from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+import { Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
 import { faTrash, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
-import { lookup } from 'dns';
 
 const user =
     {
@@ -22,7 +21,7 @@ const user =
         "bio": "Lover of Pop, Harry Styles, and Country Music"
     }
 
-class Profile extends React.Component{
+class NewProfile extends React.Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -154,45 +153,42 @@ render() {
       )
   }
   return (
-    <div className="CreateAccount">
-        <div className="container">
-            <div className="left">
-                <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
-                <p>@{this.state.user.handle}</p>
-                <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
-                <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
-                <div className="follow">
-                    <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
-                      {this.state.followerRedirect ? <Redirect to='/followers'/> : null}
-                    <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
-                    {this.state.followingRedirect ? <Redirect to='/following'/> : null}
+    <div className="AlbumPage">
+        <div className = "albumHolder">
+            <div className="albumInfo">
+                <div className="albumInfoTemp">
+                    <div className="left">
+                        <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
+                        <p>@{this.state.user.handle}</p>
+                        <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
+                        <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
+                        <div className="follow">
+                            <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
+                            {this.state.followerRedirect ? <Redirect to='/followers'/> : null}
+                            <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
+                            {this.state.followingRedirect ? <Redirect to='/following'/> : null}
+                        </div>
+                        <h2>{this.state.user.bio}</h2>
+                        <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
+                        {/* {this.state.edit ? <Redirect to='/editprofile'/> : null} */}
+                        {this.state.edit ? <Redirect to={{
+                            pathname: '/editprofile',
+                            state: {email: this.state.user.email}
+                        }}/>: null}
+                    </div>                     
                 </div>
-                <h2>{this.state.user.bio}</h2>
-                <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
-                {/* {this.state.edit ? <Redirect to='/editprofile'/> : null} */}
-                {this.state.edit ? <Redirect to={{
-                    pathname: '/editprofile',
-                    state: {email: this.state.user.email}
-                }}/>: null}
-
-
             </div>
-            <div className="right">
-                Your reviews
-                <div className="albumReviews">
-                    <div className="albumReviewScroll">
-                        {reviewList}
-                    </div>
-
+            <div className="albumReviews">
+                <div className="albumReviewScroll">
+                    {reviewList}
                 </div>
             </div>
         </div>
-       
-       
     </div>
+
 
   );
 }
 
 }
-export default Profile
+export default NewProfile
