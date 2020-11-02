@@ -128,8 +128,9 @@ app.post('/createreview', function(req, res) {
    }else{
       reviewArray = "public_reviews"
    }
-   var review = new Review(req.body);
-   var albumId = review.albumId;
+   //var review = new Review(req.body);
+   var albumId = req.body.albumId;
+   console.log(albumId);
    var releaseDate;
    
    var getAlbumInfo = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
@@ -140,28 +141,41 @@ app.post('/createreview', function(req, res) {
       "useQueryString": true
    });
 
-   getAlbumInfo.end(function (res) {
-      if (res.error) throw new Error(res.error);
+   getAlbumInfo.end(function (yes) {
+      if (yes.error) throw new Error(yes.error);
       console.log("API RESPONSE");
-      releaseDate = res.body.release_date;
-   });
+     // releaseDate = res.body.release_date;
 
-   review.save(function (err) {
-      if (err) {
-        console.log("ERRR");
-        console.log(err);
-      }
-      //creates Review and adds Review ObjectID to respective User
-      User.findOneAndUpdate(
-		      {handle: req.body.username},
-		     {"$push":{[reviewArray]:review._id}},
-		      {upsert:true, select:'review'}
-      ).populate('review').exec(function(err, data) {
-                console.log(data);
-        });
-      });
-   res.status(200).send("Created new review!");
-   res.end();
+     const review = new Review ({
+      album: req.body.album,
+      artist: req.body.artist,
+      rating: req.body.rating,
+      username: req.body.username,
+      content: req.body.content,
+      private: req.body.private,
+      time: req.body.time,
+      albumId: req.body.albumId,
+      releaseDa: this.releaseDate
+    })
+ 
+    review.save(function (err) {
+       if (err) {
+         console.log("ERRR");
+         console.log(err);
+       }
+       //creates Review and adds Review ObjectID to respective User
+       User.findOneAndUpdate(
+             {handle: req.body.username},
+            {"$push":{[reviewArray]:review._id}},
+             {upsert:true, select:'review'}
+       ).populate('review').exec(function(err, data) {
+                 console.log(data);
+         });
+       });
+    res.status(200).send("Created new review!");
+    res.end();
+
+   });
 });
 
 

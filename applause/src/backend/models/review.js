@@ -37,6 +37,9 @@ let Review = new mongoose.Schema({
     },
     albumId: {
         type: Number,
+    },
+    releaseDa: {
+        type: String,
     }
 });
 
