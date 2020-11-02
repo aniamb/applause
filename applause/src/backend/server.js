@@ -52,6 +52,8 @@ api.headers({
 	"useQueryString": true
 });
 
+
+
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
 	console.log(req.body);
@@ -127,6 +129,23 @@ app.post('/createreview', function(req, res) {
       reviewArray = "public_reviews"
    }
    var review = new Review(req.body);
+   var albumId = review.albumId;
+   var releaseDate;
+   
+   var getAlbumInfo = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   getAlbumInfo.headers({
+      "x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+      "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      "useQueryString": true
+   });
+
+   getAlbumInfo.end(function (res) {
+      if (res.error) throw new Error(res.error);
+      console.log("API RESPONSE");
+      releaseDate = res.body.release_date;
+   });
+
    review.save(function (err) {
       if (err) {
         console.log("ERRR");
