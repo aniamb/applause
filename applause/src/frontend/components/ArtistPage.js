@@ -131,7 +131,7 @@ render() {
           </div>
           <div className="artistReviews">
             <div className="artistReviewScroll">
-              <h2 className="sectionTitle">Reviews of Music by {this.state.artistName}</h2> 
+              <h2 className="sectionTitle">Reviews of music by {this.state.artistName}</h2> 
               {allReviews}
           </div> 
         </div>
