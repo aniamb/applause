@@ -133,7 +133,8 @@ app.post('/createaccount', function(req, res) {
             email: req.body.email,
             password: hash,
             bio: "Write something fun about yourself!",
-            meta_data: "avatar.png"
+            meta_data: "avatar.png",
+            visibility: "public"
             })
            res.status(200).send(req.body.email);
            res.end();
@@ -490,7 +491,7 @@ app.post('/editprofile', function(req, res, err) {
           } else {
               User.findOneAndUpdate(
                   {"email":req.body.currUserEmail},
-                  {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio, meta_data:req.body.meta_data}},
+                  {$set: {handle:req.body.handle, firstname: req.body.firstname, lastname:req.body.lastname, bio:req.body.bio, meta_data:req.body.meta_data, visibility:req.body.visibility}},
                   {new:true},
                   function(err,items){
                       if(err){
