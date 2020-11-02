@@ -145,7 +145,7 @@ render() {
                             </figcaption>
                         </figure>
                         <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artists}</b></p>
+                            <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
                             <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
                             <p className="reviewInfo">{reviewsHolder[i].content}</p>
                             
@@ -177,10 +177,8 @@ render() {
 
 
             </div>
-            
-        </div>
-        <div className="right">
-                {/* This is where the user's own reviews would be! */}
+            <div className="right">
+                Your reviews
                 <div className="albumReviews">
                     <div className="albumReviewScroll">
                         {reviewList}
@@ -188,6 +186,8 @@ render() {
 
                 </div>
             </div>
+        </div>
+       
        
     </div>
 
