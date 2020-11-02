@@ -124,14 +124,14 @@ render() {
         <br></br>
         <div className = "holder">
           <div className="allAlbums">
-            <h2 className="sectionTitle">albums you've reviewed</h2> 
+            <h2 className="sectionTitle">Reviewed Albums</h2> 
             <div className="grid">
               {allAlbums}
               </div>
           </div>
           <div className="artistReviews">
             <div className="artistReviewScroll">
-              <h2 className="sectionTitle">top reviews</h2> 
+              <h2 className="sectionTitle">Reviews of Music by {this.state.artistName}</h2> 
               {allReviews}
           </div> 
         </div>
