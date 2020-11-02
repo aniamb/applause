@@ -109,7 +109,7 @@ render() {
                                 isSelectble = "true"
                                 numberOfStars={5}
                                 starDimension = "30px"
-                                starSpacing = "1px"
+                                starSpacing = "0px"
                                 name='rating'
                             />
                                 </figcaption>

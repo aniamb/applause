@@ -2,8 +2,6 @@
     padding-right: 10px;
     padding-left: 10px;
     margin-top: 10px;
-    height: 100%;
-    margin-bottom: 20px;
 }
 
 .artistPic{
@@ -29,24 +27,22 @@
 
 .holder{
     display: flex;
-    height: 100%;
     border-top: 1px solid lightgray;
+    height: min-content;
 
 }
-.allAlbums {
-    width: 400px;
-    flex: 45%;
-}
-
+ .allAlbums {
+    width: 45%;
+} 
 
 .artistReviews {
+    width: 55%;
     justify-content: center;
-    flex: 55%;
     margin-left: 100px; 
 }
 
 .artistReviewScroll{
-    height: 750px;
+    height: 30%;
     overflow: auto;
 }
 
@@ -89,6 +85,7 @@
 .albumReview{
     margin: 0;
     padding-top: 3px;
+    width: auto;
     /* overflow: auto; */
 }
   /* Add some padding inside the card container */
@@ -96,12 +93,14 @@
     padding: 2px 16px;
     text-align: left;
     word-wrap: break-word;
+    overflow-y: scroll;
 }
 
 .reviewHandle{
     text-align: left;
     font-size: 15px;
     line-height: 5px;
+    word-wrap: break-word;
 }
 
 .reviewInfo{

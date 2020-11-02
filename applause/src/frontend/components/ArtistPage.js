@@ -72,8 +72,8 @@ render() {
                 starHoverColor="yellow"
                 isSelectble = "true"
                 numberOfStars={5}
-                starDimension = "30px"
-                starSpacing = "1px"
+                starDimension = "29px"
+                starSpacing = "0px"
                 name='rating'
             />
           </figcaption>
@@ -124,11 +124,11 @@ render() {
         <br></br>
         <div className = "holder">
           <div className="allAlbums">
-            <h2 className="sectionTitle">albums</h2> 
+            <h2 className="sectionTitle">albums you've reviewed</h2> 
             <div className="grid">
               {allAlbums}
               </div>
-            </div>
+          </div>
           <div className="artistReviews">
             <div className="artistReviewScroll">
               <h2 className="sectionTitle">top reviews</h2> 

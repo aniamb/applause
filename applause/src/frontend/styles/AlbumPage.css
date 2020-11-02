@@ -98,8 +98,8 @@
 
 .albumReviews {
     justify-content: center;
-    flex: 55%;
     margin-left: 50px; 
+    width: 55%;
 }
 
 .albumReviewScroll{
@@ -133,6 +133,7 @@
     padding: 2px 16px;
     text-align: left;
     word-wrap: break-word;
+    overflow-y: scroll;
 }
 
 .reviewHandle{
@@ -144,5 +145,5 @@
 .reviewInfo{
     line-height: 40px;
     font-size: 25px;
-    overflow: auto;
+    
 }
