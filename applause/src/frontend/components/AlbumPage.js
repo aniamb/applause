@@ -23,7 +23,6 @@ class AlbumPage extends React.Component{
   console.log(this.props.match.params.albumName);
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
-  //this.setState({albumArt: this.props.match.params.albumArt}); 
   this.setState({albumId: this.props.match.params.albumId});
   
     
@@ -36,11 +35,9 @@ class AlbumPage extends React.Component{
         console.log("Status is: " + res.status);
         console.log(res.data.results);
         this.setState({reviews: res.data.results});
-        //this.setState({navigate: true});
     })
     .catch(error => {
         console.error(error);
-        //this.setState({navigate: false});
     })  
 
 }
@@ -62,6 +59,7 @@ changeListenLater = () => {
     else this.setState({isListenToLater:"Listen to Later"});
 }
 render() {
+
     var albumArt;
     var artName;
     var albName;
@@ -76,21 +74,18 @@ render() {
     
     
     let allReviews = [];
+    let aggRating = [];
     let reviewHolder = this.state.reviews;
     var reviewHolderLength = reviewHolder.length;
     var ratingWO = 0;
     
     albumArt = sessionStorage.getItem(albumId);
-    console.log(albumArt);
 
-   
     if (reviewHolderLength === 0) {
         allReviews.push (
             <h2>This album current has no reviews.</h2>
         )
     } else {
-
-
         for (let i = 0; i < reviewHolder.length; i++) {
 
             ratingWO += reviewHolder[i].rating;
@@ -125,10 +120,15 @@ render() {
                 )
             
         }
+
+        ratingWO = ratingWO/(reviewHolder.length);
+        //console.log(ratingWO);
+        ratingWO = parseInt(ratingWO);
+        aggRating.push(ratingWO);
+        console.log(aggRating);
     }
    
-    ratingWO = ratingWO/(reviewHolder.length);
-    console.log(ratingWO);
+   
 
     return (
 
@@ -146,7 +146,7 @@ render() {
                         {/* overall album rating */}
                         <StarRatings
                                 className="starRating"
-                                rating= {0}
+                                rating= {aggRating[0]}
                                 starRatedColor="rgb(243,227, 0)"
                                 starHoverColor="rgb(243,227, 0)"
                                 isSelectble = "true"
