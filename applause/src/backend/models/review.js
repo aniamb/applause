@@ -6,15 +6,14 @@ let Review = new mongoose.Schema({
         type: String,
         required: true
     },
-    artists: {
-        type: [String]
+    artist: {
+        type: String
+    },
+    image: {
+        type: String
     },
     rating: {
         type: Number
-    },
-    user: {
-        type: String,
-        required: true
     },
     likes: {
         type: Number
@@ -31,5 +30,11 @@ let Review = new mongoose.Schema({
     },
     private: {
         type: Boolean
+    },
+    time: {
+        type: Date,
     }
 });
+
+var reviewModel = mongoose.model('Review', Review);
+module.exports = reviewModel;
