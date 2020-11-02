@@ -106,8 +106,8 @@ render() {
           }else {
             console.log(albumCheck.includes(reviewHolder[i].album));
             allAlbums.push (
-              <div className="album">
-              <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="" onClick={this.toAlbum(reviewHolder[i].album + "/" + reviewHolder[i].artist + "/" + reviewHolder[i].albumId )}></img>
+              <div className="album" onClick={this.toAlbum(reviewHolder[i].album + "/" + reviewHolder[i].artist + "/" + reviewHolder[i].albumId )}>
+              <img className="albumgrid" src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="" ></img>
               <p>{reviewHolder[i].album}</p>
             </div>
             )
