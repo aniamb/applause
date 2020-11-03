@@ -27,6 +27,7 @@ class ViewProfile extends React.Component{
     super(props);
     this.state = {
         user:user,
+        username:'',
         edit:false,
         isFollow: "Follow",
         userHandle: null,
@@ -41,6 +42,8 @@ componentDidMount(){
     console.log("component mounted at view profile");
     //need to change this to use local storage
     // console.log(lookupUser);
+
+    console.log("Username: " + this.props.location.state.username);
     axios.get('http://localhost:5000/viewprofile', {
         params: {
             userHandle: this.props.location.state.username
