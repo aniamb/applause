@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
-import { faTrash, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 
@@ -105,11 +105,16 @@ deleteReview(reviewId) {
     .then((response) => {
         const data = response.data;
         console.log('Successfully deleted review');
+        window.location.reload();
         this.getReviews();
     })
     .catch(() => {
         alert("Error deleting reviews");
     });
+}
+
+editReview(reviewAlbum, reviewArtist, reviewId) {
+    this.props.history.push('/review/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
 }
 
 render() {
@@ -123,7 +128,7 @@ render() {
         var isMidday = date.getHours() == 12;
         var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
             date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
-        let time_format = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate() + ' ' + time;
+        let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
 
       reviewList.push(
                     <div className="albumCard">
@@ -145,7 +150,7 @@ render() {
                         </figure>
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                            <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                            <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
                             <p className="reviewInfo">{reviewsHolder[i].content}</p>
                             
                         </div>    
@@ -158,7 +163,7 @@ render() {
             <div className="albumInfo">
                 <div className="albumInfoTemp">
                     <div className="left">
-                        <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
+                        <FontAwesomeIcon className="prof" icon={faUserCircle} size="7x"/>
                         <p>@{this.state.user.handle}</p>
                         <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                         <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>

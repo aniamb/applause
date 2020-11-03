@@ -12,6 +12,7 @@ const mongoose = require('mongoose');
 
 let User = require('./models/user');
 let Reviews = require('./models/review')
+var ObjectId = require('mongodb').ObjectID;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -139,6 +140,36 @@ app.post('/createreview', function(req, res) {
    res.end();
 });
 
+app.get('/editreview', function(req, res) {
+   Reviews.find({'_id': ObjectId(req.query.id) }, function(err, review) {
+      if (review) {
+         res.status(200).send(review);
+         res.end();
+      } else {
+         res.status(400).send('no reviews for this id');
+         res.end();
+      }
+   })
+   
+});
+
+app.post('/submitedit', function(req, res, err) {
+   // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
+   Reviews.findOneAndUpdate(
+      {"_id" : req.body.id},
+      {$set: req.body.reviewInfo},
+      function(err, items){
+          if(err){
+             console.log("error while updating review")
+              res.status(400).send('Error happened updating review')
+          }else{
+              console.log("review updated");
+          }
+          res.end();
+      }
+   );
+   res.end();
+})
 
 //deletereview [WIP]
 app.post('/deletereview', function(req, res, err) {
