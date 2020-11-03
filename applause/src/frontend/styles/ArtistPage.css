@@ -1,0 +1,110 @@
+.ArtistPage{
+    padding-right: 10px;
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.artistPic{
+    height: 325px;
+    border-radius: 50%;
+}
+
+.artistHeader{
+    display: inline-block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.sectionTitle{
+    text-align: left;
+    margin-left: 50px;
+    font-size: 30px;
+}
+
+.artistName2{
+    font-size: 65px;
+}
+
+.holder{
+    display: flex;
+    border-top: 1px solid lightgray;
+    height: min-content;
+
+}
+ .allAlbums {
+    width: 45%;
+} 
+
+.artistReviews {
+    width: 55%;
+    justify-content: center;
+    margin-left: 100px; 
+}
+
+.artistReviewScroll{
+    height: 30%;
+    overflow: auto;
+}
+
+.album{
+    overflow: auto;
+}
+
+.grid { 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 20px;
+    align-items: stretch;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+ }
+
+  .grid img {
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
+    max-width: 100%;
+  }
+
+.card {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    background-color: rgb(165, 224, 217);
+    display: flex;
+    padding: 6px;
+    height: 190px;
+    margin-bottom: 15px;
+}
+
+  /* On mouse-over, add a deeper shadow */
+.card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+ 
+.albumReview{
+    margin: 0;
+    padding-top: 3px;
+    width: auto;
+    /* overflow: auto; */
+}
+  /* Add some padding inside the card container */
+.reviewContent {
+    padding: 2px 16px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+
+.reviewHandle{
+    text-align: left;
+    font-size: 15px;
+    line-height: 5px;
+    word-wrap: break-word;
+}
+
+.reviewInfo{
+    line-height: 40px;
+    font-size: 25px;
+
+}

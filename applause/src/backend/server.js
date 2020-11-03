@@ -11,6 +11,8 @@ const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongo
 const mongoose = require('mongoose');
 
 let User = require('./models/user');
+let Review = require('./models/review');
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -36,6 +38,8 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
 const { Server } = require('http');
+//const { default: Review } = require('../frontend/components/Review');
+//const { default: Review } = require('../frontend/components/Review');
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -47,6 +51,8 @@ api.headers({
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
+
+
 
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
@@ -62,10 +68,12 @@ app.post('/searchserver', function (req,res1) {
 
 
 
-	function Content(title, artist, art) { 
+	function Content(id, title, artist, art, artistImage) { 
+      this.id = id;
 		this.title = title; 
 		this.artist = artist; 
-		this.art = art;
+      this.art = art;
+      this.artistImage = artistImage;
 	 }
 
 	 if (searchTerm.charAt(0) ==='@') {
@@ -94,23 +102,91 @@ app.post('/searchserver', function (req,res1) {
 			var k = 'value';
 
 			for (i = 0; i < res.body.data.length; i++) {
-				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
-				objectsTest.push(val1);
+            
+				var val1 = new Content(res.body.data[i].album.id, res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
+
+            objectsTest.push(val1);
 				albumTitles.push(res.body.data[i].album.title);
 			}
 			var noDups = new Set(albumTitles);
 			var noDupObj = new Set(objectsTest);
 			finalVals = Array.from(noDups);
 			finalObjects = Array.from(noDupObj);
-	
+         console.log(finalObjects);
+         
 			res1.status(200).json({result: finalObjects})
 			res1.end();
 		});
 	}
-
-	
 });
 
+//createreview
+app.post('/createreview', function(req, res) {
+   var reviewArray;
+   if(req.body.private === true){
+      reviewArray = "private_reviews"
+   }else{
+      reviewArray = "public_reviews"
+   }
+   //var review = new Review(req.body);
+   var albumId = req.body.albumId;
+   console.log(albumId);
+   var releaseDate;
+   
+   var getAlbumInfo = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   getAlbumInfo.headers({
+      "x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+      "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      "useQueryString": true
+   });
+
+   getAlbumInfo.end(function (yes) {
+      if (yes.error) throw new Error(yes.error);
+      console.log("API RESPONSE");
+     // releaseDate = res.body.release_date;
+
+     const review = new Review ({
+      album: req.body.album,
+      artist: req.body.artist,
+      rating: req.body.rating,
+      username: req.body.username,
+      content: req.body.content,
+      private: req.body.private,
+      time: req.body.time,
+      albumId: req.body.albumId,
+      releaseDa: this.releaseDate
+    })
+ 
+    review.save(function (err) {
+       if (err) {
+         console.log("ERRR");
+         console.log(err);
+       }
+       //creates Review and adds Review ObjectID to respective User
+       User.findOneAndUpdate(
+             {handle: req.body.username},
+            {"$push":{[reviewArray]:review._id}},
+             {upsert:true, select:'review'}
+       ).populate('review').exec(function(err, data) {
+                 console.log(data);
+         });
+       });
+    res.status(200).send("Created new review!");
+    res.end();
+
+   });
+});
+
+
+//deletereview [WIP]
+app.post('/deletereview', function(req, res, err) {
+   console.log(req.body.username);
+   Reviews.deleteOne({'username': req.body.username}).exec(function(err){
+       console.log("Review successfully deleted.")
+       res.status(200).send('Deleting account worked');
+   })
+})
 
 //createaccount
 app.post('/createaccount', function(req, res) {
@@ -278,6 +354,38 @@ app.post('/createaccount', function(req, res) {
         }
      })
   });
+
+  //get reviews associated with an artist
+app.get('/getartistreviews', function(req, res, err) {
+   console.log(req.query.artistName)
+   Review.find({'artist': req.query.artistName, 'private': false }, function(err, review) {
+      if (review) {
+         console.log(review);
+         res.status(200).json({results: review})
+         res.end();
+      }else {
+         res.status(400).send('No Reviews Found');
+         res.end();
+      }
+   })
+});
+
+  //get reviews associated with an album
+  app.get('/getalbumreviews', function(req, res, err) {
+   console.log(req.query.albumName)
+   Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
+      console.log('yooooo');
+      if (review) {
+         console.log(review);
+         res.status(200).json({results: review})
+         res.end();
+      }else {
+         res.status(400).send('No Reviews Found');
+         res.end();
+      }
+   })
+});
+
 
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);

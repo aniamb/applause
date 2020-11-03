@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+ import React, {Component, Fragment} from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import axios from 'axios'
 import '../../App.css';
@@ -32,6 +32,7 @@ class Feed extends Component {
         })
         .then(res => {
             this.state.albums = res.data.result;
+            console.log(res.data.result);
             this.setState({navigate: true});
         })
         .catch(error => {
@@ -46,10 +47,10 @@ class Feed extends Component {
         return (
             <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <label>
+                <label>
                         Search: 
                         <input className = "searchBox" type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
-                    </label>
+                </label>
                     <input type="submit" value="Search" />
                 </form>
                 {this.state.navigate && <Redirect to={{

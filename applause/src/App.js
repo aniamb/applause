@@ -12,6 +12,9 @@ import ResetScreen from './frontend/components/ResetScreen';
 import Profile from './frontend/components/Profile'
 import EditProfile from './frontend/components/EditProfile'
 import ViewProfile from './frontend/components/ViewProfile'
+import AlbumPage from './frontend/components/AlbumPage'
+import ArtistPage from './frontend/components/ArtistPage'
+import Review from './frontend/components/Review'
 
 
 function App () {
@@ -32,11 +35,14 @@ function App () {
             <Route path="/following" component={Following}/>
             <Route path="/profile" component={Profile}/>
             <Route path="/viewprofile" component={ViewProfile}/>
+            <Route path="/review/:album/:artist/:albumId" component={Review}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>
             <Route path="/profile" component={Profile}/>
             <Route path="/editprofile" component={EditProfile}/>
+            <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
+            <Route exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />
