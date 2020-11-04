@@ -12,7 +12,7 @@ class Search extends Component{
             albumName:'',
             name:'',
             navigate: false, // only navigates to /search again
-
+            username: ""
         }
 
     }
@@ -29,8 +29,9 @@ class Search extends Component{
         }
     };
 
-    linkToProfile = () => {
+    linkToProfile = (username) => {
         this.setState({navigate : true});
+        this.setState({username: username});
     };
 
     sendName (text) {
@@ -70,11 +71,7 @@ class Search extends Component{
                     <div key={this.props.location.state.albums[i]} className="searchResults">
                         <h3>
                             {/* albums[i] stores users and album names  */}
-                            <button onClick={() => this.linkToProfile()}>@{this.props.location.state.albums[i]}</button>
-                            {this.state.navigate && <Redirect to={{
-                                pathname: this.whichUser(this.props.location.state.albums[i]),
-                                state: {"username": this.props.location.state.albums[i]}
-                            }}/>}
+                            <button onClick={() => this.linkToProfile(this.props.location.state.albums[i])}>@{this.props.location.state.albums[i]}</button>
                         </h3>
                     </div>
                 )
@@ -138,10 +135,10 @@ class Search extends Component{
                    <div className="userOrder">
                        {noDups}
                    </div>
-                {/* {this.state.navigate && <Redirect to={{
-                    pathname: '/albumpage',
+                {this.state.navigate && <Redirect to={{
+                    pathname: this.whichUser(this.state.username),
                     state: {"username": this.state.username}
-                }}/>} */}
+                }}/>}
                 </div>
                 <div>
 
