@@ -83,7 +83,7 @@ render() {
 
     if (reviewHolderLength === 0) {
         allReviews.push (
-            <h2>This album current has no reviews.</h2>
+            <h2>This album currently has no reviews.</h2>
         )
     } else {
         for (let i = 0; i < reviewHolder.length; i++) {

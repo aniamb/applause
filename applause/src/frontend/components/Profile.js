@@ -145,42 +145,49 @@ render() {
 
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
-    for (let i = 0; i < reviewsHolder.length; i++) {
-        let date = new Date(reviewsHolder[i].time);
-   
-          date.setHours(date.getHours()+2);
-          var isPM = date.getHours() >= 12;
-          var isMidday = date.getHours() == 12;
-          var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
-              date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
-          let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
-  
-        reviewList.push(
-                      <div className="albumCard">
-                          <figure className="albumReview">
-                            <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
-                              <figcaption>
-                                  <StarRatings
-                              className="starRating"
-                              rating= {reviewsHolder[i].rating}
-                              starRatedColor="rgb(243,227, 0)"
-                              starHoverColor="rgb(243,227, 0)"
-                              isSelectble = "true"
-                              numberOfStars={5}
-                              starDimension = "30px"
-                              starSpacing = "1px"
-                              name='rating'
-                          />
-                              </figcaption>
-                          </figure>
-                          <div className="reviewContent">
-                              <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                              <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
-                              <p className="reviewInfo">{reviewsHolder[i].content}</p>
-                              
-                          </div>    
-                      </div>
+    let reviewHolderLength = reviewsHolder.length;
+    if (reviewHolderLength === 0) {
+        reviewList.push (
+            <h2>You haven't written any reviews.</h2>
         )
+    }else{
+        for (let i = 0; i < reviewsHolder.length; i++) {
+            let date = new Date(reviewsHolder[i].time);
+    
+            date.setHours(date.getHours()+2);
+            var isPM = date.getHours() >= 12;
+            var isMidday = date.getHours() == 12;
+            var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
+                date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
+            let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
+    
+            reviewList.push(
+                        <div className="albumCard">
+                            <figure className="albumReview">
+                                <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                <figcaption>
+                                    <StarRatings
+                                className="starRating"
+                                rating= {reviewsHolder[i].rating}
+                                starRatedColor="rgb(243,227, 0)"
+                                starHoverColor="rgb(243,227, 0)"
+                                isSelectble = "true"
+                                numberOfStars={5}
+                                starDimension = "30px"
+                                starSpacing = "1px"
+                                name='rating'
+                            />
+                                </figcaption>
+                            </figure>
+                            <div className="reviewContent">
+                                <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} <button onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                                <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                                
+                            </div>    
+                        </div>
+            )
+        }
     }
   let images = this.importAll(require.context('../../public/', false));
   
@@ -192,23 +199,21 @@ render() {
                     <div className="left">
                         <Avatar 
                             style={{
-                                marginLeft: "25px",
-                                marginTop: "55px",
-                                display: 'flex',
+                                marginTop: "20px",
+                                display: 'inline-block',
                                 verticalAlign:"middle",
-                                marginBottom: "-115px",
-                                width: "100px",
-                                height: "100px",
+                                width: "200px",
+                                height: "200px",
                             }} 
                             variant="circle"
                             src={images[this.state.path]}
                             alt={this.state.user.firstname + " " + this.state.user.lastname}
                         />
-                        <p>@{this.state.user.handle}</p>
+                        <h1 className="userName">{this.state.user.firstname} {this.state.user.lastname}</h1>
+                        <p className="profileHandle">@{this.state.user.handle}</p>
                         <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
-                        <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
                         <div className="follow">
-                            <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
+                            <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
                             {this.state.followerRedirect && <Redirect to={{
                                 pathname: '/followers',
                                 state: {"hand": localStorage.getItem('currentUser')}
@@ -219,13 +224,13 @@ render() {
                                 state: {"hand": localStorage.getItem('currentUser')}
                             }}/>}
                         </div>
-                        <h2>{this.state.user.bio}</h2>
-                        <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
+                        <h2 className="bio">{this.state.user.bio}</h2>
+                        <button className = "edit followBtn2" onClick={this.editProfile}>Edit Profile</button>
                         {this.state.edit ? <Redirect to={{
                             pathname: '/editprofile',
                             state: {email: this.state.user.email}
                         }}/>: null}
-                        <button className = "logout" onClick={this.logout}>Logout</button>
+                        <button className = "logout followBtn2" onClick={this.logout}>Logout</button>
                         {this.state.logout ? <Redirect to={{
                             pathname: '/login'
                         }}/>: null}

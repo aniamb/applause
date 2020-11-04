@@ -39,10 +39,11 @@
     width: 55%;
     justify-content: center;
     margin-left: 100px; 
+    height: 100%;
 }
 
 .artistReviewScroll{
-    height: 30%;
+    height: 50%;
     overflow: auto;
 }
 
@@ -63,8 +64,10 @@
   .grid img {
     border: 1px solid #ccc;
     box-shadow: 2px 2px 6px 0px  rgba(0,0,0,0.3);
-    max-width: 100%;
+    width: 150px;
+    height: 150px;
   }
+
 
 .card {
     /* Add shadows to create the "card" effect */
@@ -85,8 +88,13 @@
 .albumReview{
     margin: 0;
     padding-top: 3px;
-    width: auto;
+    width: 250px;
     /* overflow: auto; */
+}
+
+.albumReview img{
+    width: 150px;
+    height: 150px;
 }
   /* Add some padding inside the card container */
 .reviewContent {
@@ -94,6 +102,7 @@
     text-align: left;
     word-wrap: break-word;
     overflow-y: scroll;
+    width: 100%;
 }
 
 .reviewHandle{

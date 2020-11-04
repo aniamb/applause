@@ -43,6 +43,56 @@
     position: relative;
 }
 
+.userName{
+    font-size: 50px;
+}
+
+.profileHandle{
+    margin-top: 0;
+    font-size: 40px;
+}
+
+.followBtn{
+    margin-bottom: 30px;
+    margin-top: 8px;
+    width: 125px;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+.followers {
+    display: inline-block;
+    font-size: 20px;
+}
+.following {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 20px;
+}
+
+.followBtn2 {
+    margin-top: 8px;
+    width: 75px;
+    border-radius: 25px;
+    border: none;
+    height: 27px;
+    background-color: rgb(241, 241, 241);
+    font-size: 13px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+    margin-right: 5px;
+}
+
+.bio {
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.logout{
+    margin-left: 10px;
+}
 .albumSectionTitle{
     font-size: 50px;
 }
