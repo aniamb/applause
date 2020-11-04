@@ -194,20 +194,37 @@ app.get('/editreview', function(req, res) {
 
 app.post('/submitedit', function(req, res, err) {
    // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
-   Review.findOne(
-      {"_id" : req.body.id},
-      {$set: req.body.reviewInfo},
-      function(err, items){
+   console.log("entered");
+   console.log(req.body.reviewInfo);
+   // Review.findOneAndUpdate(
+   //    {"_id" : ObjectId(req.query.id) },
+   //    {$set: req.body.reviewInfo},
+   //    function(err, items){
+   //        if(err){
+   //           console.log("error while updating review")
+   //           // res.status(400).send('Error happened updating review')
+   //        }else{
+   //            console.log("review updated");
+   //        }
+   //        res.end();
+   //    }
+   // );
+
+   Review.findOneAndUpdate(
+      {"_id":req.body.id},
+      {$set: (req.body.reviewInfo)},
+      {new:true},
+      function(err,items){
           if(err){
-             console.log("error while updating review")
-              res.status(400).send('Error happened updating review')
+              return res.status(400).send('Error occured when editing profile.')
           }else{
-              console.log("review updated");
+              console.log("Successfully updated profile.");
+              return res.status(200).send('Profile update.d');
           }
-          res.end();
+          //res.end();
       }
-   );
-   res.end();
+  )
+   //res.end();
 })
 
 //deletereview [WIP]
@@ -459,12 +476,12 @@ app.get('/getartistreviews', function(req, res, err) {
    console.log("GETTING REVIEWS");
    Review.find({'username': req.query.userHandle }, function(err, reviews) {
       if (reviews) {
-         res.status(200).send(reviews);
-         res.end();
+         return res.status(200).send(reviews);
+         //res.end();
       } else {
          console.log('no reviews for this user');
-         res.status(400).send('no reviews for this user');
-         res.end();
+         return res.status(400).send('no reviews for this user');
+        // res.end();
       }
    })
 

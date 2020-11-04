@@ -12,6 +12,7 @@ class EditReview extends React.Component{
         rating: 0,
         content: '',
         username: '',
+        image:'',
         errorMessage: '',
         visibility: 'public'
     }
@@ -30,7 +31,8 @@ componentDidMount(){
     })
     .then((response) => {
         this.setState({rating: response.data[0].rating,
-                content: response.data[0].content
+                content: response.data[0].content,
+                image: response.data[0].image
         });
         if(response.data[0].private === false){
             this.setState({visibility: 'public'}); 
@@ -71,7 +73,10 @@ handleSubmit(event){
     privateBoolean = true;
   }
 
-  const reviewInfo = {album: this.state.album, artist: this.state.artist, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: Date.now()}
+  const currentDate = Date.now();
+  const dateObj = new Date(currentDate);
+
+  const reviewInfo = {album: this.state.album, artist: this.state.artist, image: this.state.image, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: dateObj.toUTCString()}
   const params = {
       id: this.props.match.params.reviewid,
       reviewInfo: reviewInfo,
@@ -96,7 +101,7 @@ render() {
             <div className="inputBoxReview">
                 <form className = "reviewForm" onSubmit={this.handleSubmit.bind(this)}>
                   <div className="column">
-                  <img className="albumArt" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt=""></img>
+                  <img className="albumArt" src={this.state.image} alt=""></img>
                         <h1 className="albumName">{this.state.album}</h1>
                         <h3 className="artistName">{this.state.artist}</h3>
                         <StarRatings

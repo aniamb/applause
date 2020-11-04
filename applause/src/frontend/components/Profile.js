@@ -100,10 +100,10 @@ importAll(r) {
 
 getReviews = () => {
     var lookupUser = sessionStorage.getItem("currentUser");
-    console.log("lookup user is" + lookupUser)
+    console.log("lookup user is: " + lookupUser)
     axios.get('http://localhost:5000/reviews', {
         params: {
-            userHandle:lookupUser
+            userHandle: lookupUser
         }
     })
     .then((response) => {
@@ -113,7 +113,7 @@ getReviews = () => {
         console.log(data); // reviews are in console
     })
     .catch(() => {
-        alert("Error retrieving reviews");
+        //alert("Error retrieving reviews");
     });
 }
 
@@ -137,7 +137,7 @@ deleteReview(reviewId) {
 }
 
 editReview(reviewAlbum, reviewArtist, reviewId) {
-    this.props.history.push('/review/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
+    this.props.history.push('/editreview/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
 }
 
 render() {

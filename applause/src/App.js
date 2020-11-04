@@ -35,7 +35,6 @@ function App () {
             <Route path="/followers" component={Followers}/>
             <Route path="/following" component={Following}/>
             <Route path="/viewprofile" component={ViewProfile}/>
-            <Route exact path="/review/:album/:artist/:albumId" component={Review}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>
@@ -43,7 +42,8 @@ function App () {
             <Route path="/editprofile" component={EditProfile}/>
             <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <Route exact path="/artistpage/:artistName" component ={ArtistPage}/>
-            <Route exact path="/review/:album/:artist/:reviewid" component={EditReview}/>
+            <Route exact path="/review/:album/:artist/:albumId" component={Review}/>
+            <Route exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />
