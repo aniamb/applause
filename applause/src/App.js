@@ -15,6 +15,7 @@ import ViewProfile from './frontend/components/ViewProfile'
 import AlbumPage from './frontend/components/AlbumPage'
 import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
+import EditReview from './frontend/components/EditReview'
 
 
 function App () {
@@ -33,9 +34,8 @@ function App () {
             <Route path="/resetpassword" component={ResetPassword}/>
             <Route path="/followers" component={Followers}/>
             <Route path="/following" component={Following}/>
-            <Route path="/profile" component={Profile}/>
             <Route path="/viewprofile" component={ViewProfile}/>
-            <Route path="/review/:album/:artist/:albumId" component={Review}/>
+            <Route exact path="/review/:album/:artist/:albumId" component={Review}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <Route path="/feed" component={Feed}/>
             <Route path="/search" component={Search}/>
@@ -43,6 +43,7 @@ function App () {
             <Route path="/editprofile" component={EditProfile}/>
             <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <Route exact path="/artistpage/:artistName" component ={ArtistPage}/>
+            <Route exact path="/review/:album/:artist/:reviewid" component={EditReview}/>
             <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />
