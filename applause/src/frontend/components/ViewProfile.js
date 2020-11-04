@@ -46,13 +46,31 @@ componentDidMount(){
             userHandle: this.props.location.state.username
         }
     })
-    .then((response) => {   
-        console.log("response received.");
+    .then((response) => {
+
         this.setState({user: response.data});
+
         if (response.data.meta_data !== "") {
             this.setState({path: response.data.meta_data.split("/")[3]});
         }
-        // localStorage.setItem("currentUser", this.state.user.handle);
+
+        axios.get('http://localhost:5000/isFollow', {
+            params: {
+                userHandle: response.data.handle,
+                currentHandle: sessionStorage.getItem("currentUser")
+            }
+        })
+        .then((r) => {
+            if (r.data)
+                this.setState({isFollow:"Unfollow"});
+            else
+                this.setState({isFollow:"Follow"});
+
+        })
+        .catch((er) => {
+            console.log(er);
+        });
+
     })
     .catch((err) => {
         console.log('error getting info');
@@ -60,7 +78,6 @@ componentDidMount(){
 }
 
 followerRedirectFunc = () => {
-    console.log(this.state.user.handle);
   this.setState({followerRedirect:true});
 }
 
@@ -68,10 +85,49 @@ followingRedirectFunc = () => {
   this.setState({followingRedirect:true});
 }
 
-changeFollow = () => {
-    if (this.state.isFollow === "Follow")
-        this.setState({isFollow:"Unfollow"});
-    else this.setState({isFollow:"Follow"});
+folButton = (username) => {
+  if (this.state.isFollow == "Unfollow")
+    this.changeFollow(username)
+}
+
+changeFollow = (username) => {
+  console.log(this.state.isFollow)
+  console.log(username)
+
+  // if (this.state.isFollow === "Unfollow") {
+  //   axios.get('http://localhost:5000/unfollow', {
+
+  //     params: {
+  //       userHandle: sessionStorage.getItem("currentUser"),
+  //       unfollowUsername: username
+  //     }
+
+  //   }).then((response) => {
+      
+  //     console.log(response)
+    //   this.setState({isFollow:"Follow"});
+
+    // }) .catch((err) => {
+  //     console.log('error getting info');
+  //   })
+  // }
+  // } else {
+  //   axios.get('http://localhost:5000/followuser', {
+
+  //     params: {
+  //       userHandle: sessionStorage.getItem("currentUser"),
+  //       followUsername: username
+  //     }
+
+  //   }).then((response) => {
+      
+  //     console.log(response)
+  //     this.setState({isFollow:"Unfollow"})
+
+  //   }) .catch((err) => {
+  //     console.log('error getting info');
+  //   })
+  // }
 }
 
 importAll(r) {
@@ -88,7 +144,7 @@ render() {
     <div className="CreateAccount">
         <div className="container">
             <div className="left">
-            <Avatar 
+            <Avatar
                     style={{
                         marginLeft: "25px",
                         marginTop: "55px",
@@ -97,23 +153,24 @@ render() {
                         marginBottom: "-115px",
                         width: "100px",
                         height: "100px",
-                    }} 
+                    }}
                     variant="circle"
                     src={images[this.state.path]}
                     alt={this.state.user.firstname + " " + this.state.user.lastname}
                 />
                 <p>@{this.state.user.handle}</p>
-                <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
+                <button className="followBtn" onClick={this.folButton(this.state.user.handle)}>{this.state.isFollow}</button>
+                {/* {this.changeFollow(this.state.user.handle)} */}
                 <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
-                
+
                 <div className="follow">
-                    
+
                     <div className="followers" onClick={this.followerRedirectFunc}> {this.state.user.followers.length} followers</div>
                         {this.state.followerRedirect && <Redirect to={{
                             pathname: '/followers',
                             state: {"hand": this.state.user.handle}
                         }}/>}
-                    
+
                     <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
                         {this.state.followingRedirect && <Redirect to={{
                                 pathname: '/following',

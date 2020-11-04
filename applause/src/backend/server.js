@@ -296,7 +296,7 @@ app.post('/createaccount', function(req, res) {
     })
  });
 
- app.get('/viewprofile', function(req, res){
+app.get('/viewprofile', function(req, res){
    console.log(req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
@@ -313,7 +313,7 @@ app.post('/createaccount', function(req, res) {
     })
  });
 
- app.get('/unfollow', function(req, res){
+app.get('/unfollow', function(req, res){
 
   let unfollowUser = null
   User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
@@ -339,7 +339,7 @@ app.post('/createaccount', function(req, res) {
           console.log("Failed to unfollow genericUser");
           res.status(400).send("Error in unfollowing user");
           res.end();
-      }else{
+      } else{
         console.log("No errors found in unfollowng!")
           User.updateOne(
               {"handle" : unfollowUser.handle},
@@ -358,6 +358,85 @@ app.post('/createaccount', function(req, res) {
       }
     })
   });
+
+app.get('/followuser', function(req, res){
+
+  let followUser = null
+  User.findOne({'handle': req.query.followUsername }, function(err, newUser) {
+    followUser = newUser;
+    if (followUser) {
+      console.log("Found\t" + req.query.followUsername)
+    }
+  })
+  
+  let mainUser = null
+  User.findOne({'handle': req.query.userHandle }, function(err, newUser) {
+    mainUser = newUser;
+    if (mainUser) {
+      console.log("Found\t" + req.query.userHandle)
+    }
+  })
+  
+  User.updateOne(
+    {"handle" : req.query.userHandle},
+    {$addToSet : {following : req.query.followUsername}},
+    function (err,result){
+      
+      if (err){
+        console.log("Failed to following user");
+        res.status(400).send("Error in following user");
+        res.end();
+      } 
+      else {
+        console.log("No errors found in unfollowng!")
+        User.updateOne(
+          {"handle" : followUser.handle},
+          {$addToSet : {followers : req.query.userHandle}},
+          function(err, results){
+            
+            if(err){
+              console.log("Failed to update user's followers list when unfolowing");
+              res.status(400).send("Error occurred when following user. User may not exist");
+              res.end();
+            }
+
+            res.status(200).send(mainUser.following);
+            console.log(mainUser.following)
+            res.end();
+          })
+        }
+    })
+});
+
+app.get('/isFollow', function(req, res){
+   console.log(req.query.userHandle);
+   User.findOne({'handle': req.query.currentHandle }, function(err, user) {
+        if (user) {
+
+         var found = false;
+
+         for (var i = 0; i < user.following.length; i++) {
+            if (user.following[i] === req.query.userHandle) {
+               found = true;
+               res.status(200).send(true);
+               res.end();
+            }
+         }
+
+         if (!found) {
+            console.log("here")
+            res.status(200).send(false);
+            res.end();
+         }
+
+       } else {
+         // user does not exist
+         console.log('user not in base');
+         res.status(400).send('Email or Password does not exist');
+         res.end();
+       }
+    })
+ });
 
  //verify reset password link
  app.get('/reset', (req, res, next) => {

@@ -26,29 +26,31 @@ class Search extends Component{
         }
     };
 
-    linkToProfile = () => {
+    linkToProfile = (username) => {
         this.setState({navigate : true});
+        this.setState({username: username})
     };
 
     render() {
         let noDups = [];
-
+        let users = []
         var length = (this.props.location.state.albums.length);
 
         if (length === 0){
             noDups.push(<h3>No results.</h3>)
         } else if (!this.props.location.state.albums[0].title) {
+            console.log(this.props.location.state.albums[0])
             for(let i = 0; i < length; i++){
                
                 noDups.push(
                     <div key={this.props.location.state.albums[i]} className="searchResults">
                         <h3>
                             {/* albums[i] stores users and album names  */}
-                            <button onClick={() => this.linkToProfile()}>@{this.props.location.state.albums[i]}</button>
-                            {this.state.navigate && <Redirect to={{
+                            <button onClick={() => this.linkToProfile(this.props.location.state.albums[i])}>@{this.props.location.state.albums[i]}</button>
+                            {/* {this.state.navigate && <Redirect to={{
                                 pathname: this.whichUser(this.props.location.state.albums[i]),
                                 state: {"username": this.props.location.state.albums[i]}
-                            }}/>}
+                            }}/>} */}
                         </h3>
                     </div>
                 )
@@ -82,12 +84,13 @@ class Search extends Component{
 
                   </div>
                    <div className="userOrder">
+                       {/* {users} */}
                        {noDups}
                    </div>
-                {/* {this.state.navigate && <Redirect to={{
-                    pathname: '/genericprofile',
-                    state: {"username": this.state.username}
-                }}/>} */}
+                             {this.state.navigate && <Redirect to={{
+                                pathname: this.whichUser(this.state.username),
+                                state: {"username": this.state.username}
+                            }}/>}
                 </div>
             </div>
 
