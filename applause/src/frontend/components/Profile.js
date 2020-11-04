@@ -158,7 +158,7 @@ render() {
         reviewList.push(
                       <div className="albumCard">
                           <figure className="albumReview">
-                              <img class="resize" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+                            <img class="resize" src={sessionStorage.getItem(reviewsHolder[i].albumId)} alt="Avatar"/>
                               <figcaption>
                                   <StarRatings
                               className="starRating"
