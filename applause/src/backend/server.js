@@ -418,6 +418,7 @@ app.post('/createaccount', function(req, res) {
 
 app.get('/getfeedreviews', function(req, res, err) {
    let followingList = req.query.followingList; // need to pass in this list in componentdidmount on frontend
+   console.log(followingList)
    let reviewList = [];
    let promiseList = [];
    let promisesInternalList = [];
@@ -440,7 +441,8 @@ app.get('/getfeedreviews', function(req, res, err) {
                                console.log(err);
                            }
                            if (review) {
-                               reviewList.splice(reviewList.length - 1, 0, review);
+                              reviewList.push(review)
+                              //  reviewList.splice(reviewList.length - 1, 0, review);
                               }
                            }).exec();
                         promisesInternalList.push(internalPromise);
@@ -468,7 +470,6 @@ app.get('/getfeedreviews', function(req, res, err) {
         .catch((error) => {
             console.log(error);
         })
-
 });
 
 

@@ -37,7 +37,10 @@ let User = new mongoose.Schema({
     resetPasswordExpires: {
         type: Date
     },
-    reviews: {
+    private_reviews: {
+        type: [String]
+    },
+    public_reviews: {
         type: [String]
     },
     followers:{ 
@@ -51,10 +54,9 @@ let User = new mongoose.Schema({
     },
     groups: {
         type: [String]
-    },
-    meta_data: {
-        type: String
     }
+
+
 });
 var userModel = mongoose.model('User', User);
 module.exports = userModel;
