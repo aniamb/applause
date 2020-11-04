@@ -94,7 +94,7 @@ render() {
 
                 <div className="albumCard">
                         <figure className="albumReview">
-                            <img src={albumArt} alt="Avatar"/>
+                            <img src={reviewHolder[i].image} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings
                                 className="starRating"

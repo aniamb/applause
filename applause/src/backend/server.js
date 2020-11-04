@@ -155,6 +155,7 @@ app.post('/createreview', function(req, res) {
       private: req.body.private,
       time: req.body.time,
       albumId: req.body.albumId,
+      image: req.body.image,
       releaseDa: this.releaseDate
     })
  

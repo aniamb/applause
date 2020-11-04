@@ -71,7 +71,7 @@ render() {
         allReviews.push (
         <div className="card">
         <figure className="albumReview">
-          <img src={sessionStorage.getItem(reviewHolder[i].albumId)} alt="Avatar"/>
+          <img src={reviewHolder[i].image} alt="Avatar"/>
           <figcaption>
             <StarRatings
                 className="starRating"
