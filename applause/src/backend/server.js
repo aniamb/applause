@@ -691,6 +691,62 @@ app.get('/getartistreviews', function(req, res, err) {
 
  })
 
+app.get('/getfeedreviews', function(req, res, err) {
+   let followingList = req.query.followingList; // need to pass in this list in componentdidmount on frontend
+   console.log(followingList)
+   let reviewList = [];
+   let promiseList = [];
+   let promisesInternalList = [];
+   for (let i = 0; i < followingList.length; i++) { // loop thru followers
+      let currFollower = followingList[i];
+      let promise = // each follower is promise and each review is internal promise
+         User.findOne({
+            'handle': currFollower
+         }, function (err, user) {
+               if (user) {
+                  // var privateIds = user.private_reviews; 
+                  var publicIds = user.public_reviews; // public Review ID's for each follower
+                  console.log("PUBLIC IDs: " + publicIds);
+                  if (publicIds.length > 0) {
+                     for (let i = 0; i < publicIds.length; i++) { // need to have similar for loop for private ID's
+                        console.log("id: " + publicIds[i]);
+                        let internalPromise =
+                           Review.findById({'_id': mongoose.Types.ObjectId(publicIds[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+                           if (err) {
+                               console.log(err);
+                           }
+                           if (review) {
+                              reviewList.push(review)
+                              //  reviewList.splice(reviewList.length - 1, 0, review);
+                              }
+                           }).exec();
+                        promisesInternalList.push(internalPromise);
+                     }
+                  }
+               } else {
+                  console.log("User not in DB");
+               }
+         }).exec();
+      promiseList.push(promise);
+   }
+   Promise.all(promiseList) // adding everything to promises so that everything is added to reviewList for EACH user
+        .then((data) => {
+            Promise.all(promisesInternalList)
+                .then((data) =>{
+                    console.log("reviewList: " + reviewList);
+                    res.status(200).json({results: reviewList})
+                    res.end();
+                }).catch((error) => {
+                res.status(400).send();
+                res.end();
+            })
+
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+});
+
 
 // LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {

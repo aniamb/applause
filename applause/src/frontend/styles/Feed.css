@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
+.albumReviews {
+    justify-content: center;
+    width: 100%;
+}
+
+.albumReviewScroll{
+    height: 900px;
+    overflow: auto;
+}
+
+/* Element is scrollable, but the scrollbar is hidden */
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+.albumCard {
+    border-style: solid;
+    border-width: 0.5px 2px;
+    transition: 0.3s;
+    background-color: rgb(253, 253, 253);
+    display: flex;
+    padding: 6px;
+    width:100%;
+    height: calc(100vw/7);
+    /* overflow-y: scroll; */
+    overflow: hidden;
+}
+
+.art{
+    display: flex;
+    flex-direction: row;
+}
+.albumReview{
+    margin: 0;
+    padding-top: 3px;
+    display: flex;
+    flex-direction: row;
+}
+
+.resize {
+    /* width: calc(100vw/8);
+    height: calc(100vw/8); */
+    width: auto;
+    height: auto;
+    margin: auto;
+    margin-left:5vw;
+}
+
+.stars{
+    margin: auto;
+    padding-left: 3vw;
+    display: flex;
+    flex-direction: row;
+    width: 175px;
+}
+
+  /* Add some padding inside the card container */
+.reviewContent {
+    display: flex;
+    flex-direction: column;
+    margin-left: 3vw;
+    text-align: start;
+    overflow-x: scroll;
+    /* padding: 2px 16px; */
+    /* text-align: left; */
+    /* word-wrap: break-word;
+    overflow-y: scroll; */
+}
+
+/* album + artist */
+h1{
+    font-family: 'Reem Kufi';
+    font-weight: bolder;
+    font-size: larger;
+    letter-spacing: 2px;
+}
+
+/* user, date, time */
+.dateInfo{
+    margin-top:0px;
+    margin:0;
+    margin-top:0px;
+    font-weight: 400;
+    font-size: small;
+}
+
+.time{
+    font-size: smaller;
+}
+
+/* review text */
+.reviewInfo{
+    font-size: medium;
+    margin-top:10px;
+    overflow: hidden;
+}
