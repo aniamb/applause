@@ -36,7 +36,8 @@ class ViewProfile extends React.Component{
         followerRedirect: false,
         followingRedirect: false,
         hand: "",
-        path:""
+        path:"",
+        visibility: ""
     }
 }
 
@@ -53,7 +54,7 @@ async componentDidMount(){
         })
         .then((response) => {   
             console.log(response.data)
-            this.setState({user: response.data.user, reviews: response.data.reviews, isFollow: response.data.isFollowing});
+            this.setState({user: response.data.user, reviews: response.data.reviews, isFollow: response.data.isFollowing, visibility: response.data.user.visibility});
             if (response.data.user.meta_data !== "") {
                 this.setState({path: response.data.user.meta_data.split("/")[3]});
             }
@@ -212,6 +213,7 @@ render() {
                             }}/>}
                         </div>
                         <h2 className="bio">{this.state.user.bio}</h2>
+                        <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p>
                     </div>                     
                 </div>
             </div>

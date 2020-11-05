@@ -36,7 +36,8 @@ class Profile extends React.Component{
         followerRedirect: false,
         followingRedirect: false,
         hand: "",
-        path:""
+        path:"",
+        visibility: "",
     }
 }
 
@@ -52,7 +53,8 @@ async componentDidMount(){
     })
     .then((response) => {   
         console.log("response received.");
-        this.setState({user: response.data});
+        this.setState({user: response.data, visibility: response.data.visibility});
+        console.log(response.data)
         if (response.data.meta_data !== "") {
           this.setState({path: response.data.meta_data.split("/")[3]});
         }
@@ -236,6 +238,7 @@ render() {
                         {this.state.logout ? <Redirect to={{
                             pathname: '/login'
                         }}/>: null}
+                        <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p>
                     </div>                     
                 </div>
             </div>
