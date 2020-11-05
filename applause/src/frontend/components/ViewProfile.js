@@ -101,7 +101,10 @@ render() {
             var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
                 date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
             let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
-    
+            var isPrivate = "public"
+            if(reviewsHolder[i].private === true){
+                isPrivate = "private"
+            }
             reviewList.push(
                         <div className="albumCard">
                             <figure className="albumReview">
@@ -122,7 +125,7 @@ render() {
                             </figure>
                             <div className="reviewContent">
                                 <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 
+                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} {isPrivate}</p>
                                 <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                 
                             </div>    
