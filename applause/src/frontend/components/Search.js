@@ -22,7 +22,7 @@ class Search extends Component{
     };
 
     whichUser = (username) => {
-        if (username == localStorage.getItem('currentUser')) {
+        if (username === sessionStorage.getItem('currentUser')) {
           return "/profile";
         } else {
           return '/viewprofile';

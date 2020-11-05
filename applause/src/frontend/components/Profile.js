@@ -56,7 +56,7 @@ async componentDidMount(){
         if (response.data.meta_data !== "") {
           this.setState({path: response.data.meta_data.split("/")[3]});
         }
-        localStorage.setItem("currentUser", this.state.user.handle);
+        sessionStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
@@ -72,7 +72,6 @@ editProfile = () => {
 
 logout = () => {
     this.setState({logout:true});
-    localStorage.clear();
     sessionStorage.clear();
 }
 
@@ -214,17 +213,17 @@ render() {
                         />
                         <h1 className="userName">{this.state.user.firstname} {this.state.user.lastname}</h1>
                         <p className="profileHandle">@{this.state.user.handle}</p>
-                        <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
+                       <br></br>
                         <div className="follow">
                             <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
                             {this.state.followerRedirect && <Redirect to={{
                                 pathname: '/followers',
-                                state: {"hand": localStorage.getItem('currentUser')}
+                                state: {"hand": sessionStorage.getItem('currentUser')}
                             }}/>}
                             <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
                             {this.state.followingRedirect && <Redirect to={{
                                 pathname: '/following',
-                                state: {"hand": localStorage.getItem('currentUser')}
+                                state: {"hand": sessionStorage.getItem('currentUser')}
                             }}/>}
                         </div>
                         <h2 className="bio">{this.state.user.bio}</h2>

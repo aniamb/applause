@@ -502,7 +502,13 @@ app.get('/getartistreviews', function(req, res, err) {
                             }
                         }
                      }
-                     return res.status(200).send({user: userToSend, reviews: reviewsToSend});
+                     var followState;
+                     if(isFollowing === true){
+                        followState = "Unfollow"
+                     } else {
+                        followState = "Follow"
+                     }
+                     return res.status(200).send({user: userToSend, reviews: reviewsToSend, isFollowing: followState});
                   } else {
                      console.log('no reviews for this user');
                      return res.status(400).send('no reviews for this user');
@@ -537,7 +543,53 @@ app.get('/getartistreviews', function(req, res, err) {
 
  });
 
- app.get('/unfollow', function(req, res){
+ app.get('/follow', function(req, res){
+
+   let followUser = null
+   User.findOne({'handle': req.query.followUsername }, function(err, newUser) {
+       followUser = newUser;
+       if (followUser) {
+         console.log("Found\t" + req.query.unfollowUsername)
+       }
+   })
+ 
+   let mainUser = null
+   User.findOne({'handle': req.query.userHandle }, function(err, newUser) {
+       mainUser = newUser;
+       if (mainUser) {
+         console.log("Found\t" + req.query.userHandle)
+       }
+   })
+ 
+    User.updateOne(
+     {"handle" : req.query.userHandle},
+     {$push : {following : req.query.followUsername}},
+     function (err,result){
+       if(err){
+           console.log("Failed to unfollow genericUser");
+           res.status(400).send("Error in unfollowing user");
+           res.end();
+       }else{
+         console.log("No errors found in unfollowng!")
+           User.updateOne(
+               {"handle" : followUser.handle},
+               {$push : {followers : req.query.userHandle}},
+               function(err, results){
+                   if(err){
+                       console.log("Failed to update genericUser's followers list when unfolowing");
+                       res.status(400).send("Error occurred when following user. User may not exist");
+                       res.end();
+                   }
+                   res.status(200).send(mainUser.following);
+                   console.log(mainUser.following)
+                   res.end();
+               }
+           )
+       }
+     })
+   });
+ 
+   app.get('/unfollow', function(req, res){
 
   let unfollowUser = null
   User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {

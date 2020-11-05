@@ -46,7 +46,6 @@ class EditProfile extends React.Component{
 componentDidMount(){
     console.log("component mounted");
     console.log(this.props.location.state.email);
-    // var localEmail = localStorage.getItem('currentUser');
     var localEmail = this.props.location.state.email;
     //need to change this to use local storage
     // var lookupUser = user.email;
@@ -102,7 +101,6 @@ handleSubmit(event){
     event.preventDefault();
     event.target.reset();
 
-    // var currUserEmail = localStorage.getItem('currentUser');
     var currUserEmail = this.props.location.state.email;
 
       const formData = new FormData();

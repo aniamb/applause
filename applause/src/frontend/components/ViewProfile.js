@@ -31,7 +31,7 @@ class ViewProfile extends React.Component{
         username:'',
         reviews: [],
         edit:false,
-        isFollow: "Follow",
+        isFollow: "",
         userHandle: null,
         followerRedirect: false,
         followingRedirect: false,
@@ -42,24 +42,28 @@ class ViewProfile extends React.Component{
 
 async componentDidMount(){
     console.log("component mounted at view profile");
-    axios.get('http://localhost:5000/viewprofile', {
-        params: {
-            userHandle: this.props.location.state.username,
-            currentUser: sessionStorage.getItem("currentUser")
-        }
-    })
-    .then((response) => {   
-        console.log(response.data)
-        this.setState({user: response.data.user, reviews: response.data.reviews});
-        if (response.data.user.meta_data !== "") {
-            this.setState({path: response.data.user.meta_data.split("/")[3]});
-        }
-        localStorage.setItem("currentUser", this.state.user.handle);
-    })
-    .catch((err) => {
-        console.log(err)
-        console.log('error getting info');
-    });
+    if(this.props.location.state === undefined){
+        this.props.history.push('/profile');
+    } else {
+        axios.get('http://localhost:5000/viewprofile', {
+            params: {
+                userHandle: this.props.location.state.username,
+                currentUser: sessionStorage.getItem("currentUser")
+            }
+        })
+        .then((response) => {   
+            console.log(response.data)
+            this.setState({user: response.data.user, reviews: response.data.reviews, isFollow: response.data.isFollowing});
+            if (response.data.user.meta_data !== "") {
+                this.setState({path: response.data.user.meta_data.split("/")[3]});
+            }
+        // sessionStorage.setItem("currentUser", this.state.user.handle);
+        })
+        .catch((err) => {
+            console.log(err)
+            console.log('error getting info');
+        });
+    }
 }
 
 followerRedirectFunc = () => {
@@ -72,9 +76,47 @@ followingRedirectFunc = () => {
 }
 
 changeFollow = () => {
-    if (this.state.isFollow === "Follow")
-        this.setState({isFollow:"Unfollow"});
-    else this.setState({isFollow:"Follow"});
+    if (this.state.isFollow === "Follow"){
+        this.setState({isFollow:"Unfollow"});       
+         this.follow()
+    } else {
+        this.setState({isFollow:"Follow"});
+        this.unfollow()
+    }
+}
+
+follow = () => {
+    console.log("FOLLOWING USER")
+    axios.get('http://localhost:5000/follow', {
+        params: {
+          userHandle: sessionStorage.getItem("currentUser"),
+          followUsername: this.props.location.state.username
+        }
+      }).then((response) => {
+        console.log("successfully followed user")
+        window.location.reload();
+  
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
+
+unfollow = () => {
+    console.log("UNFOLLOWING USER")
+    axios.get('http://localhost:5000/unfollow', {
+        params: {
+          userHandle: sessionStorage.getItem("currentUser"),
+          unfollowUsername: this.props.location.state.username
+        }
+      }).then((response) => {
+        console.log("successfully unfollowed user")
+        window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+
 }
 
 importAll(r) {
