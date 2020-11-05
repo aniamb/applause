@@ -455,20 +455,127 @@ app.get('/getartistreviews', function(req, res, err) {
  });
 
  app.get('/viewprofile', function(req, res){
-   console.log(req.query.userHandle);
-   User.findOne({'handle': req.query.userHandle }, function(err, user) {
-        if (user) {
+   var isFollowing = false;
+   var isPrivate = false;
+   var userToSend;
+   //determine if current logged in user is following
+   User.findOne({'handle': req.query.currentUser }, function(err, user) {
+      if (user) {
+         for (var i = 0; i < user.following.length; i++) {
+            if (user.following[i] === req.query.userHandle) {
+                isFollowing = true;
+                break;
+            }
+          }
+          //determine the visibility of the profile
+          User.findOne({'handle': req.query.userHandle }, function(err, user) {
+            if (user) {
+               if(user.visibility === "public"){
+                  isPrivate = false;
+               } else {
+                  isPrivate = true;
+               }
+               userToSend = user;
+               console.log(req.query.userHandle + " isPrivate: "+ isPrivate)
+              //send back userinfo and reviews
+               var reviewsToSend = []
+               Review.find({'username': req.query.userHandle }, function(err, reviews) {
+                  if (reviews) {
+                     if(isFollowing === true){
+                        //send all public + private reviews
+                        console.log("in review isFollowing True")
+                        for (var i = 0; i < reviews.length; i++) {
+                           reviewsToSend.push(reviews[i])
+                        }
+                        
+                     } else {
+                        if(isPrivate === true){
+                           console.log("not following but is private profile");
+                           //only send public reviews
+                           for (var i = 0; i < reviews.length; i++) {
+                              if (reviews[i].private === false) {
+                                 console.log("pushing public review")
+                                 reviewsToSend.push(reviews[i]);
+                                 console.log(reviews[i])
+                              }
+                            }
+                        } else {
+                           //send public + private reviews
+                           console.log("not following but is public profile");
+                           for (var i = 0; i < reviews.length; i++) {
+                              reviewsToSend.push(reviews[i])
+                           }
+                        }
+                     }
+                     console.log("userToSend: " + userToSend)
+                     return res.status(200).send({user: userToSend, reviews: reviewsToSend});
+                     //res.end();
+                  } else {
+                     console.log('no reviews for this user');
+                     return res.status(400).send('no reviews for this user');
+                    // res.end();
+                  }
+               })
+            } else {
+               // user does not exist
+               console.log('user not in base');
+            }
+         })
+      console.log(req.query.currentUser+ " isFollowing " + req.query.userHandle + " :"+ isFollowing);
+     } else {
+       // user does not exist
+       console.log('user not in base');
+     }
+  })
+  
+  //determine the visibility of the profile
+   //  User.findOne({'handle': req.query.userHandle }, function(err, user) {
+   //    if (user) {
+   //       if(user.visibility === "public"){
+   //          isPrivate = false;
+   //       } else {
+   //          isPrivate = true;
+   //       }
+   //       console.log(req.query.userHandle + " isPrivate: "+ isPrivate)
+   //    } else {
+   //       // user does not exist
+   //       console.log('user not in base');
+   //    }
+   // })
 
-         res.status(200).send(user);
-         res.end();
+   //send back userinfo and reviews
+   // var reviewsToSend = []
+   // Review.find({'username': req.query.userHandle }, function(err, reviews) {
+   //    if (reviews) {
+   //       if(isFollowing === true){
+   //          //send all public + private reviews
+   //          console.log("in review isFollowing True")
+   //          reviewsToSend.push(reviews)
+   //       } else {
+   //          if(isPrivate === true){
+   //             console.log("not following but is private profile");
+   //             //only send public reviews
+   //             for (var i = 0; i < reviews.length; i++) {
+   //                if (reviews[i].private === false) {
+   //                   console.log("pushing public review")
+   //                   reviewsToSend.push(reviews[i]);
+   //                }
+   //              }
+   //          } else {
+   //             //send public + private reviews
+   //             console.log("not following but is public profile");
+   //             reviewsToSend.push(reviews)
+   //          }
+   //       }
 
-       } else {
-         // user does not exist
-         console.log('user not in base');
-         res.status(400).send('Email or Password does not exist');
-         res.end();
-       }
-    })
+   //       return res.status(200).send(reviewsToSend);
+   //       //res.end();
+   //    } else {
+   //       console.log('no reviews for this user');
+   //       return res.status(400).send('no reviews for this user');
+   //      // res.end();
+   //    }
+   // })
  });
 
  app.get('/reviews', function(req, res){
