@@ -18,14 +18,33 @@ import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
 
 
-function App () {
-  
+class App extends React.Component{
+  constructor (props){
+    super(props);
+    this.state = {
+      userHandle:null
+    }
+  }
+
+  Feed = () => (
+    <div>
+      <h2>Feed</h2>
+    </div>
+  );
+
+
+render() {
+
   return (
     <div className="App">
       <div className="App-header">
-          <div style={{ textDecoration: "none", fontSize: "70px" }}>
-          applause
+          <div style={{ textDecoration: "none", fontSize: "70px" }} >
+          <Link to="/feed" style={{ textDecoration: 'none', color: 'black'}}>applause</Link>
+          <div  className="topright"> 
+              <Link to="/profile" style={{ textDecoration: 'none', color: 'black'}}>my profile</Link>
+              </div>
             </div>
+            
       </div>
       <BrowserRouter>
         <Switch>
@@ -51,8 +70,15 @@ function App () {
             }/>
         </Switch>
       </BrowserRouter>
+
+
     </div>
+
+    
   );
+}
+
+
 }
 
 export default App;
