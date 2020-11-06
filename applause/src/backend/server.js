@@ -684,12 +684,45 @@ app.get('/getartistreviews', function(req, res, err) {
          res.status(404).json('no user exists in db to update');
       }
    })
-
-
-
-
-
  })
+
+ app.get('/unlike', function(req, res){
+   let unfollowUser = null
+   console.log(req.query.reviewId)
+    Review.updateOne(
+      {"_id" : req.query.reviewId},
+     {$pull : {users_liked : req.query.handle}},
+     function (err,result){
+       if(err){
+            console.log("Failed to unlike review");
+            res.status(400).send("Error in unliking review");
+            res.end();
+       }else{
+            res.status(200).send();
+            console.log("unliked the review!")
+            res.end();
+       }
+     })
+});
+
+app.get('/like', function(req, res){
+   let unfollowUser = null
+   console.log(req.query.reviewId)
+    Review.updateOne(
+      {"_id" : req.query.reviewId},
+     {$push : {users_liked : req.query.handle}},
+     function (err,result){
+       if(err){
+            console.log("Failed to unlike review");
+            res.status(400).send("Error in unliking review");
+            res.end();
+       }else{
+            res.status(200).send();
+            console.log("unliked the review!")
+            res.end();
+       }
+     })
+});
 
 app.get('/getfeedreviews', function(req, res, err) {
    let followingList = req.query.followingList; // need to pass in this list in componentdidmount on frontend

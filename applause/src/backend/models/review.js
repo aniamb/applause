@@ -33,10 +33,13 @@ let Review = new mongoose.Schema({
         type: Boolean
     },
     time: {
-        type: String,
+        type: Date,
+    },
+    users_liked: {
+        type:[String]
     },
     albumId: {
-        type: Number,
+        type: Number
     }
 });
 
