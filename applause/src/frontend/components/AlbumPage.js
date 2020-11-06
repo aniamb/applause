@@ -79,7 +79,13 @@ render() {
     var reviewHolderLength = reviewHolder.length;
     var ratingWO = 0;
     
+   if (reviewHolderLength === 0) {
     albumArt = sessionStorage.getItem(albumId);
+   }else {
+       albumArt = reviewHolder[0].image;
+   }
+    
+   
 
     if (reviewHolderLength === 0) {
         allReviews.push (

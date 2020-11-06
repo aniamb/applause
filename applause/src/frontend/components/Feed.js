@@ -70,6 +70,13 @@ class Feed extends Component {
         })
     }
 
+    toAlbum (text) {
+        return event => {
+          event.preventDefault()
+          this.props.history.push('/albumpage/'+ text);
+          console.log(text)
+        }
+      }
 
     render () {
         let reviewList = [];
@@ -88,7 +95,7 @@ class Feed extends Component {
             reviewList.push(
                           <div className="albumCard">
                               <div className = "artFeed>">
-                              <figure className="albumReviewFeed">
+                              <figure className="albumReviewFeed" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                   <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>
                                   {/* <figcaption> */}
                                   <div className="starsFeed">
