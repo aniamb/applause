@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
-.albumReviews {
+.albumReviewsFeed {
     justify-content: center;
     width: 100%;
 }
 
-.albumReviewScroll{
+.albumReviewScrollFeed{
     height: 900px;
     overflow: auto;
 }
@@ -15,7 +15,7 @@
     background: transparent; /* make scrollbar transparent */
 }
 
-.albumCard {
+.albumCardFeed {
     border-style: solid;
     border-width: 0.5px 2px;
     transition: 0.3s;
@@ -28,18 +28,18 @@
     overflow: hidden;
 }
 
-.art{
+.artFeed {
     display: flex;
     flex-direction: row;
 }
-.albumReview{
+.albumReviewFeed{
     margin: 0;
     padding-top: 3px;
     display: flex;
     flex-direction: row;
 }
 
-.resize {
+.resizeFeed {
     /* width: calc(100vw/8);
     height: calc(100vw/8); */
     width: auto;
@@ -48,7 +48,7 @@
     margin-left:5vw;
 }
 
-.stars{
+.starsFeed{
     margin: auto;
     padding-left: 3vw;
     display: flex;
@@ -57,7 +57,7 @@
 }
 
   /* Add some padding inside the card container */
-.reviewContent {
+.reviewContentFeed {
     display: flex;
     flex-direction: column;
     margin-left: 3vw;
@@ -91,7 +91,7 @@ h1{
 }
 
 /* review text */
-.reviewInfo{
+.reviewInfoFeed{
     font-size: medium;
     margin-top:10px;
     overflow: hidden;

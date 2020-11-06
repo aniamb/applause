@@ -87,11 +87,11 @@ class Feed extends Component {
             let time_format = time
             reviewList.push(
                           <div className="albumCard">
-                              <div className = "art>">
-                              <figure className="albumReview">
+                              <div className = "artFeed>">
+                              <figure className="albumReviewFeed">
                                   <img className="resize" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
                                   {/* <figcaption> */}
-                                  <div className="stars">
+                                  <div className="starsFeed">
                                       <StarRatings
                                   className="starRating"
                                   rating= {reviewsHolder[i].rating}
@@ -110,7 +110,7 @@ class Feed extends Component {
                               <div className="reviewContent">
                                   <h1>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</h1>
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
-                                  <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                                  <p className="reviewInfoFeed">{reviewsHolder[i].content}</p>
                                   {/* <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
                                   <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p> */}
@@ -131,8 +131,8 @@ class Feed extends Component {
                     pathname: '/search',
                     state: {"albums": this.state.albums}
                 }}/>}
-                <div className="albumReviews">
-                    <div className="albumReviewScroll">
+                <div className="albumReviewsFeed">
+                    <div className="albumReviewScrollFeed">
                         {reviewList}
                     </div>
                 </div>
