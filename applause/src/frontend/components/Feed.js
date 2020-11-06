@@ -89,7 +89,7 @@ class Feed extends Component {
                           <div className="albumCard">
                               <div className = "artFeed>">
                               <figure className="albumReviewFeed">
-                                  <img className="resize" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>
                                   {/* <figcaption> */}
                                   <div className="starsFeed">
                                       <StarRatings
