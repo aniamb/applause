@@ -23,18 +23,19 @@ function App () {
   
   return (
     <div className="App">
+       <BrowserRouter>
       <div className="App-header">
         <div style={{ textDecoration: "none", fontSize: "70px" }} >
             {/* applause */}
-            <Link to="/feed" style={{ textDecoration: 'none', color: 'black'}}>applause</Link>
+           
+            <Link exact to="/feed" style={{ textDecoration: 'none', color: 'black'}}>applause</Link>
 
               <div  className="topright"> 
                   <Link to="/profile" style={{ textDecoration: 'none', color: 'black'}}>my profile</Link>
               </div>
-
         </div>
       </div>
-      <BrowserRouter>
+     
         <Switch>
             <Route path="/createaccount" component={CreateAccount}/>
             <Route path="/login" component={Login}/>
