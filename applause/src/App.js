@@ -18,14 +18,21 @@ import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
 
 
+
 function App () {
   
   return (
     <div className="App">
       <div className="App-header">
-          <div style={{ textDecoration: "none", fontSize: "70px" }}>
-          applause
-            </div>
+        <div style={{ textDecoration: "none", fontSize: "70px" }} >
+            {/* applause */}
+            <Link to="/feed" style={{ textDecoration: 'none', color: 'black'}}>applause</Link>
+
+              <div  className="topright"> 
+                  <Link to="/profile" style={{ textDecoration: 'none', color: 'black'}}>my profile</Link>
+              </div>
+
+        </div>
       </div>
       <BrowserRouter>
         <Switch>
