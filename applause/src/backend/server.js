@@ -689,7 +689,7 @@ app.get('/getartistreviews', function(req, res, err) {
  app.get('/unlike', function(req, res){
    let unfollowUser = null
    console.log(req.query.reviewId)
-    Reviews.updateOne(
+    Review.updateOne(
       {"_id" : req.query.reviewId},
      {$pull : {users_liked : req.query.handle}},
      function (err,result){
@@ -708,7 +708,7 @@ app.get('/getartistreviews', function(req, res, err) {
 app.get('/like', function(req, res){
    let unfollowUser = null
    console.log(req.query.reviewId)
-    Reviews.updateOne(
+    Review.updateOne(
       {"_id" : req.query.reviewId},
      {$push : {users_liked : req.query.handle}},
      function (err,result){
