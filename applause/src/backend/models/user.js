@@ -55,8 +55,6 @@ let User = new mongoose.Schema({
     groups: {
         type: [String]
     }
-
-
 });
 var userModel = mongoose.model('User', User);
 module.exports = userModel;

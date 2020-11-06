@@ -33,6 +33,9 @@ let Review = new mongoose.Schema({
     },
     time: {
         type: Date,
+    },
+    users_liked: {
+        type:[String]
     }
 });
 
