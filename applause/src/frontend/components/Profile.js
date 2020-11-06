@@ -91,6 +91,14 @@ changeFollow = () => {
     else this.setState({isFollow:"Follow"});
 }
 
+toAlbum (text) {
+    return event => {
+      event.preventDefault()
+      this.props.history.push('/albumpage/'+ text);
+      console.log(text)
+    }
+  }
+
 
 importAll(r) {
   let images = {};
@@ -167,7 +175,7 @@ render() {
             }
             reviewList.push(
                         <div className="albumCard">
-                            <figure className="albumReview">
+                            <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                 <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings

@@ -126,6 +126,14 @@ importAll(r) {
     return images;
   }
 
+  toAlbum (text) {
+    return event => {
+      event.preventDefault()
+      this.props.history.push('/albumpage/'+ text);
+      console.log(text)
+    }
+  }
+
 render() {
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
@@ -150,7 +158,7 @@ render() {
             }
             reviewList.push(
                         <div className="albumCard">
-                            <figure className="albumReview">
+                            <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                 <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings

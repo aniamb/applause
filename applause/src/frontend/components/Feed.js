@@ -200,7 +200,7 @@ class Feed extends Component {
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                   {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
-                                  <p className="reviewInfoFeed">{reviewsHolder[i].content}</p>
+
                                   {/* <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
                                   <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p> */}
