@@ -19,7 +19,7 @@ class Followers extends Component{
   }
 
   whichUser = (username) => {
-    if (username === localStorage.getItem('currentUser')) {
+    if (username === sessionStorage.getItem('currentUser')) {
       return "/profile";
     } else {
       return '/viewprofile';
@@ -35,7 +35,7 @@ class Followers extends Component{
     var currHandle = null;
 
     if (this.props.location.state.hand === "") {
-      currHandle = localStorage.getItem('currentUser');
+      currHandle = sessionStorage.getItem('currentUser');
       console.log(currHandle);
     } else {
       currHandle = this.props.location.state.hand;

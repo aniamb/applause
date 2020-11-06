@@ -1,8 +1,11 @@
 import React from 'react';
-import { Redirect} from 'react-router-dom';
 import { Avatar } from '@material-ui/core';
 import '../styles/Profile.css';
+import { Redirect} from 'react-router-dom'
 import axios from 'axios'
+import { faTrash, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import StarRatings from 'react-star-ratings';
 
 const user =
     {
@@ -29,10 +32,12 @@ class Profile extends React.Component{
         logout:false,
         isFollow: "Follow",
         userHandle: null,
+        reviews: [],
         followerRedirect: false,
         followingRedirect: false,
         hand: "",
-        path:""
+        path:"",
+        visibility: "",
     }
 }
 
@@ -48,17 +53,20 @@ async componentDidMount(){
     })
     .then((response) => {   
         console.log("response received.");
-        this.setState({user: response.data});
+        this.setState({user: response.data, visibility: response.data.visibility});
+        console.log(response.data)
         if (response.data.meta_data !== "") {
           this.setState({path: response.data.meta_data.split("/")[3]});
         }
-        localStorage.setItem("currentUser", this.state.user.handle);
+        sessionStorage.setItem("currentUser", this.state.user.handle);
     })
     .catch((err) => {
         console.log('error getting info');
         console.log(err);
     });
+    this.getReviews();
 }
+
 
 editProfile = () => {
     this.setState({edit:true});
@@ -66,7 +74,6 @@ editProfile = () => {
 
 logout = () => {
     this.setState({logout:true});
-    localStorage.clear();
     sessionStorage.clear();
 }
 
@@ -91,59 +98,158 @@ importAll(r) {
   return images;
 }
 
+
+getReviews = () => {
+    var lookupUser = sessionStorage.getItem("currentUser");
+    console.log("lookup user is: " + lookupUser)
+    axios.get('http://localhost:5000/reviews', {
+        params: {
+            userHandle: lookupUser
+        }
+    })
+    .then((response) => {
+        const data = response.data;
+        this.setState({ reviews: data });
+        console.log('Retrieved reviews!');
+        console.log(data); // reviews are in console
+    })
+    .catch(() => {
+        //alert("Error retrieving reviews");
+    });
+}
+
+deleteReview(reviewId) {
+    console.log("DELETING REVIEW")
+    console.log(reviewId)
+    axios.post('http://localhost:5000/deletereview', {
+        params: {
+            id: reviewId
+        }
+    })
+    .then((response) => {
+        const data = response.data;
+        console.log('Successfully deleted review');
+        window.location.reload();
+        this.getReviews();
+    })
+    .catch(() => {
+        alert("Error deleting reviews");
+    });
+}
+
+editReview(reviewAlbum, reviewArtist, reviewId) {
+    this.props.history.push('/editreview/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
+}
+
 render() {
 
+
+    let reviewList = [];
+    let reviewsHolder = this.state.reviews;
+    let reviewHolderLength = reviewsHolder.length;
+    if (reviewHolderLength === 0) {
+        reviewList.push (
+            <h2>You haven't written any reviews.</h2>
+        )
+    }else{
+        for (let i = 0; i < reviewsHolder.length; i++) {
+            let date = new Date(reviewsHolder[i].time);
+    
+            date.setHours(date.getHours()+2);
+            var isPM = date.getHours() >= 12;
+            var isMidday = date.getHours() == 12;
+            var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
+                date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
+            let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
+            var isPrivate = "public"
+            if(reviewsHolder[i].private === true){
+                isPrivate = "private"
+            }
+            reviewList.push(
+                        <div className="albumCard">
+                            <figure className="albumReview">
+                                <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                <figcaption>
+                                    <StarRatings
+                                className="starRating"
+                                rating= {reviewsHolder[i].rating}
+                                starRatedColor="rgb(243,227, 0)"
+                                starHoverColor="rgb(243,227, 0)"
+                                isSelectble = "true"
+                                numberOfStars={5}
+                                starDimension = "30px"
+                                starSpacing = "1px"
+                                name='rating'
+                            />
+                                </figcaption>
+                            </figure>
+                            <div className="reviewContent">
+                                <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                                <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                                
+                            </div>    
+                        </div>
+            )
+        }
+    }
   let images = this.importAll(require.context('../../public/', false));
-
+  
   return (
-    <div className="CreateAccount">
-        <div className="container">
-            <div className="left">
-               <Avatar 
-                    style={{
-                        marginLeft: "25px",
-                        marginTop: "55px",
-                        display: 'flex',
-                        verticalAlign:"middle",
-                        marginBottom: "-115px",
-                        width: "100px",
-                        height: "100px",
-                    }} 
-                    variant="circle"
-                    src={images[this.state.path]}
-                    alt={this.state.user.firstname + " " + this.state.user.lastname}
-                />
-                <p>@{this.state.user.handle}</p>
-                <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
-                <h1>{this.state.user.firstname} {this.state.user.lastname}</h1>
-                <div className="follow">
-                    <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers</div>
-                    {this.state.followerRedirect && <Redirect to={{
-                            pathname: '/followers',
-                            state: {"hand": localStorage.getItem('currentUser')}
-                    }}/>}
-                    <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
-                    {this.state.followingRedirect && <Redirect to={{
-                            pathname: '/following',
-                            state: {"hand": localStorage.getItem('currentUser')}
-                    }}/>}
+    <div className="AlbumPage">
+        <div className = "albumHolder">
+            <div className="albumInfo">
+                <div className="albumInfoTemp">
+                    <div className="left">
+                        <Avatar 
+                            style={{
+                                marginTop: "20px",
+                                display: 'inline-block',
+                                verticalAlign:"middle",
+                                width: "200px",
+                                height: "200px",
+                            }} 
+                            variant="circle"
+                            src={images[this.state.path]}
+                            alt={this.state.user.firstname + " " + this.state.user.lastname}
+                        />
+                        <h1 className="userName">{this.state.user.firstname} {this.state.user.lastname}</h1>
+                        <p className="profileHandle">@{this.state.user.handle}</p>
+                       <br></br>
+                        <div className="follow">
+                            <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
+                            {this.state.followerRedirect && <Redirect to={{
+                                pathname: '/followers',
+                                state: {"hand": sessionStorage.getItem('currentUser')}
+                            }}/>}
+                            <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
+                            {this.state.followingRedirect && <Redirect to={{
+                                pathname: '/following',
+                                state: {"hand": sessionStorage.getItem('currentUser')}
+                            }}/>}
+                        </div>
+                        <h2 className="bio">{this.state.user.bio}</h2>
+                        <button className = "edit followBtn2" onClick={this.editProfile}>Edit Profile</button>
+                        {this.state.edit ? <Redirect to={{
+                            pathname: '/editprofile',
+                            state: {email: this.state.user.email}
+                        }}/>: null}
+                        <button className = "logout followBtn2" onClick={this.logout}>Logout</button>
+                        {this.state.logout ? <Redirect to={{
+                            pathname: '/login'
+                        }}/>: null}
+                        <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p>
+                    </div>                     
                 </div>
-                <h2>{this.state.user.bio}</h2>
-                <button className = "edit" onClick={this.editProfile}>Edit Profile</button>
-                {this.state.edit ? <Redirect to={{
-                    pathname: '/editprofile',
-                    state: {email: this.state.user.email}
-                }}/>: null}
-                <button className = "logout" onClick={this.logout}>Logout</button>
-                {this.state.logout ? <Redirect to={{
-                    pathname: '/login'
-                }}/>: null}
-
-
             </div>
-            <div className="right">This is where the user's own reviews would be!</div>
+            <div className="albumReviews">
+                <div className="albumReviewScroll">
+                    {reviewList}
+                </div>
+            </div>
         </div>
     </div>
+
 
   );
 }

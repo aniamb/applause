@@ -23,7 +23,7 @@ class CreateAccount extends React.Component{
     }
 }
 componentDidMount(){
-  localStorage.clear();
+  sessionStorage.clear();
 }
 
 handleFirstNameChange(event) {
@@ -57,7 +57,7 @@ handleSubmit(event){
   }else{
       axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
           console.log(registerInfo.firstname);
-          localStorage.setItem("currentUser", response.data);
+          sessionStorage.setItem("currentUser", response.data);
           console.log('create account success');
           this.setState({isRedirect: true})
           // this.props.history.push('/login');

@@ -19,7 +19,7 @@ class Login extends React.Component{
     }
 
 componentDidMount(){
-    localStorage.clear();
+    sessionStorage.clear();
 }
 handleEmailChange(event) {
   this.setState({email: event.target.value})

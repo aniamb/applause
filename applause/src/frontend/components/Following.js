@@ -29,7 +29,7 @@ class Following extends Component{
     var currHandle = null;
 
     if (this.props.location.state.hand === "") {
-      currHandle = localStorage.getItem('currentUser');
+      currHandle = sessionStorage.getItem('currentUser');
     } else {
       currHandle = this.props.location.state.hand;
     }
@@ -54,7 +54,7 @@ unfollow = (username) => {
   var currHandle = null;
 
   if (this.props.location.state.hand === "") {
-    currHandle = localStorage.getItem('currentUser');
+    currHandle = sessionStorage.getItem('currentUser');
   } else {
     currHandle = this.props.location.state.hand;
   }
@@ -78,7 +78,7 @@ unfollow = (username) => {
 }
 
 whichUser = (username) => {
-  if (username === localStorage.getItem('currentUser')) {
+  if (username === sessionStorage.getItem('currentUser')) {
     return "/profile";
   } else {
     return '/viewprofile';

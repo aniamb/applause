@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+ import React, {Component, Fragment} from 'react';
 import { NavLink, Redirect} from 'react-router-dom'
 import axios from 'axios';
 import '../../App.css';
@@ -77,6 +77,7 @@ class Feed extends Component {
         })
         .then(res => {
             this.state.albums = res.data.result;
+            console.log(res.data.result);
             this.setState({navigate: true});
         })
         .catch(error => {
@@ -149,6 +150,13 @@ class Feed extends Component {
            console.log('error getting info');
           })
     }
+    toAlbum (text) {
+        return event => {
+          event.preventDefault()
+          this.props.history.push('/albumpage/'+ text);
+          console.log(text)
+        }
+      }
 
     render () {
         let reviewList = [];
@@ -167,11 +175,11 @@ class Feed extends Component {
             var usersLiked = reviewsHolder[i].users_liked
             reviewList.push(
                           <div className="albumCard">
-                              <div className = "art>">
-                              <figure className="albumReview">
-                                  <img className="resize" src="https://e-cdns-images.dzcdn.net/images/cover/0a5209aec8e37012eb07eb6ef01fa7e6/250x250-000000-80-0-0.jpg" alt="Avatar"/>
+                              <div className = "artFeed>">
+                              <figure className="albumReviewFeed" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
+                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>
                                   {/* <figcaption> */}
-                                  <div className="stars">
+                                  <div className="starsFeed">
                                       <StarRatings
                                   className="starRating"
                                   rating= {reviewsHolder[i].rating}
@@ -192,6 +200,10 @@ class Feed extends Component {
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                   {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
+                                  <p className="reviewInfoFeed">{reviewsHolder[i].content}</p>
+                                  {/* <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                  <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 
+                                  <p className="reviewInfo">{reviewsHolder[i].content}</p> */}
                               </div>    
                           </div>
             )
@@ -199,18 +211,18 @@ class Feed extends Component {
         return (
             <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <label>
+                <label>
                         Search: 
                         <input className = "searchBox" type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
-                    </label>
+                </label>
                     <input type="submit" value="Search" />
                 </form>
                 {this.state.navigate && <Redirect to={{
                     pathname: '/search',
                     state: {"albums": this.state.albums}
                 }}/>}
-                <div className="albumReviews">
-                    <div className="albumReviewScroll">
+                <div className="albumReviewsFeed">
+                    <div className="albumReviewScrollFeed">
                         {reviewList}
                     </div>
                 </div>

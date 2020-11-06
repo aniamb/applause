@@ -24,7 +24,7 @@ class ResetScreen extends React.Component{
     }
 
 async componentDidMount() {
-    localStorage.clear();
+    sessionStorage.clear();
     console.log(this.props.match.params.token);
     await axios.get('http://localhost:5000/reset', {
         params: {

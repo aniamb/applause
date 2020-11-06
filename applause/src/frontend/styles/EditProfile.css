@@ -7,6 +7,9 @@ form{
     margin-top: 5px;
 }
 
+.profileIcon{
+    margin-top: 3px;
+}
 input[type=text]{
     margin:10px 5px;
     border:none;

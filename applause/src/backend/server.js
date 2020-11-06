@@ -11,7 +11,8 @@ const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongo
 const mongoose = require('mongoose');
 
 let User = require('./models/user');
-let Reviews = require('./models/review');
+let Review = require('./models/review');
+var ObjectId = require('mongodb').ObjectID;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
@@ -37,6 +38,8 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
 const { Server } = require('http');
+//const { default: Review } = require('../frontend/components/Review');
+//const { default: Review } = require('../frontend/components/Review');
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -48,6 +51,8 @@ api.headers({
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
+
+
 
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
@@ -63,10 +68,12 @@ app.post('/searchserver', function (req,res1) {
 
 
 
-	function Content(title, artist, art) { 
+	function Content(id, title, artist, art, artistImage) { 
+      this.id = id;
 		this.title = title; 
 		this.artist = artist; 
-		this.art = art;
+      this.art = art;
+      this.artistImage = artistImage;
 	 }
 
 	 if (searchTerm.charAt(0) ==='@') {
@@ -95,23 +102,141 @@ app.post('/searchserver', function (req,res1) {
 			var k = 'value';
 
 			for (i = 0; i < res.body.data.length; i++) {
-				var val1 = new Content(res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium); 
-				objectsTest.push(val1);
+            
+				var val1 = new Content(res.body.data[i].album.id, res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
+
+            objectsTest.push(val1);
 				albumTitles.push(res.body.data[i].album.title);
 			}
 			var noDups = new Set(albumTitles);
 			var noDupObj = new Set(objectsTest);
 			finalVals = Array.from(noDups);
 			finalObjects = Array.from(noDupObj);
-	
+         console.log(finalObjects);
+         
 			res1.status(200).json({result: finalObjects})
 			res1.end();
 		});
 	}
-
-	
 });
 
+//createreview
+app.post('/createreview', function(req, res) {
+   var reviewArray;
+   if(req.body.private === true){
+      reviewArray = "private_reviews"
+   }else{
+      reviewArray = "public_reviews"
+   }
+   //var review = new Review(req.body);
+   var albumId = req.body.albumId;
+   console.log(albumId);
+   var releaseDate;
+   
+   var getAlbumInfo = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   getAlbumInfo.headers({
+      "x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+      "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      "useQueryString": true
+   });
+
+   getAlbumInfo.end(function (yes) {
+      if (yes.error) throw new Error(yes.error);
+      console.log("API RESPONSE");
+     // releaseDate = res.body.release_date;
+
+     const review = new Review ({
+      album: req.body.album,
+      artist: req.body.artist,
+      rating: req.body.rating,
+      username: req.body.username,
+      content: req.body.content,
+      private: req.body.private,
+      time: req.body.time,
+      albumId: req.body.albumId,
+      image: req.body.image,
+      releaseDa: this.releaseDate
+    })
+ 
+    review.save(function (err) {
+       if (err) {
+         console.log("ERRR");
+         console.log(err);
+       }
+       //creates Review and adds Review ObjectID to respective User
+       User.findOneAndUpdate(
+             {handle: req.body.username},
+            {"$push":{[reviewArray]:review._id}},
+             {upsert:true, select:'review'}
+       ).populate('review').exec(function(err, data) {
+                 console.log(data);
+         });
+       });
+    res.status(200).send("Created new review!");
+    res.end();
+
+   });
+});
+
+app.get('/editreview', function(req, res) {
+   Review.find({'_id': ObjectId(req.query.id) }, function(err, review) {
+      if (review) {
+         res.status(200).send(review);
+         res.end();
+      } else {
+         res.status(400).send('no reviews for this id');
+         res.end();
+      }
+   })
+   
+});
+
+app.post('/submitedit', function(req, res, err) {
+   // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
+   console.log("entered");
+   console.log(req.body.reviewInfo);
+   // Review.findOneAndUpdate(
+   //    {"_id" : ObjectId(req.query.id) },
+   //    {$set: req.body.reviewInfo},
+   //    function(err, items){
+   //        if(err){
+   //           console.log("error while updating review")
+   //           // res.status(400).send('Error happened updating review')
+   //        }else{
+   //            console.log("review updated");
+   //        }
+   //        res.end();
+   //    }
+   // );
+
+   Review.findOneAndUpdate(
+      {"_id":req.body.id},
+      {$set: (req.body.reviewInfo)},
+      {new:true},
+      function(err,items){
+          if(err){
+              return res.status(400).send('Error occured when editing profile.')
+          }else{
+              console.log("Successfully updated profile.");
+              return res.status(200).send('Profile update.d');
+          }
+          //res.end();
+      }
+  )
+   //res.end();
+})
+
+//deletereview [WIP]
+app.post('/deletereview', function(req, res, err) {
+   console.log(req.body.params.id);
+   Review.findByIdAndRemove(req.body.params.id.toString().trim(), function (err) {
+      if(err) console.log(err);
+      console.log("Successful deletion");
+    });
+    res.status(200).send("Deleted review");
+    res.end();
+})
 
 //createaccount
 app.post('/createaccount', function(req, res) {
@@ -280,6 +405,38 @@ app.post('/createaccount', function(req, res) {
      })
   });
 
+  //get reviews associated with an artist
+app.get('/getartistreviews', function(req, res, err) {
+   console.log(req.query.artistName)
+   Review.find({'artist': req.query.artistName, 'private': false }, function(err, review) {
+      if (review) {
+         console.log(review);
+         res.status(200).json({results: review})
+         res.end();
+      }else {
+         res.status(400).send('No Reviews Found');
+         res.end();
+      }
+   })
+});
+
+  //get reviews associated with an album
+  app.get('/getalbumreviews', function(req, res, err) {
+   console.log(req.query.albumName)
+   Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
+      console.log('yooooo');
+      if (review) {
+         console.log(review);
+         res.status(200).json({results: review})
+         res.end();
+      }else {
+         res.status(400).send('No Reviews Found');
+         res.end();
+      }
+   })
+});
+
+
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
@@ -298,23 +455,141 @@ app.post('/createaccount', function(req, res) {
  });
 
  app.get('/viewprofile', function(req, res){
-   console.log(req.query.userHandle);
-   User.findOne({'handle': req.query.userHandle }, function(err, user) {
-        if (user) {
-
-         res.status(200).send(user);
-         res.end();
-
-       } else {
-         // user does not exist
-         console.log('user not in base');
-         res.status(400).send('Email or Password does not exist');
-         res.end();
-       }
-    })
+   var isFollowing = false;
+   var isPrivate = false;
+   var userToSend;
+   //determine if current logged in user is following
+   User.findOne({'handle': req.query.currentUser }, function(err, user) {
+      if (user) {
+         for (var i = 0; i < user.following.length; i++) {
+            if (user.following[i] === req.query.userHandle) {
+                isFollowing = true;
+                break;
+            }
+          }
+          //determine the visibility of the profile
+          User.findOne({'handle': req.query.userHandle }, function(err, user) {
+            if (user) {
+               if(user.visibility === "public"){
+                  isPrivate = false;
+               } else {
+                  isPrivate = true;
+               }
+               userToSend = user;
+               console.log(req.query.userHandle + " isPrivate: "+ isPrivate)
+              //send back userinfo and reviews
+               var reviewsToSend = []
+               Review.find({'username': req.query.userHandle }, function(err, reviews) {
+                  if (reviews) {
+                     if(isFollowing === true){
+                        //send all public + private reviews
+                        console.log("in review isFollowing True")
+                        for (var i = 0; i < reviews.length; i++) {
+                           reviewsToSend.push(reviews[i])
+                        }
+                        
+                     } else {
+                        if(isPrivate === true){
+                           console.log("not following but is private profile");
+                        } else {
+                           //send only public reviews bc not following BUT public profile
+                           console.log("not following but is public profile");
+                            for (var i = 0; i < reviews.length; i++) {
+                              if (reviews[i].private === false) {
+                                 console.log("pushing public review")
+                                 reviewsToSend.push(reviews[i]);
+                              }
+                            }
+                        }
+                     }
+                     var followState;
+                     if(isFollowing === true){
+                        followState = "Unfollow"
+                     } else {
+                        followState = "Follow"
+                     }
+                     return res.status(200).send({user: userToSend, reviews: reviewsToSend, isFollowing: followState});
+                  } else {
+                     console.log('no reviews for this user');
+                     return res.status(400).send('no reviews for this user');
+                  }
+               })
+            } else {
+               // user does not exist
+               console.log('user not in base');
+            }
+         })
+     } else {
+       // user does not exist
+       console.log('user not in base');
+     }
+  })
+  
  });
 
- app.get('/unfollow', function(req, res){
+ app.get('/reviews', function(req, res){
+   console.log(req.query.userHandle);
+   console.log("GETTING REVIEWS");
+   Review.find({'username': req.query.userHandle }, function(err, reviews) {
+      if (reviews) {
+         return res.status(200).send(reviews);
+         //res.end();
+      } else {
+         console.log('no reviews for this user');
+         return res.status(400).send('no reviews for this user');
+        // res.end();
+      }
+   })
+
+ });
+
+ app.get('/follow', function(req, res){
+
+   let followUser = null
+   User.findOne({'handle': req.query.followUsername }, function(err, newUser) {
+       followUser = newUser;
+       if (followUser) {
+         console.log("Found\t" + req.query.unfollowUsername)
+       }
+   })
+ 
+   let mainUser = null
+   User.findOne({'handle': req.query.userHandle }, function(err, newUser) {
+       mainUser = newUser;
+       if (mainUser) {
+         console.log("Found\t" + req.query.userHandle)
+       }
+   })
+ 
+    User.updateOne(
+     {"handle" : req.query.userHandle},
+     {$push : {following : req.query.followUsername}},
+     function (err,result){
+       if(err){
+           console.log("Failed to unfollow genericUser");
+           res.status(400).send("Error in unfollowing user");
+           res.end();
+       }else{
+         console.log("No errors found in unfollowng!")
+           User.updateOne(
+               {"handle" : followUser.handle},
+               {$push : {followers : req.query.userHandle}},
+               function(err, results){
+                   if(err){
+                       console.log("Failed to update genericUser's followers list when unfolowing");
+                       res.status(400).send("Error occurred when following user. User may not exist");
+                       res.end();
+                   }
+                   res.status(200).send(mainUser.following);
+                   console.log(mainUser.following)
+                   res.end();
+               }
+           )
+       }
+     })
+   });
+ 
+   app.get('/unfollow', function(req, res){
 
   let unfollowUser = null
   User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
@@ -469,7 +744,7 @@ app.get('/getfeedreviews', function(req, res, err) {
                      for (let i = 0; i < publicIds.length; i++) { // need to have similar for loop for private ID's
                         console.log("id: " + publicIds[i]);
                         let internalPromise =
-                           Reviews.findById({'_id': mongoose.Types.ObjectId(publicIds[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+                           Review.findById({'_id': mongoose.Types.ObjectId(publicIds[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
                            if (err) {
                                console.log(err);
                            }

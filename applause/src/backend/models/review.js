@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const {ObjectId} = mongoose.Schema.Types
 
 
 let Review = new mongoose.Schema({
@@ -36,6 +37,9 @@ let Review = new mongoose.Schema({
     },
     users_liked: {
         type:[String]
+    },
+    albumId: {
+        type: Number
     }
 });
 

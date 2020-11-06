@@ -46,7 +46,6 @@ class EditProfile extends React.Component{
 componentDidMount(){
     console.log("component mounted");
     console.log(this.props.location.state.email);
-    // var localEmail = localStorage.getItem('currentUser');
     var localEmail = this.props.location.state.email;
     //need to change this to use local storage
     // var lookupUser = user.email;
@@ -102,7 +101,6 @@ handleSubmit(event){
     event.preventDefault();
     event.target.reset();
 
-    // var currUserEmail = localStorage.getItem('currentUser');
     var currUserEmail = this.props.location.state.email;
 
       const formData = new FormData();
@@ -154,11 +152,12 @@ render() {
     <div className="EditProfile">
         <div className="container">
             <div className="left">
-                <FontAwesomeIcon className="prof" icon={faUserCircle} size="sm"/>
+                <FontAwesomeIcon className="prof profileIcon" icon={faUserCircle} size="6x"/>
                 <form onSubmit={this.handleSubmit.bind(this)}>
                     <input type="file" className="custom-file-input" name="myImage" onChange= {this.handlePictureChange} />
                     {console.log(this.state.file)}
                     {/* <button className="upload-button" type="submit">Upload to DB</button> */}
+                    <br></br>
                     <label>Handle</label>
                     <input type="text" id="username" required value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
                     {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
