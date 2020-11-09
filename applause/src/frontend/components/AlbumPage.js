@@ -14,6 +14,7 @@ class AlbumPage extends React.Component{
         albumId:'',
         albumArt:'',
         reviews:[],
+        tracks:[],
         rating:'',
         isReviewLater: 'Review Later',
         isListenToLater: 'Listen to Later'
@@ -27,14 +28,14 @@ class AlbumPage extends React.Component{
 
 
   axios.get('http://localhost:5000/getalbumtracks', {
-    params: {
-        albumId: this.props.match.params.Id
-    }
+        params: {
+            albumId: this.props.match.params.albumId
+        }
     })
     .then(res => {
         console.log("Status is: " + res.status);
         console.log(res.data.results);
-        this.setState({reviews: res.data.results});
+        this.setState({tracks: res.data.results});
     })
     .catch(error => {
         console.error(error);

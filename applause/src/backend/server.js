@@ -426,7 +426,7 @@ app.get('/getartistreviews', function(req, res, err) {
    Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
       console.log('yooooo');
       if (review) {
-         console.log(review);
+         //console.log(review);
          res.status(200).json({results: review})
          res.end();
       }else {
@@ -438,7 +438,28 @@ app.get('/getartistreviews', function(req, res, err) {
 
 
 app.get('/getalbumtracks', function(req, res, err) {
+   console.log("getting tracklist");
    console.log(req.query.albumId);
+   var albumId = req.query.albumId;
+   console.log("https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   var track = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   track.headers({
+      "x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+      "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      "useQueryString": true
+   });
+
+   track.end(function (yes) {
+      if (yes.error) throw new Error(yes.error);
+
+      console.log("body: ");
+      console.log(yes.body.tracklist);
+
+      res.status(200).send("yay");
+      res.end();
+   });
 
 });
 
@@ -879,7 +900,7 @@ app.post('/editprofile', function(req, res, err) {
 });
 
 // Delete Account
-app.post('/delete', function(req, res, err) {
+app.get('/delete', function(req, res, err) {
     console.log(req.body.currUser);
     User.deleteOne({'handle': req.body.currUser}).exec(function(err){
         console.log("Account successfully deleted.")
