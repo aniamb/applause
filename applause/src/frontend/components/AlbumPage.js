@@ -92,6 +92,7 @@ render() {
     
     let allReviews = [];
     let aggRating = [];
+    let trackList= [];
     let reviewHolder = this.state.reviews;
     var reviewHolderLength = reviewHolder.length;
     var ratingWO = 0;
@@ -102,7 +103,11 @@ render() {
        albumArt = reviewHolder[0].image;
    }
     
-   
+   for (let j = 0; j < this.state.tracks.length; j++) {
+       trackList.push(
+        <p className="trackText">  {this.state.tracks[j]} </p> 
+       )
+   }
 
     if (reviewHolderLength === 0) {
         allReviews.push (
@@ -164,7 +169,7 @@ render() {
                     <br></br>
                     <div class="tooltip">
                         <img className ="albumPic" src={albumArt} alt="Avatar"/>
-                        <span class="tooltiptext">{this.state.tracks}</span>
+                        <span class="tooltiptext">{trackList}</span>
                     </div>
                    
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 

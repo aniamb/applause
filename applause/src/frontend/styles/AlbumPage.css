@@ -156,12 +156,15 @@
   
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
+    width: 150px;
+    background-color: white;
+    color: black;
     text-align: center;
     padding: 5px 0;
     border-radius: 6px;
+    opacity: .5;
+    top: -5px;
+    right: 105%;
    
     /* Position the tooltip text - see examples below! */
     position: absolute;
@@ -171,4 +174,8 @@
   /* Show the tooltip text when you mouse over the tooltip container */
 .tooltip:hover .tooltiptext {
 visibility: visible;
+}
+
+.trackText {
+    font-size: 15px;
 }
