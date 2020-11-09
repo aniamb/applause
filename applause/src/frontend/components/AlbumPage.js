@@ -103,6 +103,7 @@ render() {
        albumArt = reviewHolder[0].image;
    }
     
+    // trackList.push(<p className="trackText">Tracklist:</p> )
    for (let j = 0; j < this.state.tracks.length; j++) {
        trackList.push(
         <p className="trackText">  {this.state.tracks[j]} </p> 
@@ -167,10 +168,10 @@ render() {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <div class="tooltip">
+                    {/* <div class="tooltip"> */}
                         <img className ="albumPic" src={albumArt} alt="Avatar"/>
-                        <span class="tooltiptext">{trackList}</span>
-                    </div>
+
+                    {/* </div> */}
                    
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
@@ -192,6 +193,13 @@ render() {
                         <br></br>
                         <br></br>
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
+                        <br></br>
+                        <br></br>
+                        <div class="tooltip">
+                            <input type="submit" className="reviewButton" value="View Tracklist" />
+                            <span class="tooltiptext">{trackList}</span>
+                        </div>
+                        
                         <br></br>
                         <br></br>
                         <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
