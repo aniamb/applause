@@ -437,6 +437,12 @@ app.get('/getartistreviews', function(req, res, err) {
 });
 
 
+app.get('/getalbumtracks', function(req, res, err) {
+   console.log(req.query.albumId);
+
+});
+
+
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {

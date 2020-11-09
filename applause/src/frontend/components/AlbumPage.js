@@ -24,7 +24,22 @@ class AlbumPage extends React.Component{
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
   this.setState({albumId: this.props.match.params.albumId});
-  
+
+
+  axios.get('http://localhost:5000/getalbumtracks', {
+    params: {
+        albumId: this.props.match.params.Id
+    }
+    })
+    .then(res => {
+        console.log("Status is: " + res.status);
+        console.log(res.data.results);
+        this.setState({reviews: res.data.results});
+    })
+    .catch(error => {
+        console.error(error);
+    })  
+    
     
   axios.get('http://localhost:5000/getalbumreviews', {
         params: {
@@ -145,7 +160,11 @@ render() {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <img className ="albumPic" src={albumArt} alt="Avatar"/>
+                    <div class="tooltip">
+                        <img className ="albumPic" src={albumArt} alt="Avatar"/>
+                        <span class="tooltiptext">Tooltip text</span>
+                    </div>
+                   
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
 
