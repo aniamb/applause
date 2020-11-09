@@ -3,6 +3,7 @@ const express = require('express');
 require('dotenv').config();
 const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
 
+
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const app = express();
@@ -40,6 +41,7 @@ const { useImperativeHandle } = require('react');
 const { Server } = require('http');
 //const { default: Review } = require('../frontend/components/Review');
 //const { default: Review } = require('../frontend/components/Review');
+
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -455,7 +457,14 @@ app.get('/getalbumtracks', function(req, res, err) {
       if (yes.error) throw new Error(yes.error);
 
       console.log("body: ");
-      console.log(yes.body.tracklist);
+      console.log(yes.body.tracks);
+
+      // var getWebInfo = new XMLHttpRequest();  
+      // getWebInfo.open('GET', yes.body.tracklist, false);   
+      // getWebInfo.send(null);  
+      // if(getWebInfo.status == 200)  
+      //    dump(getWebInfo.responseText);
+      //    console.log(getWebInfo.responseText);
 
       res.status(200).send("yay");
       res.end();
