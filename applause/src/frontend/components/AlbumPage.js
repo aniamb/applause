@@ -36,6 +36,7 @@ class AlbumPage extends React.Component{
         console.log("Status is: " + res.status);
         console.log(res.data.results);
         this.setState({tracks: res.data.results});
+        console.log(this.state.tracks);
     })
     .catch(error => {
         console.error(error);
@@ -163,7 +164,7 @@ render() {
                     <br></br>
                     <div class="tooltip">
                         <img className ="albumPic" src={albumArt} alt="Avatar"/>
-                        <span class="tooltiptext">Tooltip text</span>
+                        <span class="tooltiptext">{this.state.tracks}</span>
                     </div>
                    
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 

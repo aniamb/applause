@@ -443,6 +443,8 @@ app.get('/getalbumtracks', function(req, res, err) {
    console.log("getting tracklist");
    console.log(req.query.albumId);
    var albumId = req.query.albumId;
+   var trackList = [];
+
    console.log("https://rapidapi.p.rapidapi.com/album/" + albumId);
 
    var track = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
@@ -457,16 +459,15 @@ app.get('/getalbumtracks', function(req, res, err) {
       if (yes.error) throw new Error(yes.error);
 
       console.log("body: ");
-      console.log(yes.body.tracks);
+      console.log("Number of tracks: " + yes.body.nb_tracks);
+      for (let i = 0; i < yes.body.nb_tracks; i++) {
+         //console.log(yes.body.tracks.data[i].title);
+         trackList.push(yes.body.tracks.data[i].title);
+      }
 
-      // var getWebInfo = new XMLHttpRequest();  
-      // getWebInfo.open('GET', yes.body.tracklist, false);   
-      // getWebInfo.send(null);  
-      // if(getWebInfo.status == 200)  
-      //    dump(getWebInfo.responseText);
-      //    console.log(getWebInfo.responseText);
+      console.log(trackList);
 
-      res.status(200).send("yay");
+      res.status(200).json({results: trackList});
       res.end();
    });
 
