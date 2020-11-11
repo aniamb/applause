@@ -168,10 +168,10 @@ render() {
                     <br></br>
                     <br></br>
                     <br></br>
-                    {/* <div class="tooltip"> */}
+                    <div class="tooltip">
                         <img className ="albumPic" src={albumArt} alt="Avatar"/>
-
-                    {/* </div> */}
+                        <span class="tooltiptext">{trackList}</span>
+                    </div>
                    
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
@@ -195,13 +195,8 @@ render() {
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
                         <br></br>
                         <br></br>
-                        <div class="tooltip">
-                            <input type="submit" className="reviewButton" value="View Tracklist" />
-                            <span class="tooltiptext">{trackList}</span>
-                        </div>
+                        <p className="trackText">Hover album art to view tracklist</p>
                         
-                        <br></br>
-                        <br></br>
                         <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
                         <div className="forLater">
                             <input type="submit" value={this.state.isReviewLater} onClick={this.changeReviewLater}/>
