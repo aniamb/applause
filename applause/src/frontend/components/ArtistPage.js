@@ -141,7 +141,13 @@ render() {
           </div>
           <div className="artistReviews">
             <div className="artistReviewScroll">
-              <h2 className="sectionTitle">Reviews of music by {this.state.artistName}</h2> 
+              <div className="reviewSectionTitle">
+                <h2 id = "reviewSectionHeader" className="sectionTitle">Reviews of music by {this.state.artistName}</h2>
+                <select className="dropdown" onChange={this.handleDropdownChange}>
+                  <option value="1">Top Liked</option>
+                  <option value="2">Most Recent</option>
+                </select> 
+              </div>
               {allReviews}
           </div> 
         </div>

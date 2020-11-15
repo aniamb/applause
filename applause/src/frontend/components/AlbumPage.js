@@ -176,6 +176,11 @@ render() {
                 </div>
             </div>
             <div className="albumReviews">
+                <select className="dropdown-album" onChange={this.handleDropdownChange}>
+                  <option value="1">Top Liked</option>
+                  <option value="2">Most Recent</option>
+                </select> 
+                <br></br>
                 <div className="albumReviewScroll">
                     {/* review cards */}
                     {allReviews}
