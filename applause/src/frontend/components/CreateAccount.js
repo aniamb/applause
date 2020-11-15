@@ -58,6 +58,7 @@ handleSubmit(event){
       axios.post('http://localhost:5000/createaccount', registerInfo).then(response=> {
           console.log(registerInfo.firstname);
           sessionStorage.setItem("currentUser", response.data);
+          sessionStorage.setItem("loggedIn", true);
           console.log('create account success');
           this.setState({isRedirect: true})
           // this.props.history.push('/login');

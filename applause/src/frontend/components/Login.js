@@ -39,6 +39,7 @@ handleSubmit(event){
         axios.post('http://localhost:5000/login', loginInfo).then(response=> {
             console.log(response.data);
             sessionStorage.setItem("currentUser", response.data);
+            sessionStorage.setItem("loggedIn", "true");
             this.setState({isRedirect: true});
             // this.props.history.push('/resetpassword');
            // this.props.history.push('/profile');

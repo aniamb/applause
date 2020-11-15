@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
 import './App.css';
+import { PrivateRoute } from './frontend/components/PrivateRoute'
 import Feed from './frontend/components/Feed.js';
 import Search from './frontend/components/Search.js';
 import CreateAccount from './frontend/components/CreateAccount'
@@ -20,7 +21,6 @@ import EditReview from './frontend/components/EditReview'
 
 
 function App () {
-  
   return (
     <div className="App">
        <BrowserRouter>
@@ -40,19 +40,19 @@ function App () {
             <Route path="/createaccount" component={CreateAccount}/>
             <Route path="/login" component={Login}/>
             <Route path="/resetpassword" component={ResetPassword}/>
-            <Route path="/followers" component={Followers}/>
-            <Route path="/following" component={Following}/>
-            <Route path="/viewprofile" component={ViewProfile}/>
+            <PrivateRoute path="/followers" component={Followers}/>
+            <PrivateRoute path="/following" component={Following}/>
+            <PrivateRoute path="/viewprofile" component={ViewProfile}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
-            <Route path="/feed" component={Feed}/>
-            <Route path="/search" component={Search}/>
-            <Route path="/profile" component={Profile}/>
-            <Route path="/editprofile" component={EditProfile}/>
-            <Route exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
-            <Route exact path="/artistpage/:artistName" component ={ArtistPage}/>
-            <Route exact path="/review/:album/:artist/:albumId" component={Review}/>
-            <Route exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
-            <Route render= {() =>
+            <PrivateRoute path="/feed" component={Feed}/>
+            <PrivateRoute path="/search" component={Search}/>
+            <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute path="/editprofile" component={EditProfile}/>
+            <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
+            <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
+            <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>
+            <PrivateRoute exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
+            <PrivateRoute render= {() =>
                 // <Timeline />
                 <CreateAccount />
                 // <Profile />
