@@ -52,9 +52,9 @@ handleSubmit(event){
     privateBoolean = true;
   }
   const currentDate = Date.now();
-  const dateObj = new Date(currentDate);
+ // const dateObj = new Date(currentDate);
   
-  const reviewInfo = {album: this.state.album, artist: this.state.artist, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: dateObj.toUTCString(), albumId: this.state.albumId, image: sessionStorage.getItem(this.state.albumId)}
+  const reviewInfo = {album: this.state.album, artist: this.state.artist, rating: this.state.rating, username: this.state.username, content: this.state.content, private: privateBoolean, time: currentDate, albumId: this.state.albumId, image: sessionStorage.getItem(this.state.albumId)}
   axios.post('http://localhost:5000/createreview', reviewInfo).then(response=> {
     console.log(response.data);
     console.log('create review success');

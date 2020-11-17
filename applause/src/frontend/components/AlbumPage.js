@@ -2,6 +2,8 @@ import React from 'react';
 import '../styles/AlbumPage.css';
 import StarRatings from 'react-star-ratings';
 import Genius from '../styles/genius.png'
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios'
 
 class AlbumPage extends React.Component{
@@ -16,7 +18,8 @@ class AlbumPage extends React.Component{
         reviews:[],
         rating:'',
         isReviewLater: 'Review Later',
-        isListenToLater: 'Listen to Later'
+        isListenToLater: 'Listen to Later',
+        filter: "1"
     }
 }
  componentDidMount () {
@@ -58,6 +61,36 @@ changeListenLater = () => {
         this.setState({isListenToLater:"Added to Listen to Later!"});
     else this.setState({isListenToLater:"Listen to Later"});
 }
+
+handleDropdownChange(event) {
+    event.preventDefault();
+    this.setState({filter: event.target.value});
+  }
+  
+  sortData(reviewHolder){
+    if(this.state.filter === "1"){
+      //top liked
+      reviewHolder.sort(
+        function(a, b) {          
+           if (a.users_liked.length === b.users_liked.length) {
+              return new Date(b.time).getTime() - new Date(a.time).getTime()
+           }
+           return b.users_liked.length - a.users_liked.length
+        });
+    }else{
+      //most recent
+      reviewHolder.sort(
+        function(a, b) {  
+          let dateA =  new Date(a.time).getTime();
+          let dateB =  new Date(b.time).getTime()      
+           if (dateA  === dateB) {
+              return b.users_liked.length - a.users_liked.length;
+           }
+           return dateB - dateA
+        });
+    }
+  }
+
 render() {
 
     var albumArt;
@@ -76,6 +109,7 @@ render() {
     let allReviews = [];
     let aggRating = [];
     let reviewHolder = this.state.reviews;
+    this.sortData(reviewHolder)
     var reviewHolderLength = reviewHolder.length;
     var ratingWO = 0;
     
@@ -95,7 +129,20 @@ render() {
         for (let i = 0; i < reviewHolder.length; i++) {
 
             ratingWO += reviewHolder[i].rating;
-            
+            let date = new Date(reviewHolder[i].time);
+       
+            date.setHours(date.getHours()+2);
+            var isPM = date.getHours() >= 12;
+            var isMidday = date.getHours() === 12;
+            var minutes = date.getMinutes();
+            if(date.getMinutes() < 10){
+            minutes = "0" + date.getMinutes();
+            }
+            var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
+                minutes].join(':') + (isPM ? 'pm' : 'am');
+        //   let time_format = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate() + ' ' + time;
+            let date_format = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
+            let time_format = time
                 allReviews.push (
 
                 <div className="albumCard">
@@ -117,9 +164,10 @@ render() {
                         </figure>
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@{reviewHolder[i].username} </p> 
+                            <p className="reviewHandle">@{reviewHolder[i].username} </p>
+                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length} 
                             <br></br>
-                           <p className="reviewHandle">Posted: {reviewHolder[i].time}</p> 
+                           <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
                             <p className="reviewInfo">{reviewHolder[i].content}</p>
                         </div>    
                     </div>
@@ -176,7 +224,7 @@ render() {
                 </div>
             </div>
             <div className="albumReviews">
-                <select className="dropdown-album" onChange={this.handleDropdownChange}>
+                <select className="dropdown-album" onChange={this.handleDropdownChange.bind(this)}>
                   <option value="1">Top Liked</option>
                   <option value="2">Most Recent</option>
                 </select> 
