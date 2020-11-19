@@ -176,7 +176,7 @@ render() {
             reviewList.push(
                         <div className="albumCard">
                             <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
-                                <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                <img class="resize" src={reviewsHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings
                                 className="starRating"
@@ -193,7 +193,7 @@ render() {
                             </figure>
                             <div className="reviewContent">
                                 <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                                <p className="reviewHandle">@{reviewsHolder[i].username}, {time_format}, {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button className="trashBtn" onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
                                 <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                 
                             </div>    
@@ -205,25 +205,25 @@ render() {
   
   return (
     <div className="AlbumPage">
-        <div className = "albumHolder">
-            <div className="albumInfo">
-                <div className="albumInfoTemp">
-                    <div className="left">
+        <div className = "pageHolder">
+            <div className="profileInfo">
+                {/* <div className="albumInfoTemp"> */}
+                    {/* <div className="left"> */}
                         <Avatar 
                             style={{
                                 marginTop: "20px",
                                 display: 'inline-block',
                                 verticalAlign:"middle",
-                                width: "200px",
-                                height: "200px",
+                                width: "17vw",
+                                height:"17vw"
                             }} 
+                            className = "profPic"
                             variant="circle"
                             src={images[this.state.path]}
                             alt={this.state.user.firstname + " " + this.state.user.lastname}
                         />
-                        <h1 className="userName">{this.state.user.firstname} {this.state.user.lastname}</h1>
+                        <h1 className="fullName">{this.state.user.firstname} {this.state.user.lastname}</h1>
                         <p className="profileHandle">@{this.state.user.handle}</p>
-                       <br></br>
                         <div className="follow">
                             <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
                             {this.state.followerRedirect && <Redirect to={{
@@ -237,18 +237,20 @@ render() {
                             }}/>}
                         </div>
                         <h2 className="bio">{this.state.user.bio}</h2>
-                        <button className = "edit followBtn2" onClick={this.editProfile}>Edit Profile</button>
-                        {this.state.edit ? <Redirect to={{
-                            pathname: '/editprofile',
-                            state: {email: this.state.user.email}
-                        }}/>: null}
-                        <button className = "logout followBtn2" onClick={this.logout}>Logout</button>
-                        {this.state.logout ? <Redirect to={{
-                            pathname: '/login'
-                        }}/>: null}
-                        <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p>
-                    </div>                     
-                </div>
+                        <div className="navBtn">
+                            <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
+                            {this.state.edit ? <Redirect to={{
+                                pathname: '/editprofile',
+                                state: {email: this.state.user.email}
+                            }}/>: null}
+                            <div className = "logout navBtn" onClick={this.logout}>Logout</div>
+                            {this.state.logout ? <Redirect to={{
+                                pathname: '/login'
+                            }}/>: null}
+                        </div>
+                        {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
+                    {/* </div>                      */}
+                {/* </div> */}
             </div>
             <div className="albumReviews">
                 <div className="albumReviewScroll">

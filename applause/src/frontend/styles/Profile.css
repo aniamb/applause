@@ -1,10 +1,189 @@
+/* WHOLE PAGE CSS */
 .AlbumPage{
-    padding-right: 10px;
+    /* padding-right: 10px;
     padding-left: 10px;
     margin-top: 10px;
     height: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 20px; */
+    max-width: 100%;
+    height:100%;
 }
+
+.pageHolder{
+    /* margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 50px;
+    display: flex;
+    height: 50%;
+    margin-bottom: 100px; */
+    display: flex;
+    justify-content: center;
+    margin:7vh;
+}
+
+/* PROFILE (LEFT) SIDE CSS */
+.profileInfo {
+    width:30%;
+    height:70vh;
+    background:rgb(119,205,195);
+    border-radius: 5px;
+    margin:0px 35px;
+    flex:45%;
+    position: relative;
+    margin: 0px 30px;
+}
+
+.fullName {
+    margin:0;
+    margin-top:10px;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px;
+    font-weight: normal;
+    padding:0;
+}
+
+.profileHandle {
+    padding:0;
+    margin:0;
+    margin-top: -5px;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:15px
+}
+
+.follow {
+    display: flex;
+    justify-content: center;
+}
+
+.follow > div {
+    margin:10px;
+}
+
+.bio {
+    font-weight: 400;
+    font-size:1em;
+    margin:25px 10px;
+}
+
+.navBtn {
+    display:flex;
+    justify-content: center;
+    /* justify-self: center; */
+}
+
+.navBtn > div {
+    width: 100px;
+    height: 25px;
+    /* padding-left:auto; */
+    margin:10px;
+    /* margin-left:10px; */
+    border-radius: 25px;
+    font-size: 13px;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(241, 241, 241);
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+
+.edit:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+}
+
+.logout:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+}
+
+/* ALBUM REVIEWS (RIGHT SIDE) CSS */
+
+/* The Review Card */
+.reviewContent {
+    padding: 2px 16px;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-y: scroll;
+}
+
+/* Review Title */
+.reviewAlbum {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px;
+    font-weight: normal;
+    line-height: 25px;
+}
+
+/* Review time/date/edit stuff */
+.reviewHandle {
+    margin:0;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
+}
+
+.editBtn{
+    padding:0;
+    margin:0;
+    margin-left: 10px;
+    outline: none;
+    background-color: none;
+    border:0;
+    background:white;
+}
+
+.trashBtn {
+    padding: 0;
+    margin:0;
+    margin-left:5px;
+    outline: none;
+    background-color: none;
+    border:0;
+    background:white;
+}
+
+.reviewInfo {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
+    font-size:35px;
+}
+/* .navBtn {
+    margin-top: 8px;
+    width: 75px;
+    border-radius: 25px;
+    border: none;
+    height: 27px;
+    background-color: rgb(241, 241, 241);
+    font-size: 13px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+    margin-right: 5px;
+}
+
+.navBtn:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+} */
+
+/* .profPic {
+    margin-top: 20px;
+    display: inline-block;
+    vertical-align:middle;
+    width: 200px;
+    height: 200px;
+} */
+
+/* .edit {
+    position: absolute;
+    right:5px;
+    border: none;
+    outline: none;
+    background-color: white;
+    font-size:1vw;
+    font-weight: bold;
+}
+
+.edit:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+} */
 
 .albumPic{
     height: 250px;
@@ -20,20 +199,6 @@
     font-size: 65px;
 }
 
-.albumHolder{
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 50px;
-    display: flex;
-    height: 50%;
-    margin-bottom: 100px;
-
-}
-
-.albumInfo {
-    flex: 45%;
-}
-
 .albumInfoTemp{
     background-color: rgb(119,205,195);
     border-radius: 7%;
@@ -43,26 +208,16 @@
     position: relative;
 }
 
-.userName{
+/* .userName{
     font-size: 50px;
-}
+} */
 
-.profileHandle{
+/* .profileHandle{
     margin-top: 0;
     font-size: 40px;
-}
+} */
 
-.followBtn{
-    margin-bottom: 30px;
-    margin-top: 8px;
-    width: 125px;
-    border-radius: 25px;
-    border: none;
-    height: 25px;
-    background-color: white;
-    font-size: 15px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-}
+
 .followers {
     display: inline-block;
     font-size: 20px;
@@ -73,22 +228,12 @@
     font-size: 20px;
 }
 
-.followBtn2 {
-    margin-top: 8px;
-    width: 75px;
-    border-radius: 25px;
-    border: none;
-    height: 27px;
-    background-color: rgb(241, 241, 241);
-    font-size: 13px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 5px;
-}
 
-.bio {
+
+/* .bio {
     font-size: 30px;
     font-weight: 600;
-}
+} */
 
 .logout{
     margin-left: 10px;
@@ -106,9 +251,6 @@
     display: inline;
 }
 
-.editBtn{
-    margin-left: 10px;
-}
 
 
 .totalRatings{
@@ -160,10 +302,6 @@
     overflow: auto;
 }
 
-.resize {
-    width: 150px;
-    height: auto;
-}
 
 
 .albumCard {
@@ -187,13 +325,7 @@
     margin: 0;
     padding-top: 3px;
 }
-  /* Add some padding inside the card container */
-.reviewContent {
-    padding: 2px 16px;
-    text-align: left;
-    word-wrap: break-word;
-    overflow-y: scroll;
-}
+
 
 .reviewHandle{
     text-align: left;
@@ -205,4 +337,80 @@
     line-height: 40px;
     font-size: 25px;
     
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width:700px) {
+    .fullName{
+        font-size: 15px;
+    }
+
+    /* .followBtn{
+        width: 60%;
+        font-size:10px;
+    } */
+
+    .follow{
+        flex-direction: column;
+    }
+
+    .follow>div{
+        margin:5px;
+    }
+
+    .navBtn {
+        flex-direction: column;
+    }
+
+    .reviewAlbum {
+        font-size:15px;
+        line-height: 15px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .pageHolder{
+        flex-direction: column;
+    }
+
+    .pageHolder > div{
+        width:100%;
+        margin: 15px 10px;
+    }
+
+    .edit {
+        font-size:2vw;
+    }
+
+    .navBtn {
+        justify-content: center;
+        /* vertical-align: middle; */
+    }
+
+    .navBtn > div{
+        margin:auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+/* 
+    .musicGroups{
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .groups {
+        flex-direction: column;
+        justify-content: center;
+    }
+    #box,.group {
+        width: calc(100vw/4);
+        height: calc(100vw/4);
+        justify-content: center;
+        justify-self: center;
+        margin:10px 0px;
+    } */
+
 }
