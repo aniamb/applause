@@ -151,7 +151,6 @@ editReview(reviewAlbum, reviewArtist, reviewId) {
 
 render() {
 
-
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
     let reviewHolderLength = reviewsHolder.length;
@@ -174,7 +173,7 @@ render() {
                 isPrivate = "private"
             }
             reviewList.push(
-                        <div className="albumCard">
+                        <div className="albumCardProfile">
                             <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                 <img class="resize" src={reviewsHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
@@ -191,10 +190,10 @@ render() {
                             />
                                 </figcaption>
                             </figure>
-                            <div className="reviewContent">
-                                <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                                <p className="reviewHandle">@{reviewsHolder[i].username}, {time_format}, {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="edit" icon={faEdit} size="sm"/></button><button className="trashBtn" onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
-                                <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                            <div className="reviewContentProfile">
+                                <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                <p className="reviewHandleProfile">@{reviewsHolder[i].username}, {time_format}, {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="editReview" icon={faEdit} size="sm"/></button><button className="trashBtn" onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                                <p className="reviewInfoProfile">{reviewsHolder[i].content}</p>
                                 
                             </div>    
                         </div>
@@ -206,51 +205,61 @@ render() {
   return (
     <div className="AlbumPage">
         <div className = "pageHolder">
-            <div className="profileInfo">
-                {/* <div className="albumInfoTemp"> */}
-                    {/* <div className="left"> */}
-                        <Avatar 
-                            style={{
-                                marginTop: "20px",
-                                display: 'inline-block',
-                                verticalAlign:"middle",
-                                width: "17vw",
-                                height:"17vw"
-                            }} 
-                            className = "profPic"
-                            variant="circle"
-                            src={images[this.state.path]}
-                            alt={this.state.user.firstname + " " + this.state.user.lastname}
-                        />
-                        <h1 className="fullName">{this.state.user.firstname} {this.state.user.lastname}</h1>
-                        <p className="profileHandle">@{this.state.user.handle}</p>
-                        <div className="follow">
-                            <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
-                            {this.state.followerRedirect && <Redirect to={{
-                                pathname: '/followers',
-                                state: {"hand": sessionStorage.getItem('currentUser')}
-                            }}/>}
-                            <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
-                            {this.state.followingRedirect && <Redirect to={{
-                                pathname: '/following',
-                                state: {"hand": sessionStorage.getItem('currentUser')}
-                            }}/>}
-                        </div>
-                        <h2 className="bio">{this.state.user.bio}</h2>
-                        <div className="navBtn">
-                            <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
-                            {this.state.edit ? <Redirect to={{
-                                pathname: '/editprofile',
-                                state: {email: this.state.user.email}
-                            }}/>: null}
-                            <div className = "logout navBtn" onClick={this.logout}>Logout</div>
-                            {this.state.logout ? <Redirect to={{
-                                pathname: '/login'
-                            }}/>: null}
-                        </div>
-                        {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
-                    {/* </div>                      */}
-                {/* </div> */}
+            <div className="leftSide">
+                <div className="profileInfo">
+                    {/* <div className="albumInfoTemp"> */}
+                        {/* <div className="left"> */}
+                            <Avatar 
+                                style={{
+                                    marginTop: "20px",
+                                    display: 'inline-block',
+                                    verticalAlign:"middle",
+                                    width: "17vw",
+                                    height:"17vw"
+                                }} 
+                                className = "profPic"
+                                variant="circle"
+                                src={images[this.state.path]}
+                                alt={this.state.user.firstname + " " + this.state.user.lastname}
+                            />
+                            <h1 className="fullName">{this.state.user.firstname} {this.state.user.lastname}</h1>
+                            <p className="profileHandle">@{this.state.user.handle}</p>
+                            <div className="follow">
+                                <div className="followers" onClick={this.followerRedirectFunc}>{this.state.user.followers.length} followers  </div>
+                                {this.state.followerRedirect && <Redirect to={{
+                                    pathname: '/followers',
+                                    state: {"hand": sessionStorage.getItem('currentUser')}
+                                }}/>}
+                                <div className="following" onClick={this.followingRedirectFunc}>{this.state.user.following.length} following</div>
+                                {this.state.followingRedirect && <Redirect to={{
+                                    pathname: '/following',
+                                    state: {"hand": sessionStorage.getItem('currentUser')}
+                                }}/>}
+                            </div>
+                            <h2 className="bio">{this.state.user.bio}</h2>
+                            <div className="navBtn">
+                                <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
+                                {this.state.edit ? <Redirect to={{
+                                    pathname: '/editprofile',
+                                    state: {email: this.state.user.email}
+                                }}/>: null}
+                                <div className = "logout navBtn" onClick={this.logout}>Logout</div>
+                                {this.state.logout ? <Redirect to={{
+                                    pathname: '/login'
+                                }}/>: null}
+                            </div>
+                            {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
+                        {/* </div>                      */}
+                    {/* </div> */}
+                </div>
+                <div className="musicGroups">
+                    <button className="group">
+                            Review Later
+                    </button>
+                    <button className="group" >
+                            Listen Later
+                    </button>
+                </div>
             </div>
             <div className="albumReviews">
                 <div className="albumReviewScroll">
