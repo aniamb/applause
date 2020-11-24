@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/ArtistPage.css'
 import StarRatings from 'react-star-ratings';
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios';
 
@@ -79,6 +79,10 @@ sortData(reviewHolder){
   }
 }
 
+redirectComment(id) {
+  this.props.history.push('/comments/' + id);
+}
+
 render() {
    let allReviews = [];
    let reviewHolder = this.state.reviews;
@@ -134,6 +138,7 @@ render() {
           <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p>
           <p className="reviewHandle">@{reviewHolder[i].username} </p> 
           <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+          <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
           <br></br>
           <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
           <p className="reviewInfo">{reviewHolder[i].content}</p>

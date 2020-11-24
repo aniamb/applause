@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/AlbumPage.css';
 import StarRatings from 'react-star-ratings';
 import Genius from '../styles/genius.png'
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios'
 
@@ -91,6 +91,10 @@ handleDropdownChange(event) {
     }
   }
 
+redirectComment(id) {
+    this.props.history.push('/comments/' + id);
+}
+
 render() {
 
     var albumArt;
@@ -165,7 +169,8 @@ render() {
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
                             <p className="reviewHandle">@{reviewHolder[i].username} </p>
-                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length} 
+                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+                            <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
                             <br></br>
                            <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
                             <p className="reviewInfo">{reviewHolder[i].content}</p>
