@@ -6,6 +6,9 @@ const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
 
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const request = require('request');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongodb.net/test?retryWrites=true&w=majority";
@@ -18,6 +21,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 
@@ -120,13 +125,30 @@ app.post('/searchserver', function (req,res1) {
 	}
 });
 
+
+var client_id = '1e16a710b11b440080bd4f588115191e'; // Your client id
+var client_secret = '10443ec704464dc990af339e1bbee0f3'; // Your secret
+var redirect_uri = 'http://localhost:3000/callback'; // Your redirect uri
+
+var generateRandomString = function(length) {
+   var text = '';
+   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ 
+   for (var i = 0; i < length; i++) {
+     text += possible.charAt(Math.floor(Math.random() * possible.length));
+   }
+   return text;
+ };
+
+var stateKey = 'spotify_auth_state';
+
 app.get('/spotifyauth', function(req, res) {
 
-   // var state = generateRandomString(16);
-   // res.cookie(stateKey, state);
+   var state = generateRandomString(16);
+   res.cookie(stateKey, state);
  
    // // your application requests authorization
-   // var scope = 'user-read-private user-read-email';
+   var scope = 'user-read-private user-read-email';
    // res.redirect('https://accounts.spotify.com/authorize?' +
    //   querystring.stringify({
    //     response_type: 'code',
@@ -135,7 +157,12 @@ app.get('/spotifyauth', function(req, res) {
    //     redirect_uri: redirect_uri,
    //     state: state
    //   }));
-   console.log("basic redirect");
+   res.redirect('https://accounts.spotify.com/authorize' +
+      '?response_type=code' +
+      '&client_id=' + client_id +
+      (scope ? '&scope=' + encodeURIComponent(scope) : '') +
+      '&redirect_uri=' + encodeURIComponent(redirect_uri));
+      console.log("basic redirect");
  });
 
 //createreview
