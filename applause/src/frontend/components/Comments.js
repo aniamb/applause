@@ -22,6 +22,7 @@ class Comments extends Component{
           reviewComments: [],
           reviewTime: "",
           navigate: false,
+          commentContent: "",
 
       }
     }
@@ -64,7 +65,8 @@ handleContentChange(event) {
 
 handleCommentSubmit(event){
     event.preventDefault()
-    const commentInfo = {commenter: sessionStorage.getItem("currentUser"), comment: this.state.commentContent, time: Date.now()}
+    const commentInfo = {commenter: sessionStorage.getItem("currentUser"), comment: this.state.commentContent, date: Date.now()}
+    this.setState({reviewComments: [...this.state.reviewComments, commentInfo]})
     const params = {
         id: this.props.match.params.reviewId,
         commentInfo: commentInfo,
@@ -72,7 +74,7 @@ handleCommentSubmit(event){
     axios.post('http://localhost:5000/postcomment', params).then(response=> {
         console.log(response.data);
         console.log('comment success');
-        window.location.reload();
+        this.setState({commentContent: ""})
   }).catch((err)=> {
     console.log('comment fail');
   })
@@ -119,34 +121,13 @@ navigate(){
   render() {
     var finalDate = this.getDate(this.state.reviewTime).date
     var finalTime = this.getDate(this.state.reviewTime).time
-
-    let commentsHolder = this.state.reviewComments;
     let commentList = []
-    if(commentsHolder.length === 0){
+    if(this.state.reviewComments.length === 0){
         commentList.push(<h2>This review has no comments.</h2>)
-    }else{
-        for (let i = 0; i < commentsHolder.length; i++) {
-            let commenter = commentsHolder[i].commenter;
-            let comment = commentsHolder[i].comment;
-            var commentDate = this.getDate(commentsHolder[i].date).date
-            var commentTime = this.getDate(commentsHolder[i].date).time
-            commentList.push(
-                <div>
-                    <button onClick={() => this.navigate()}><h1>{commenter}:</h1></button>
-                    {this.state.navigate && <Redirect to={{
-                        pathname: this.whichUser(commenter),
-                        state: {"username": commenter}
-                    }}/>}
-                    <h3>{comment} </h3>
-                    <h4>posted: {commentDate} {commentTime} </h4>
-                </div>
-            )
-        }    
     }
-
     return (
       <div className="Comments">
-        <h1> Comments!</h1>
+        <h1> view comments</h1>
         <div className="albumCard">
             <div className = "artFeed>">
             <figure className="albumReviewFeed" onClick={this.toAlbum(this.state.reviewAlbum + "/" + this.state.reviewArtist + "/" + this.state.reviewAlbumId)}>
@@ -175,8 +156,19 @@ navigate(){
             </div>    
         </div>
         {commentList}
+        {this.state.reviewComments.map((commentValue, index) =>
+            <div key = {index}>
+                <button onClick={() => this.navigate()}><h1>{commentValue.commenter}:</h1></button>
+                    {this.state.navigate && <Redirect to={{
+                        pathname: this.whichUser(commentValue.commenter),
+                        state: {"username": commentValue.commenter}
+                    }}/>}
+                <h3>{commentValue.comment} </h3>
+                <h4>posted: {this.getDate(commentValue.date).date} {this.getDate(commentValue.date).time}</h4>
+            </div>
+        )}
         <form className = "commentForm" id="commentForm" onSubmit={this.handleCommentSubmit.bind(this)}>
-             <textarea form="commentForm "type="text" name="content" content={this.state.commentContent} placeholder="write a comment"
+             <textarea form="commentForm "type="text" name="content" value={this.state.commentContent} placeholder="write a comment"
                 onChange={this.handleContentChange.bind(this)} required/><br></br>
             <input className="submitButton" type="submit" value="post comment"/>
          </form>
