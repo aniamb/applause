@@ -108,11 +108,13 @@ importAll(r) {
 
 getSpotify = () => {
     console.log("cliick works");
+    
     axios.get('http://localhost:5000/spotifyauth', {
-        
+        //headers: {'Access-Control-Allow-Origin': '*'}
     })
     .then((response) => {
         console.log("hi");
+        console.log(response);
     })
     .catch(() => {
         alert("Error retrieving reviews");
@@ -255,6 +257,7 @@ render() {
                             <h2 className="bio">{this.state.user.bio}</h2>
                             <div className="navBtn">
                                 <div className = "edit navBtn" onClick={this.getSpotify}>Spotify</div>
+                                <a href="http://localhost:5000/spotifyauth">spotify</a>
                                 <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
                                 {this.state.edit ? <Redirect to={{
                                     pathname: '/editprofile',

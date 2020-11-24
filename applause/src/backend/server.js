@@ -33,10 +33,18 @@ db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+   res.header('Access-Control-Allow-Headers', true);
+   //res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Credentials', true);
+   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+   next();
+ });
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -149,19 +157,17 @@ app.get('/spotifyauth', function(req, res) {
  
    // // your application requests authorization
    var scope = 'user-read-private user-read-email';
-   // res.redirect('https://accounts.spotify.com/authorize?' +
-   //   querystring.stringify({
-   //     response_type: 'code',
-   //     client_id: client_id,
-   //     scope: scope,
-   //     redirect_uri: redirect_uri,
-   //     state: state
-   //   }));
-   res.redirect('https://accounts.spotify.com/authorize' +
-      '?response_type=code' +
-      '&client_id=' + client_id +
-      (scope ? '&scope=' + encodeURIComponent(scope) : '') +
-      '&redirect_uri=' + encodeURIComponent(redirect_uri));
+
+   //res.header('Access-Control-Allow-Origin: *');
+   res.redirect('https://accounts.spotify.com/authorize?' +
+      querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+   }));
+      
       console.log("basic redirect");
  });
 
