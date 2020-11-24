@@ -3,6 +3,7 @@ const express = require('express');
 require('dotenv').config();
 const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
 
+
 const bodyParser = require("body-parser");
 const cors = require('cors');
 const app = express();
@@ -40,6 +41,7 @@ const { useImperativeHandle } = require('react');
 const { Server } = require('http');
 //const { default: Review } = require('../frontend/components/Review');
 //const { default: Review } = require('../frontend/components/Review');
+
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
@@ -426,7 +428,7 @@ app.get('/getartistreviews', function(req, res, err) {
    Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
       console.log('yooooo');
       if (review) {
-         console.log(review);
+         //console.log(review);
          res.status(200).json({results: review})
          res.end();
       }else {
@@ -434,6 +436,41 @@ app.get('/getartistreviews', function(req, res, err) {
          res.end();
       }
    })
+});
+
+
+app.get('/getalbumtracks', function(req, res, err) {
+   console.log("getting tracklist");
+   console.log(req.query.albumId);
+   var albumId = req.query.albumId;
+   var trackList = [];
+
+   console.log("https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   var track = unirest("GET", "https://rapidapi.p.rapidapi.com/album/" + albumId);
+
+   track.headers({
+      "x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
+      "x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
+      "useQueryString": true
+   });
+
+   track.end(function (yes) {
+      if (yes.error) throw new Error(yes.error);
+
+      console.log("body: ");
+      console.log("Number of tracks: " + yes.body.nb_tracks);
+      for (let i = 0; i < yes.body.nb_tracks; i++) {
+         //console.log(yes.body.tracks.data[i].title);
+         trackList.push(yes.body.tracks.data[i].title);
+      }
+
+      console.log(trackList);
+
+      res.status(200).json({results: trackList});
+      res.end();
+   });
+
 });
 
 
@@ -873,7 +910,7 @@ app.post('/editprofile', function(req, res, err) {
 });
 
 // Delete Account
-app.post('/delete', function(req, res, err) {
+app.get('/delete', function(req, res, err) {
     console.log(req.body.currUser);
     User.deleteOne({'handle': req.body.currUser}).exec(function(err){
         console.log("Account successfully deleted.")

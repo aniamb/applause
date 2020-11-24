@@ -1,68 +1,57 @@
+/* WHOLE PAGE CSS */
 .AlbumPage{
-    padding-right: 10px;
-    padding-left: 10px;
-    margin-top: 10px;
-    height: 100%;
-    margin-bottom: 20px;
+    max-width: 100%;
+    height:100%;
 }
 
-.albumPic{
-    height: 250px;
-}
-
-.artistHeader{
-    display: inline-block;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.artistName2{
-    font-size: 65px;
-}
-
-.albumHolder{
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 50px;
+.pageHolder{
     display: flex;
-    height: 50%;
-    margin-bottom: 100px;
-
+    justify-content: center;
+    margin:7vh;
 }
 
-.albumInfo {
-    flex: 45%;
+/* PROFILE (LEFT) SIDE CSS */
+
+.leftSide {
+    flex:45%;
 }
 
-.albumInfoTemp{
-    background-color: rgb(119,205,195);
-    border-radius: 7%;
-    height: 100%;
-    width: 625px;
-    margin: 0 auto;
+.profileInfo {
+    /* width:30%; */
+    height:70vh;
+    background:rgb(119,205,195);
+    border-radius: 5px;
+    margin:0px 35px;
     position: relative;
+    margin: 0px 30px;
 }
 
-.userName{
-    font-size: 50px;
+.fullName {
+    margin:0;
+    margin-top:10px;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px;
+    font-weight: normal;
+    padding:0;
 }
 
-.profileHandle{
-    margin-top: 0;
-    font-size: 40px;
+.profileHandle {
+    padding:0;
+    margin:0;
+    margin-top: -5px;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:15px
 }
 
-.followBtn{
-    margin-bottom: 30px;
-    margin-top: 8px;
-    width: 125px;
-    border-radius: 25px;
-    border: none;
-    height: 25px;
-    background-color: white;
-    font-size: 15px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+.follow {
+    display: flex;
+    justify-content: center;
 }
+
+.follow > div {
+    margin:10px;
+}
+
 .followers {
     display: inline-block;
     font-size: 20px;
@@ -73,81 +62,80 @@
     font-size: 20px;
 }
 
-.followBtn2 {
-    margin-top: 8px;
-    width: 75px;
-    border-radius: 25px;
-    border: none;
-    height: 27px;
-    background-color: rgb(241, 241, 241);
-    font-size: 13px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 5px;
+.bio {
+    font-weight: 400;
+    font-size:1em;
+    margin:25px 10px;
 }
 
-.bio {
-    font-size: 30px;
-    font-weight: 600;
+.navBtn {
+    display:flex;
+    justify-content: center;
+    /* justify-self: center; */
+}
+
+.navBtn > div {
+    width: 100px;
+    height: 25px;
+    /* padding-left:auto; */
+    margin:10px;
+    /* margin-left:10px; */
+    border-radius: 25px;
+    font-size: 16px;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(241, 241, 241);
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+
+.edit:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
 }
 
 .logout{
     margin-left: 10px;
-}
-.albumSectionTitle{
-    font-size: 50px;
+    font-size:4vw;
 }
 
-.albumArtistSectionTitle{
-    line-height: 10px;
-    font-size: 30px;
+.logout:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
 }
 
-.star-ratings{
-    display: inline;
+/* MUSIC GROUP SECTIONS */
+.musicGroups{
+    display: flex;
+    justify-content: center;
+    margin-top:15px;
 }
 
-.editBtn{
-    margin-left: 10px;
-}
-
-
-.totalRatings{
-    margin-top: 0;
-    display: inline;
-}
-
-.reviewButton{
-    margin-top: 8px;
-    width: fit-content;
-    border-radius: 25px;
-    border: none;
-    height: 25px;
-    background-color: white;
-    font-size: 20px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 5px;
-}
-
-.forLater{
-    float: right;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    margin-bottom: 30px;
-    margin-right: 20px;
-}
-
-.forLater input{
-    margin-top: 8px;
-    width: fit-content;
-    border-radius: 25px;
-    border: none;
-    height: 25px;
+.group {
+    width: calc(100vw/10);
+    height: calc(100vw/10);
+    color:rgb(119,205,195);
     background-color: rgb(241, 241, 241);
-    font-size: 13px;
     box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 5px;
+    margin:0px 10px;
+    border: none;
+    outline: none;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
+    font-size:20px;
 }
+
+.group:hover {
+    -ms-transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    transition: 0.5s;
+    z-index: 9;
+    cursor: pointer;
+}
+
+/* ALBUM REVIEWS (RIGHT SIDE) CSS */
+
+/* REVIEW SECTION AS A WHOLE */
 
 .albumReviews {
     justify-content: center;
@@ -160,13 +148,8 @@
     overflow: auto;
 }
 
-.resize {
-    width: 150px;
-    height: auto;
-}
-
-
-.albumCard {
+/* The Review Card */
+.albumCardProfile {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -176,54 +159,136 @@
     height: 190px;
     margin-bottom: 15px;
     overflow-y: scroll;
+    line-height: 15px;
 }
 
   /* On mouse-over, add a deeper shadow */
-.albumCard:hover {
+.albumCardProfile:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
- 
+
+/* I think this is for the left side of the card (pic + star rating) */
 .albumReview{
     margin: 0;
     padding-top: 3px;
 }
-  /* Add some padding inside the card container */
-.reviewContent {
+
+.reviewContentProfile {
     padding: 2px 16px;
     text-align: left;
     word-wrap: break-word;
     overflow-y: scroll;
 }
 
-.reviewHandle{
+/* Review Title */
+.reviewAlbumProfile {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px;
+    font-weight: normal;
+    line-height: 25px;
+}
+
+/* Review time/date/edit stuff */
+.reviewHandleProfile {
+    margin:0;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
     text-align: left;
     font-size: 15px;
-    line-height: 5px;
 }
 
-.reviewInfo{
-    line-height: 40px;
-    font-size: 25px;
-    
+.editBtn{
+    padding:0;
+    margin:0;
+    margin-left: 10px;
+    outline: none;
+    background-color: none;
+    border:0;
+    background:white;
 }
 
-.popup-content {
-    margin: auto;
-    background: rgb(255, 255, 255);
-    width: 50%;
-    padding: 5px;
-  }
-  .popup-arrow {
-    color: rgb(255, 255, 255);
-  }
-  [role='tooltip'].popup-content {
-    width: 200px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
-  }
-  
-  .popup-overlay {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  [data-popup='tooltip'].popup-overlay {
-    background: transparent;
-  }
+.trashBtn {
+    padding: 0;
+    margin:0;
+    margin-left:5px;
+    outline: none;
+    background-color: none;
+    border:0;
+    background:white;
+}
+
+.editReview:hover, .trashBtn:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+}
+
+/* Review Content */
+.reviewInfoProfile {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
+    font-size:25px;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width:700px) {
+    .fullName{
+        font-size: 15px;
+    }
+
+    /* .followBtn{
+        width: 60%;
+        font-size:10px;
+    } */
+
+    .follow{
+        flex-direction: column;
+    }
+
+    .follow>div{
+        margin:5px;
+    }
+
+    .navBtn {
+        flex-direction: column;
+    }
+
+    .reviewAlbumProfile {
+        font-size:15px;
+        line-height: 15px;
+    }
+
+    .group {
+        width: calc(100vw/5);
+        height: calc(100vw/5);
+        margin:0px 10px;
+        font-size:20px;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .pageHolder{
+        flex-direction: column;
+    }
+
+    .pageHolder > div{
+        width:100%;
+        margin: 15px 10px;
+    }
+
+    .edit {
+        font-size:2vw;
+    }
+
+    .navBtn {
+        justify-content: center;
+        /* vertical-align: middle; */
+    }
+
+    .navBtn > div{
+        margin:auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+}
