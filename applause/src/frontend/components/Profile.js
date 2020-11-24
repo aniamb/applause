@@ -171,7 +171,7 @@ render() {
             }
             var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
                 minutes].join(':') + (isPM ? 'pm' : 'am');
-            let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
+            let time_format = (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() + ' at ' + time;
             var isPrivate = "public"
             if(reviewsHolder[i].private === true){
                 isPrivate = "private"

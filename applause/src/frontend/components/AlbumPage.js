@@ -186,12 +186,11 @@ render() {
                                 </figcaption>
                         </figure>
                         <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@{reviewHolder[i].username} </p>
-                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length} 
-                            <br></br>
-                           <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
+                            <h1>{reviewHolder[i].album}, {reviewHolder[i].artist}</h1>
+                            <h2 className="dateInfo">reviewed by @{reviewHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                             <p className="reviewInfo">{reviewHolder[i].content}</p>
+                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+                            <br></br>
                         </div>    
                     </div>
                 )
