@@ -132,8 +132,8 @@ class Followers extends Component{
                 <Avatar 
                   style={{
                     margin: "auto",
-                    marginLeft: "450px",
-                    marginTop: "10px",
+                    marginLeft: "20%",
+                    marginTop: "5%",
                     float: "left",
                     width: "100px",
                     height: "100px",

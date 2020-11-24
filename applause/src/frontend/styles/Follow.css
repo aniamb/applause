@@ -16,7 +16,7 @@
     }
     .header h2 {
       /* text-align: center; */
-      margin-right: 430px;
+      margin-right: 35%;
       font-weight: 900;
       font-family: 'Reem Kufi';
       color:black;
@@ -24,7 +24,7 @@
       /* color: grey; */
     }
     .header button {
-      margin-right: 200px;
+      margin-right: 20%;
       /* background-color: transparent; */
       outline-color: transparent;
       /* font-weight: 300; */
