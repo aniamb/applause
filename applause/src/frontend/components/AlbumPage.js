@@ -16,6 +16,7 @@ class AlbumPage extends React.Component{
         albumId:'',
         albumArt:'',
         reviews:[],
+        tracks:[],
         rating:'',
         isReviewLater: 'Review Later',
         isListenToLater: 'Listen to Later',
@@ -27,7 +28,23 @@ class AlbumPage extends React.Component{
   this.setState({albumName: this.props.match.params.albumName});
   this.setState({artistName: this.props.match.params.artistName});
   this.setState({albumId: this.props.match.params.albumId});
-  
+
+
+  axios.get('http://localhost:5000/getalbumtracks', {
+        params: {
+            albumId: this.props.match.params.albumId
+        }
+    })
+    .then(res => {
+        console.log("Status is: " + res.status);
+        console.log(res.data.results);
+        this.setState({tracks: res.data.results});
+        console.log(this.state.tracks);
+    })
+    .catch(error => {
+        console.error(error);
+    })  
+    
     
   axios.get('http://localhost:5000/getalbumreviews', {
         params: {
@@ -108,6 +125,7 @@ render() {
     
     let allReviews = [];
     let aggRating = [];
+    let trackList= [];
     let reviewHolder = this.state.reviews;
     this.sortData(reviewHolder)
     var reviewHolderLength = reviewHolder.length;
@@ -119,7 +137,12 @@ render() {
        albumArt = reviewHolder[0].image;
    }
     
-   
+    // trackList.push(<p className="trackText">Tracklist:</p> )
+   for (let j = 0; j < this.state.tracks.length; j++) {
+       trackList.push(
+        <p className="trackText">  {this.state.tracks[j]} </p> 
+       )
+   }
 
     if (reviewHolderLength === 0) {
         allReviews.push (
@@ -193,7 +216,11 @@ render() {
                     <br></br>
                     <br></br>
                     <br></br>
-                    <img className ="albumPic" src={albumArt} alt="Avatar"/>
+                    <div class="tooltip">
+                        <img className ="albumPic" src={albumArt} alt="Avatar"/>
+                        <span class="tooltiptext">{trackList}</span>
+                    </div>
+                   
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
                     <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
 
@@ -216,6 +243,8 @@ render() {
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
                         <br></br>
                         <br></br>
+                        <p className="trackText">Hover album art to view tracklist</p>
+                        
                         <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
                         <div className="forLater">
                             <input type="submit" value={this.state.isReviewLater} onClick={this.changeReviewLater}/>
