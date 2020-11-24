@@ -202,7 +202,6 @@ render() {
         }
     }
   let images = this.importAll(require.context('../../public/', false));
-  
   return (
     <div className="AlbumPage">
         <div className = "albumHolder">

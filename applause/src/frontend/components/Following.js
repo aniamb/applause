@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import { Redirect} from 'react-router-dom'
 import '../styles/Login.css';
+import { Avatar } from '@material-ui/core';
+import '../styles/Follow.css';
 import axios from 'axios'
 
 
@@ -14,7 +16,8 @@ class Following extends Component{
         followingRedirect: false,
         navigate: false,
         userNames: [],
-        hand: ""
+        hand: "",
+        users: []
       }
   }
 
@@ -40,8 +43,40 @@ class Following extends Component{
           userHandle: currHandle
         }
       }).then((response) => {
+        console.log(response)
         this.setState({followingData: response.data.results})
         this.setState({followingRedirect: true});
+
+        var temp_users = [];
+        
+        console.log(this.state.followingData)
+
+        for (let index = 0; index < this.state.followingData.length; index++) {
+
+            console.log("Iterating with \t" + this.state.followingData[index]);
+
+            axios.get('http://localhost:5000/profile', {
+              params: {
+                  userHandle: this.state.followingData[index]
+              }
+            })
+            .then((r) => {   
+              console.log("Got User");
+              // this.setState({user: response.data});
+              console.log(r);
+
+              var temp = [];
+              temp.push(r.data);
+              
+              var joined = this.state.users.concat(temp)
+              this.setState({users: joined});
+
+            })
+            .catch((err) => {
+                console.log('error getting info');
+                console.log(err);
+            });
+        }
 
       })
       .catch((err) => {
@@ -85,31 +120,66 @@ whichUser = (username) => {
   }
 };
 
+importAll(r) {
+  let images = {};
+  r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+  return images;
+}
 
+render() {
 
-  render() {
     let userNames = [];
+    let images = this.importAll(require.context('../../public/', false));
 
-    console.log(this.state.followingData);
-    console.log(this.state.followingData.length);
+    console.log(this.state.users);
+    console.log(this.state.users.length);
 
-    for(let i = 0; i< this.state.followingData.length; i++){
+    for(let i = 0; i< this.state.users.length; i++){
       if (i === 0) {
         console.log("Here")
       }
+
+      let path = ""
+      console.log(this.state.users[i]);
+
+      if (this.state.users[i].meta_data !== "" && this.state.users[i].meta_data !== undefined) {
+        path = this.state.users[i].meta_data.split("/")[3];
+      }
+
       userNames.push(
-          <div key={this.state.followingData[i]} className="searchResults">
+          <div className="follow">
+            <Avatar 
+              style={{
+                margin: "auto",
+                marginLeft: "450px",
+                marginTop: "10px",
+                float: "left",
+                width: "100px",
+                height: "100px",
+              }} 
+              variant="circle"
+              src={images[path]}
+              alt={this.state.users[i].firstname + " " + this.state.users[i].lastname}
+            />
+            <div className="header">
+              <h2>
+                {this.state.users[i].firstname} {this.state.users[i].lastname}
+              </h2>
               <h3>
                   <button onClick={() => this.linkToProfile(this.state.followingData[i])} >@{this.state.followingData[i]}</button>
                   <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button>
               </h3>
+            </div>
           </div>
       )
   }
+  
+  userNames.sort();
 
-    return (
+  return (
 
-      <div className="Following">
+      <div className="header">
+
         <h1> Following!</h1>
           <div className="row">
             <div className="userOrder">

@@ -438,7 +438,7 @@ app.get('/getartistreviews', function(req, res, err) {
 
 
  app.get('/profile', function(req, res){
-   console.log(req.query.userHandle);
+   console.log("In server\t" + req.query.userHandle);
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 
