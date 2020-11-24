@@ -106,6 +106,9 @@ importAll(r) {
   return images;
 }
 
+getSpotify = () => {
+    console.log("cliick works");
+}
 
 getReviews = () => {
     var lookupUser = sessionStorage.getItem("currentUser");
@@ -242,6 +245,7 @@ render() {
                             </div>
                             <h2 className="bio">{this.state.user.bio}</h2>
                             <div className="navBtn">
+                                <div className = "edit navBtn" onClick={this.getSpotify}>Spotify</div>
                                 <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
                                 {this.state.edit ? <Redirect to={{
                                     pathname: '/editprofile',
