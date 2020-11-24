@@ -168,7 +168,7 @@ navigate(){
             </div>
         )}
         <form className = "commentForm" id="commentForm" onSubmit={this.handleCommentSubmit.bind(this)}>
-             <textarea form="commentForm "type="text" name="content" value={this.state.commentContent} placeholder="write a comment"
+             <input form="commentForm "type="text" name="content" value={this.state.commentContent} placeholder="write a comment..."
                 onChange={this.handleContentChange.bind(this)} required/><br></br>
             <input className="submitButton" type="submit" value="post comment"/>
          </form>

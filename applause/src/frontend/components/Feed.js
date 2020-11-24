@@ -1,5 +1,5 @@
- import React, {Component, Fragment} from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+ import React, {Component} from 'react';
+import { Redirect} from 'react-router-dom'
 import axios from 'axios';
 import '../../App.css';
 import '../styles/Feed.css';
@@ -50,8 +50,8 @@ class Feed extends Component {
                     liked.push(false)
                 }
             }
-            for(var i = 0; i<this.state.feedReviews.length; i++){
-                numLiked[i] = this.state.feedReviews[i].users_liked.length
+            for(var j = 0; j<this.state.feedReviews.length; j++){
+                numLiked[j] = this.state.feedReviews[j].users_liked.length
             }
             this.setState({numLikes:numLiked})
             this.setState({feedReviewsLiked: liked})
@@ -68,7 +68,6 @@ class Feed extends Component {
     handleSubmit(event) {
     //#alert('Search Value was: ' + this.state.value);
 
-        const { search } = this.state; 
         event.preventDefault();
   
 
@@ -76,7 +75,7 @@ class Feed extends Component {
             value: this.state.value
         })
         .then(res => {
-            this.state.albums = res.data.result;
+            this.setState({albums: res.data.result});
             console.log(res.data.result);
             this.setState({navigate: true});
         })
@@ -170,7 +169,7 @@ class Feed extends Component {
        
               date.setHours(date.getHours()+2);
               var isPM = date.getHours() >= 12;
-              var isMidday = date.getHours() == 12;
+              var isMidday = date.getHours() === 12;
               var minutes = date.getMinutes();
               if(date.getMinutes() < 10){
                 minutes = "0" + date.getMinutes();
@@ -180,9 +179,8 @@ class Feed extends Component {
             //   let time_format = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate() + ' ' + time;
             let date_format = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
             let time_format = time
-            var usersLiked = reviewsHolder[i].users_liked
             reviewList.push(
-                          <div className="albumCard">
+                          <div className="albumCard" key={i}>
                               <div className = "artFeed>">
                               <figure className="albumReviewFeed" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                   <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>

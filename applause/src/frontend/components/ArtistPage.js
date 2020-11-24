@@ -100,7 +100,6 @@ render() {
    } else {
 
    for (let i = 0; i < reviewHolder.length; i++) {
-    var albumArt = sessionStorage.getItem(this.state.albumId);
     let date = new Date(reviewHolder[i].time);
        
     date.setHours(date.getHours()+2);

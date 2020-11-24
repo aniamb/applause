@@ -2,8 +2,6 @@ import React from 'react';
 import { Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar } from '@material-ui/core';
 import StarRatings from 'react-star-ratings';
 

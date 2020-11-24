@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import './App.css';
 import { PrivateRoute } from './frontend/components/PrivateRoute'
 import Feed from './frontend/components/Feed.js';

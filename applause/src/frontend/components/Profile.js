@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 import '../styles/Profile.css';
 import { Redirect} from 'react-router-dom'
 import axios from 'axios'
-import { faTrash, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 
@@ -136,7 +136,6 @@ deleteReview(reviewId) {
         }
     })
     .then((response) => {
-        const data = response.data;
         console.log('Successfully deleted review');
         window.location.reload();
         this.getReviews();
@@ -157,7 +156,7 @@ render() {
     let reviewHolderLength = reviewsHolder.length;
     if (reviewHolderLength === 0) {
         reviewList.push (
-            <h2>You haven't written any reviews.</h2>
+            <h2 key={0}>You haven't written any reviews.</h2>
         )
     }else{
         for (let i = 0; i < reviewsHolder.length; i++) {
@@ -165,7 +164,7 @@ render() {
     
             date.setHours(date.getHours()+2);
             var isPM = date.getHours() >= 12;
-            var isMidday = date.getHours() == 12;
+            var isMidday = date.getHours() === 12;
             var minutes = date.getMinutes();
             if(date.getMinutes() < 10){
                 minutes = "0" + date.getMinutes();
@@ -178,7 +177,7 @@ render() {
                 isPrivate = "private"
             }
             reviewList.push(
-                        <div className="albumCardProfile">
+                        <div className="albumCardProfile" key={i}>
                             <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                 <img class="resize" src={reviewsHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
