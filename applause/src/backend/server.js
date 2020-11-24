@@ -54,8 +54,6 @@ api.headers({
 	"useQueryString": true
 });
 
-
-
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
 	console.log(req.body);
@@ -121,6 +119,24 @@ app.post('/searchserver', function (req,res1) {
 		});
 	}
 });
+
+app.get('/spotifyauth', function(req, res) {
+
+   // var state = generateRandomString(16);
+   // res.cookie(stateKey, state);
+ 
+   // // your application requests authorization
+   // var scope = 'user-read-private user-read-email';
+   // res.redirect('https://accounts.spotify.com/authorize?' +
+   //   querystring.stringify({
+   //     response_type: 'code',
+   //     client_id: client_id,
+   //     scope: scope,
+   //     redirect_uri: redirect_uri,
+   //     state: state
+   //   }));
+   console.log("basic redirect");
+ });
 
 //createreview
 app.post('/createreview', function(req, res) {

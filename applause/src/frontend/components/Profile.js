@@ -108,6 +108,15 @@ importAll(r) {
 
 getSpotify = () => {
     console.log("cliick works");
+    axios.get('http://localhost:5000/spotifyauth', {
+
+    })
+    .then((response) => {
+        console.log("hi");
+    })
+    .catch(() => {
+        alert("Error retrieving reviews");
+    });
 }
 
 getReviews = () => {
