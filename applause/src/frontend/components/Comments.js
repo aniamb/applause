@@ -65,7 +65,7 @@ handleContentChange(event) {
 
 handleCommentSubmit(event){
     event.preventDefault()
-    const commentInfo = {commenter: sessionStorage.getItem("currentUser"), comment: this.state.commentContent, date: Date.now()}
+    const commentInfo = {commenter: sessionStorage.getItem("currentUser"), comment: this.state.commentContent, date: Date.now(), profilePic: sessionStorage.getItem("profileImagePath")}
     this.setState({reviewComments: [...this.state.reviewComments, commentInfo]})
     const params = {
         id: this.props.match.params.reviewId,

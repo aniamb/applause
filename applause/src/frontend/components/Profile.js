@@ -59,6 +59,7 @@ async componentDidMount(){
           this.setState({path: response.data.meta_data.split("/")[3]});
         }
         sessionStorage.setItem("currentUser", this.state.user.handle);
+        sessionStorage.setItem("profileImagePath", this.state.path);
     })
     .catch((err) => {
         console.log('error getting info');

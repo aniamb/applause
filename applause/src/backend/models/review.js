@@ -4,7 +4,8 @@ const {ObjectId} = mongoose.Schema.Types
 var comments = new mongoose.Schema({
     commenter: String,
     comment: String,
-    date: {type: Date, default:Date.now}
+    date: {type: Date, default:Date.now},
+    profilePic: String
 });
 
 let Review = new mongoose.Schema({
