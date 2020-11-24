@@ -51,9 +51,29 @@ handleReviewSubmit(event){
 }
 
 changeReviewLater = () => {
-    if (this.state.isReviewLater === "Review Later")
-        this.setState({isReviewLater:"Added to Review Later!"});
-    else this.setState({isReviewLater:"Review Later"});
+    // console.log(sessionStorage.getItem('currentUser'));
+    var user = sessionStorage.getItem('currentUser');
+    var albumArtwork = sessionStorage.getItem(this.state.albumId);
+    console.log(user)
+    if (this.state.isReviewLater === "Review Later"){
+        console.log(user)
+        axios.post('http://localhost:5000/addreviewlater', {
+            params: {
+                handle: user,
+                albumName: this.state.albumName,
+                artistName: this.state.artistName,
+                albumArt: albumArtwork
+            }
+        })
+        .then((response) => {
+            const data = response.data;
+            console.log('Successfully added to review later');
+            this.setState({isReviewLater:"Added to Review Later!"});
+        })
+        .catch(() => {
+            alert("Error deleting reviews");
+        });
+    } else this.setState({isReviewLater:"Review Later"});
 }
 
 changeListenLater = () => {

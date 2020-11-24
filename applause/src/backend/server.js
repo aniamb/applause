@@ -880,3 +880,28 @@ app.post('/delete', function(req, res, err) {
         res.status(200).send('Deleting account worked');
     })
 })
+
+// Add albim to review Later
+app.post('/addreviewlater', function(req, res, err) {
+   console.log("in add review later");
+
+   var albumInfo = []
+   albumInfo.push(req.body.params.albumName)
+   albumInfo.push(req.body.params.artistName)
+   albumInfo.push(req.body.params.albumArt)
+   console.log(typeof(albumInfo))
+    User.updateOne(
+     {"handle" : req.body.params.handle},
+     {$push : {review_later : albumInfo }},
+     function (err,result){
+       if(err){
+           console.log("Failed to album to review later");
+           res.status(400).send("Error in adding album to review later");
+           res.end();
+       }else{
+         res.status(200).send();
+         console.log("Added album to review later!");
+         res.end();
+       }
+     })
+})
