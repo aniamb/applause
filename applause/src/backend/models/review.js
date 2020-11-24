@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 const {ObjectId} = mongoose.Schema.Types
 
+var comments = new mongoose.Schema({
+    commenter: String,
+    comment: String,
+    date: {type: Date, default:Date.now}
+});
 
 let Review = new mongoose.Schema({
     album: {
@@ -20,7 +25,7 @@ let Review = new mongoose.Schema({
         type: Number
     },
     comments: {
-        type: [String]
+        type: [comments]
     },
     username: {
         type: String,

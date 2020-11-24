@@ -3,7 +3,7 @@ import { NavLink, Redirect} from 'react-router-dom'
 import axios from 'axios';
 import '../../App.css';
 import '../styles/Feed.css';
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 
@@ -157,6 +157,10 @@ class Feed extends Component {
           console.log(text)
         }
       }
+    
+    redirectComment(id) {
+        this.props.history.push('/comments/' + id);
+    }
 
     render () {
         let reviewList = [];
@@ -204,6 +208,7 @@ class Feed extends Component {
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                   {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
+                                  <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewsHolder[i]._id)}/> {reviewsHolder[i].comments.length}
 
                                   {/* <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
                                   <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 

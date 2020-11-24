@@ -880,3 +880,25 @@ app.post('/delete', function(req, res, err) {
         res.status(200).send('Deleting account worked');
     })
 })
+
+app.post('/postcomment', function(req, res, err) {
+   // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
+   console.log("entered");
+   console.log(req.body);
+   console.log(req.body.commentInfo);
+   Review.findOneAndUpdate(
+      {"_id":req.body.id},
+      {$push : {comments : req.body.commentInfo}},
+      {new:true},
+      function(err,items){
+          if(err){
+              return res.status(400).send('Error occured when editing profile.')
+          }else{
+              console.log("Successfully updated profile.");
+              return res.status(200).send('Profile updated');
+          }
+          //res.end();
+      }
+  )
+   //res.end();
+})
