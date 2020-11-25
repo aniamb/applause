@@ -17,7 +17,9 @@ class Following extends Component{
         navigate: false,
         userNames: [],
         hand: "",
-        users: []
+        users: [],
+        findToFollow: [],
+        findToFollowUsers: []
       }
   }
 
@@ -49,35 +51,72 @@ class Following extends Component{
 
         var temp_users = [];
         
-        console.log(this.state.followingData)
+        console.log("Handle that's being followed\t" + this.state.followingData);
 
-        for (let index = 0; index < this.state.followingData.length; index++) {
+        axios.get('http://localhost:5000/recommendedFollow', {
+          params: {
+            userHandle: currHandle
+          }
+          })
+          .then((re) => {   
+            console.log("recommendedFollow");
 
-            console.log("Iterating with \t" + this.state.followingData[index]);
+            console.log(re);
 
-            axios.get('http://localhost:5000/profile', {
-              params: {
-                  userHandle: this.state.followingData[index]
-              }
-            })
-            .then((r) => {   
-              console.log("Got User");
-              // this.setState({user: response.data});
-              console.log(r);
+            this.setState({findToFollow: re.data});
 
-              var temp = [];
-              temp.push(r.data);
-              
-              var joined = this.state.users.concat(temp)
-              this.setState({users: joined});
+            for (let index = 0; index < this.state.followingData.length; index++) {
 
-            })
-            .catch((err) => {
-                console.log('error getting info');
-                console.log(err);
-            });
-        }
+                axios.get('http://localhost:5000/profile', {
+                  params: {
+                      userHandle: this.state.followingData[index]
+                  }
+                })
+                .then((r) => {   
+                  console.log("Got User in followingData");
 
+                  var temp = [];
+                  temp.push(r.data);
+                  
+                  var joined = this.state.users.concat(temp)
+                  this.setState({users: joined});
+
+                })
+                .catch((err) => {
+                    console.log('error getting info');
+                    console.log(err);
+                });
+            }
+
+            for (let index = 0; index < this.state.findToFollow.length; index++) {
+
+              axios.get('http://localhost:5000/profile', {
+                params: {
+                    userHandle: this.state.findToFollow[index]
+                }
+              })
+              .then((r) => {   
+                console.log("Got User in findToFollow");
+                // this.setState({user: response.data});
+                console.log(r);
+
+                var temp = [];
+                temp.push(r.data);
+                
+                var joined = this.state.findToFollowUsers.concat(temp)
+                this.setState({findToFollowUsers: joined});
+
+              })
+              .catch((err) => {
+                  console.log('error getting info');
+                  console.log(err);
+              });
+          }
+        })
+        .catch((err) => {
+          console.log('error getting info');
+          console.log(err);
+      });
       })
       .catch((err) => {
        console.log('error getting info');
@@ -133,16 +172,13 @@ render() {
     let userNames = [];
     let images = this.importAll(require.context('../../public/', false));
 
-    console.log(this.state.users);
-    console.log(this.state.users.length);
-
     for(let i = 0; i< this.state.users.length; i++){
       if (i === 0) {
         console.log("Here")
       }
 
       let path = ""
-      console.log(this.state.users[i]);
+      // console.log(this.state.users[i]);
 
       if (this.state.users[i].meta_data !== "" && this.state.users[i].meta_data !== undefined) {
         path = this.state.users[i].meta_data.split("/")[3];
@@ -172,15 +208,61 @@ render() {
               </h2>
 
               <h3>
-                @{this.state.followingData[i]}
+                @{this.state.users[i].handle}
               </h3>
                 {/* <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button> */}
             </div>
             </div>
       )
-  }
+    }
+
+    let recFollow = [];
+    for(let i = 0; i< this.state.findToFollowUsers.length; i++){
+      if (i === 0) {
+        console.log("Here")
+      }
+
+      let path = ""
+      // console.log(this.state.findToFollowUsers[i]);
+
+      if (this.state.findToFollowUsers[i].meta_data !== "" && this.state.findToFollowUsers[i].meta_data !== undefined) {
+        path = this.state.findToFollowUsers[i].meta_data.split("/")[3];
+      }
+
+      recFollow.push(
+          <div className="follow" onClick={() => this.linkToProfile(this.state.findToFollowUsers[i].handle)} >
+            <div className="followProfPic">
+              <Avatar 
+                style={{
+                  margin: "auto",
+                  // marginLeft: "20%",
+                  // marginTop: "5%",
+                  float: "left",
+                  width: "100px",
+                  height: "100px",
+                }} 
+                variant="circle"
+                src={images[path]}
+                alt={this.state.findToFollowUsers[i].firstname + " " + this.state.findToFollowUsers[i].lastname}
+              />
+            </div>
+            <div className="headerName">
+              
+              <h2>
+                {this.state.findToFollowUsers[i].firstname} {this.state.findToFollowUsers[i].lastname}
+              </h2>
+
+              <h3>
+                @{this.state.findToFollowUsers[i].handle}
+              </h3>
+                {/* <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button> */}
+            </div>
+            </div>
+      )
+    }
   
   userNames.sort();
+  recFollow.sort();
 
   return (
 
@@ -191,10 +273,20 @@ render() {
             <div className="userOrder">
                 {userNames}
             </div>
-          {this.state.navigate && <Redirect to={{
-              pathname: this.whichUser(this.state.username),
-              state: {"username": this.state.username}
-          }}/>}
+            {this.state.navigate && <Redirect to={{
+                pathname: this.whichUser(this.state.username),
+                state: {"username": this.state.username}
+            }}/>}
+          </div>
+          <h1> Recommended Users to Follow!</h1>
+          <div className="row">
+            <div className="userOrder">
+                {recFollow}
+            </div>
+            {this.state.navigate && <Redirect to={{
+                pathname: this.whichUser(this.state.username),
+                state: {"username": this.state.username}
+            }}/>}
           </div>
       </div>
 
