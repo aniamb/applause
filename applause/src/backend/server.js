@@ -589,7 +589,7 @@ app.get('/getartistreviews', function(req, res, err) {
      })
    });
  
-   app.get('/unfollow', function(req, res){
+app.get('/unfollow', function(req, res){
 
   let unfollowUser = null
   User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
@@ -901,4 +901,21 @@ app.post('/postcomment', function(req, res, err) {
       }
   )
    //res.end();
+})
+
+//delete comment
+app.post('/deletecomment', function(req, res, err) {
+   Review.updateOne(
+      {"_id":req.body.reviewId},
+      {$pull : {comments : {_id: ObjectId(req.body.commentId) }}},
+      function (err,result){
+        if(err){
+            console.log("Failed to delete comment");
+            res.status(400).send("Error in deleting comment");
+            res.end();
+        }else{
+          console.log("No errors in deleting comment")
+           res.status(200).send("No errors deleting comment")
+        }
+      })
 })

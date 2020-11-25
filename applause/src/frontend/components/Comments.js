@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import { Redirect} from 'react-router-dom'
 import '../styles/Feed.css';
+import '../styles/Comments.css';
 import axios from 'axios'
 import StarRatings from 'react-star-ratings';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 
 class Comments extends Component{
@@ -23,6 +24,8 @@ class Comments extends Component{
           reviewTime: "",
           navigate: false,
           commentContent: "",
+          commentUsername: "",
+          username: "",
 
       }
     }
@@ -44,8 +47,9 @@ componentDidMount () {
             reviewContent: response.data[0].content,
             reviewLikes: response.data[0].users_liked.length,
             reviewComments: response.data[0].comments,
-            reviewTime: response.data[0].time,
+            reviewTime: response.data[0].time
         });
+        console.log(this.state.reviewComments)
     }).catch(() => {
         alert("Error getting review");
     });
@@ -114,8 +118,34 @@ whichUser = (username) => {
     }
 };
 
-navigate(){
+navigate = (username) => {
     this.setState({navigate: true}); 
+    this.setState({username: username});
+}
+
+displayTrashIcon(user, index, id){
+    if(sessionStorage.getItem("currentUser") === user){
+        return <FontAwesomeIcon className="trash" icon={faTrash} size="sm" style={{float: "right"}} onClick={() => this.deleteComment(index, id)}/>;
+    }
+}
+
+deleteComment(indexToDelete, commentId){
+    this.setState({reviewComments: this.state.reviewComments.filter((comments, commentIndex) => commentIndex !== indexToDelete)})
+    const params = {
+        reviewId: this.props.match.params.reviewId,
+        commentId: commentId,
+    }
+    axios.post('http://localhost:5000/deletecomment', params).then(response=> {
+        console.log('comment delete success');
+    }).catch((err)=> {
+        console.log('comment delete fail');
+  })
+}
+
+importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
+    return images;
 }
 
   render() {
@@ -125,13 +155,14 @@ navigate(){
     if(this.state.reviewComments.length === 0){
         commentList.push(<h2>This review has no comments.</h2>)
     }
+    let images = this.importAll(require.context('../../public/', false));
     return (
       <div className="Comments">
         <h1> view comments</h1>
         <div className="albumCard">
             <div className = "artFeed>">
             <figure className="albumReviewFeed" onClick={this.toAlbum(this.state.reviewAlbum + "/" + this.state.reviewArtist + "/" + this.state.reviewAlbumId)}>
-                <img className="resize" src={this.state.reviewImage} alt="Avatar"/>
+                <img className="resize" src={this.state.reviewImage} alt="Avatar" style={{"width": "194px", "height":"194px"}}/>
                 <div className="starsFeed">
                     <StarRatings
                 className="starRating"
@@ -156,22 +187,49 @@ navigate(){
             </div>    
         </div>
         {commentList}
-        {this.state.reviewComments.map((commentValue, index) =>
-            <div key = {index}>
-                <button onClick={() => this.navigate()}><h1>{commentValue.commenter}:</h1></button>
-                    {this.state.navigate && <Redirect to={{
-                        pathname: this.whichUser(commentValue.commenter),
-                        state: {"username": commentValue.commenter}
-                    }}/>}
-                <h3>{commentValue.comment} </h3>
-                <h4>posted: {this.getDate(commentValue.date).date} {this.getDate(commentValue.date).time}</h4>
+        <div className="commentsList">
+            {this.state.reviewComments.map((commentValue, index) =>
+                <div className="user-comment-card2" key = {index}>
+                    <img className="user-avatar" src={images[commentValue.profilePic]} alt=""></img>
+                    <div className="user-info user-comment-card">
+                    {this.displayTrashIcon(commentValue.commenter, index, commentValue._id)}
+
+                    <div className="timeInfo">
+                        <button className="profileRedirect" onClick={() => this.navigate(commentValue.commenter)}><h4 className="user_name">@{commentValue.commenter}</h4></button>
+                            {this.state.navigate && <Redirect to={{
+                                pathname: this.whichUser(this.state.username),
+                                state: {"username": this.state.username}
+                            }}/>}
+                        <div className="timePosted">
+                            <h4>{this.getDate(commentValue.date).date} {this.getDate(commentValue.date).time}</h4>
+                        </div>
+                    </div>
+                        <br></br>
+                        <br></br>
+
+                    <div class="user__comment"><h3>{commentValue.comment}</h3></div>
+                    
+                </div>
             </div>
-        )}
-        <form className = "commentForm" id="commentForm" onSubmit={this.handleCommentSubmit.bind(this)}>
-             <input form="commentForm "type="text" name="content" value={this.state.commentContent} placeholder="write a comment..."
-                onChange={this.handleContentChange.bind(this)} required/><br></br>
-            <input className="submitButton" type="submit" value="post comment"/>
-         </form>
+            )}
+        </div>
+        <div className="formDiv">
+            <form className = "commentForm" id="commentForm" onSubmit={this.handleCommentSubmit.bind(this)}>
+            <img className="comment-avatar" src={images[sessionStorage.getItem("profileImagePath")]} alt=""></img>
+                <textarea className = "commentInput" form="commentForm "type="text" name="content" value={this.state.commentContent} placeholder="write a comment..."
+                    onChange={this.handleContentChange.bind(this)} required/><br></br>
+             <input className="submitComment" type="submit" value="post comment"/>
+
+            </form>
+        </div>
+
+
+
+         
+
+
+
+
       </div>
 
     );

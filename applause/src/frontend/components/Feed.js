@@ -183,7 +183,7 @@ class Feed extends Component {
                           <div className="albumCard" key={i}>
                               <div className = "artFeed>">
                               <figure className="albumReviewFeed" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
-                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar" style={{"width": "194px", "height":"194px"}}/>
                                   {/* <figcaption> */}
                                   <div className="starsFeed">
                                       <StarRatings
