@@ -137,6 +137,7 @@ app.post('/searchserver', function (req,res1) {
 var client_id = '1e16a710b11b440080bd4f588115191e'; // Your client id
 var client_secret = '10443ec704464dc990af339e1bbee0f3'; // Your secret
 var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
+var username = '';
 
 var generateRandomString = function(length) {
    var text = '';
@@ -156,7 +157,7 @@ app.get('/spotifyauth', function(req, res) {
    res.cookie(stateKey, state);
  
    // // your application requests authorization
-   var scope = 'user-read-private user-read-email';
+   var scope = 'user-read-private user-read-email playlist-modify-public';
 
    //res.header('Access-Control-Allow-Origin: *');
    res.redirect('https://accounts.spotify.com/authorize?' +
@@ -213,12 +214,39 @@ app.get('/spotifyauth', function(req, res) {
            headers: { 'Authorization': 'Bearer ' + access_token },
            json: true
          };
- 
+        // var username = '';
          // use the access token to access the Spotify Web API
          request.get(options, function(error, response, body) {
-         console.log("hi");
-           console.log(body);
+            console.log("hi");
+            username = body.id;
+            console.log(body.id)
+
+            var createPlaylist = {
+
+               url: 'https://api.spotify.com/v1/users/' + body.id +  '/playlists',
+               body: JSON.stringify({
+                   'name': 'Applause Playlist',
+                   'public': true
+               }),
+               dataType:'json',
+               headers: {
+                   'Authorization': 'Bearer ' + access_token,
+                   'Content-Type': 'application/json',
+               }
+             };
+   
+             request.post(createPlaylist, function(error, response, body) {
+                  console.log("playlist created")
+                  console.log(body);
+               });
+
+
+
          });
+
+
+         console.log("Username: " + username);
+
  
          // we can also pass the token to the browser to make requests from there
          // res.redirect('/#' +
@@ -228,6 +256,8 @@ app.get('/spotifyauth', function(req, res) {
          //   }));
 
          res.redirect('http://localhost:3000/profile');
+
+         
        } else {
          res.redirect('/#' +
            querystring.stringify({
