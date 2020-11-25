@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import './App.css';
 import { PrivateRoute } from './frontend/components/PrivateRoute'
 import Feed from './frontend/components/Feed.js';
@@ -17,6 +17,7 @@ import AlbumPage from './frontend/components/AlbumPage'
 import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
+import Comments from './frontend/components/Comments'
 
 
 
@@ -52,6 +53,7 @@ function App () {
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>
             <PrivateRoute exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
+            <PrivateRoute exact path="/comments/:reviewId" component={Comments}/>
             <PrivateRoute render= {() =>
                 // <Timeline />
                 <CreateAccount />

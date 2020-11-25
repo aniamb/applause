@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
 import '../styles/EditProfile.css';
 import axios from 'axios'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";

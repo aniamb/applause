@@ -98,7 +98,7 @@ class Search extends Component{
                                 , {this.props.location.state.albums[i].artist}
                             <br></br>
                             <br></br>
-                            <img src={this.props.location.state.albums[i].art}></img>
+                            <img alt="" src={this.props.location.state.albums[i].art}></img>
                             <br></br>
                            
                             <div>

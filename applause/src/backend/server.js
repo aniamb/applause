@@ -626,7 +626,7 @@ app.get('/getalbumtracks', function(req, res, err) {
      })
    });
  
-   app.get('/unfollow', function(req, res){
+app.get('/unfollow', function(req, res){
 
   let unfollowUser = null
   User.findOne({'handle': req.query.unfollowUsername }, function(err, newUser) {
@@ -916,4 +916,43 @@ app.get('/delete', function(req, res, err) {
         console.log("Account successfully deleted.")
         res.status(200).send('Deleting account worked');
     })
+})
+
+app.post('/postcomment', function(req, res, err) {
+   // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
+   console.log("entered");
+   console.log(req.body);
+   console.log(req.body.commentInfo);
+   Review.findOneAndUpdate(
+      {"_id":req.body.id},
+      {$push : {comments : req.body.commentInfo}},
+      {new:true},
+      function(err,items){
+          if(err){
+              return res.status(400).send('Error occured when editing profile.')
+          }else{
+              console.log("Successfully updated profile.");
+              return res.status(200).send('Profile updated');
+          }
+          //res.end();
+      }
+  )
+   //res.end();
+})
+
+//delete comment
+app.post('/deletecomment', function(req, res, err) {
+   Review.updateOne(
+      {"_id":req.body.reviewId},
+      {$pull : {comments : {_id: ObjectId(req.body.commentId) }}},
+      function (err,result){
+        if(err){
+            console.log("Failed to delete comment");
+            res.status(400).send("Error in deleting comment");
+            res.end();
+        }else{
+          console.log("No errors in deleting comment")
+           res.status(200).send("No errors deleting comment")
+        }
+      })
 })

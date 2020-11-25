@@ -1,9 +1,9 @@
- import React, {Component, Fragment} from 'react';
-import { NavLink, Redirect} from 'react-router-dom'
+ import React, {Component} from 'react';
+import { Redirect} from 'react-router-dom'
 import axios from 'axios';
 import '../../App.css';
 import '../styles/Feed.css';
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 
@@ -50,8 +50,8 @@ class Feed extends Component {
                     liked.push(false)
                 }
             }
-            for(var i = 0; i<this.state.feedReviews.length; i++){
-                numLiked[i] = this.state.feedReviews[i].users_liked.length
+            for(var j = 0; j<this.state.feedReviews.length; j++){
+                numLiked[j] = this.state.feedReviews[j].users_liked.length
             }
             this.setState({numLikes:numLiked})
             this.setState({feedReviewsLiked: liked})
@@ -68,7 +68,6 @@ class Feed extends Component {
     handleSubmit(event) {
     //#alert('Search Value was: ' + this.state.value);
 
-        const { search } = this.state; 
         event.preventDefault();
   
 
@@ -76,7 +75,7 @@ class Feed extends Component {
             value: this.state.value
         })
         .then(res => {
-            this.state.albums = res.data.result;
+            this.setState({albums: res.data.result});
             console.log(res.data.result);
             this.setState({navigate: true});
         })
@@ -157,6 +156,10 @@ class Feed extends Component {
           console.log(text)
         }
       }
+    
+    redirectComment(id) {
+        this.props.history.push('/comments/' + id);
+    }
 
     render () {
         let reviewList = [];
@@ -166,7 +169,7 @@ class Feed extends Component {
        
               date.setHours(date.getHours()+2);
               var isPM = date.getHours() >= 12;
-              var isMidday = date.getHours() == 12;
+              var isMidday = date.getHours() === 12;
               var minutes = date.getMinutes();
               if(date.getMinutes() < 10){
                 minutes = "0" + date.getMinutes();
@@ -176,12 +179,11 @@ class Feed extends Component {
             //   let time_format = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate() + ' ' + time;
             let date_format = (date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear();
             let time_format = time
-            var usersLiked = reviewsHolder[i].users_liked
             reviewList.push(
-                          <div className="albumCard">
+                          <div className="albumCard" key={i}>
                               <div className = "artFeed>">
                               <figure className="albumReviewFeed" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
-                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                  <img className="resize" src={reviewsHolder[i].image} alt="Avatar" style={{"width": "194px", "height":"194px"}}/>
                                   {/* <figcaption> */}
                                   <div className="starsFeed">
                                       <StarRatings
@@ -204,6 +206,7 @@ class Feed extends Component {
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                   {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
+                                  <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewsHolder[i]._id)}/> {reviewsHolder[i].comments.length}
 
                                   {/* <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
                                   <p className="reviewHandle">@{reviewsHolder[i].username} {time_format}</p> 
