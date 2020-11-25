@@ -137,7 +137,7 @@ app.post('/searchserver', function (req,res1) {
 var client_id = '1e16a710b11b440080bd4f588115191e'; // Your client id
 var client_secret = '10443ec704464dc990af339e1bbee0f3'; // Your secret
 var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
-var username = '';
+var playlistId;
 
 var generateRandomString = function(length) {
    var text = '';
@@ -240,6 +240,8 @@ app.get('/spotifyauth', function(req, res) {
                   console.log("playlist created")
                   console.log(body);
                   console.log(body.id); //playlist id
+                  playlistId = body.id;
+                  console.log("PID:" + playlistId);
 
                      //search for artist
 
@@ -267,7 +269,8 @@ app.get('/spotifyauth', function(req, res) {
                                  },
                                  json: true
                               };
-
+                              
+                              //get top tracks and corresponding info
                               request.get(topTracks, function(error, response, body) {
                                  console.log("get top tracks");
                                  console.log(body.tracks.length);
@@ -278,6 +281,8 @@ app.get('/spotifyauth', function(req, res) {
                                  }                                 
                                  
                               });
+
+                              console.log("PID:" + playlistId);
                            
                      });
 
@@ -288,7 +293,7 @@ app.get('/spotifyauth', function(req, res) {
          });
 
 
-         console.log("Username: " + username);
+         //console.log("Username: " + username);
 
  
          // we can also pass the token to the browser to make requests from there
