@@ -283,6 +283,7 @@ app.get('/spotifyauth', function(req, res) {
                               });
 
                               console.log("PID:" + playlistId);
+                              //may have to create playlist last
                            
                      });
 
