@@ -148,20 +148,22 @@ render() {
 
       userNames.push(
           <div className="follow">
-            <Avatar 
-              style={{
-                margin: "auto",
-                marginLeft: "20%",
-                marginTop: "5%",
-                float: "left",
-                width: "100px",
-                height: "100px",
-              }} 
-              variant="circle"
-              src={images[path]}
-              alt={this.state.users[i].firstname + " " + this.state.users[i].lastname}
-            />
-            <div className="header">
+            <div className="followProfPic">
+              <Avatar 
+                style={{
+                  margin: "auto",
+                  marginLeft: "20%",
+                  marginTop: "5%",
+                  float: "left",
+                  width: "100px",
+                  height: "100px",
+                }} 
+                variant="circle"
+                src={images[path]}
+                alt={this.state.users[i].firstname + " " + this.state.users[i].lastname}
+              />
+            </div>
+            <div className="headerName">
               <h2>
                 {this.state.users[i].firstname} {this.state.users[i].lastname}
               </h2>
