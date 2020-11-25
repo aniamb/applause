@@ -104,12 +104,14 @@ unfollow = (username) => {
       this.setState({followingData: response.data})
       console.log(this.state.followingData)
       this.setState({followingRedirect: true});
-
+      window.location.reload()
     })
     .catch((err) => {
      console.log('error getting info');
      this.setState({followingRedirect: false});
     })
+
+
 }
 
 whichUser = (username) => {
@@ -147,13 +149,13 @@ render() {
       }
 
       userNames.push(
-          <div className="follow">
+          <div className="follow" onClick={() => this.linkToProfile(this.state.followingData[i])} >
             <div className="followProfPic">
               <Avatar 
                 style={{
                   margin: "auto",
-                  marginLeft: "20%",
-                  marginTop: "5%",
+                  // marginLeft: "20%",
+                  // marginTop: "5%",
                   float: "left",
                   width: "100px",
                   height: "100px",
@@ -164,15 +166,17 @@ render() {
               />
             </div>
             <div className="headerName">
+              
               <h2>
                 {this.state.users[i].firstname} {this.state.users[i].lastname}
               </h2>
+
               <h3>
-                  <button onClick={() => this.linkToProfile(this.state.followingData[i])} >@{this.state.followingData[i]}</button>
-                  <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button>
+                @{this.state.followingData[i]}
               </h3>
+                {/* <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button> */}
             </div>
-          </div>
+            </div>
       )
   }
   

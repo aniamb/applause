@@ -4,7 +4,8 @@
     border: 3px solid transparent;
     display: flex;
     justify-content: center;
-    /* text-align: center; */
+    margin-right: 5%;
+    /* margin-left: 15%; */
   }
   
   .header h1 {
@@ -13,26 +14,32 @@
       font-weight: 900;
       font-family: 'Reem Kufi';
       color:rgb(119,205,195);
-      /* color: grey; */
     }
 
     .headerName h2 {
-      /* text-align: center; */
-      margin-right: 35%;
-      font-weight: 900;
+      margin-left: 50%;
+      text-align: right;
+      font-weight: 350;
       font-family: 'Reem Kufi';
       color:black;
-      text-align: right;
-      /* color: grey; */
     }
 
-    .headerName button {
-      margin-right: 20%;
-      /* background-color: transparent; */
-      outline-color: transparent;
-      /* font-weight: 300; */
-      font-style: italic;
+    .headerName h2:hover {
+      font-weight: 750;
+      font-family: 'Reem Kufi';
       color: rgb(119,205,195);
+    }
+
+    .headerName h3 {
+      margin-left: 55%;
+      font-family: 'Reem Kufi';
+      font-weight: 350;
+      color: rgb(119,205,195);
+    }
+    .headerName h3:hover {
+      font-weight: 750;
+      font-family: 'Reem Kufi';
+      color: black;
     }
   
   .userOrder {
