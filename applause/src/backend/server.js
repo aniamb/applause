@@ -221,6 +221,7 @@ app.get('/spotifyauth', function(req, res) {
             username = body.id;
             console.log(body.id)
 
+            //create playlist
             var createPlaylist = {
 
                url: 'https://api.spotify.com/v1/users/' + body.id +  '/playlists',
@@ -238,6 +239,48 @@ app.get('/spotifyauth', function(req, res) {
              request.post(createPlaylist, function(error, response, body) {
                   console.log("playlist created")
                   console.log(body);
+                  console.log(body.id); //playlist id
+
+                     //search for artist
+
+                     var searchArtists = {
+                        url: 'https://api.spotify.com/v1/search?q=' + 'harry%20styles' + '&type=artist&limit=5',
+                        headers: {
+                           'Authorization': 'Bearer ' + access_token,
+                           'Content-Type': 'application/json',
+                        },
+                        json: true
+                     };
+
+
+                     request.get(searchArtists, function(error, response, body) {
+                        console.log("search artist info:")
+                        console.log(body.artists.items[0].id); //playlist id
+      
+                           //get top tracks of artist 
+
+                              var topTracks = {
+                                 url: 'https://api.spotify.com/v1/artists/' + body.artists.items[0].id + '/top-tracks?country=US',
+                                 headers: {
+                                    'Authorization': 'Bearer ' + access_token
+                                    //'Content-Type': 'application/json',
+                                 },
+                                 json: true
+                              };
+
+                              request.get(topTracks, function(error, response, body) {
+                                 console.log("get top tracks");
+                                 console.log(body.tracks.length);
+                                 for (let i = 0; i < 4; i++) {
+                                    console.log(body.tracks[i].name);
+                                    console.log(body.tracks[i].id);
+                                    console.log(body.tracks[i].uri);
+                                 }                                 
+                                 
+                              });
+                           
+                     });
+
                });
 
 
