@@ -173,6 +173,7 @@ app.get('/spotifyauth', function(req, res) {
  });
 
  app.get('/callback', function(req, res) {
+   var songURIs = [];
 
    console.log("idk if htis works");
 
@@ -214,12 +215,12 @@ app.get('/spotifyauth', function(req, res) {
            headers: { 'Authorization': 'Bearer ' + access_token },
            json: true
          };
-        // var username = '';
+
          // use the access token to access the Spotify Web API
-         request.get(options, function(error, response, body) {
+         request.get(options, function(error, response, body1) {
             console.log("hi");
-            username = body.id;
-            console.log(body.id)
+            username = body1.id;
+            console.log(body1.id)
 
             var searchArtists = {
                url: 'https://api.spotify.com/v1/search?q=' + 'harry%20styles' + '&type=artist&limit=5',
@@ -251,27 +252,57 @@ app.get('/spotifyauth', function(req, res) {
                         console.log("get top tracks");
                         console.log(body.tracks.length);
                         for (let i = 0; i < 4; i++) {
-                           console.log(body.tracks[i].name);
-                           console.log(body.tracks[i].id);
-                           console.log(body.tracks[i].uri);
+                           // console.log(body.tracks[i].name);
+                           // console.log(body.tracks[i].id);
+                           // console.log(body.tracks[i].uri);
+                           songURIs.push(body.tracks[i].uri);
                         }                                 
-                        
-                     });
+                        console.log(songURIs);
+                        console.log(body1.id);
 
-                    // console.log("PID:" + playlistId);
-                     //may have to create playlist last
-                     //call user info again
-                     //create playlist
-                     //add tracks to playlist
-                  
+                        var createPlaylist = {
+
+                           url: 'https://api.spotify.com/v1/users/' + body1.id +  '/playlists',
+                           body: JSON.stringify({
+                               'name': 'Applause Playlist',
+                               'public': true
+                           }),
+                           dataType:'json',
+                           headers: {
+                               'Authorization': 'Bearer ' + access_token,
+                               'Content-Type': 'application/json',
+                           }
+                         };
+                         
+                         request.post(createPlaylist, function(error, response, body2) {
+                              console.log("playlist created")
+                              var bodie = JSON.parse(body2);
+                              console.log(bodie.id);
+                              console.log(body2.id); //playlist id
+
+                              console.log(songURIs[0]);
+                              var addTrack = {
+                                 url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
+                                 body: JSON.stringify({
+                                   'uris': songURIs
+                                 }),
+                                 dataType: 'json',
+                                 headers: {
+                                     'Authorization': 'Bearer ' + access_token,
+                                     'Content-Type': 'application/json',
+                                 }
+                               };
+
+                              request.post(addTrack, function(error, response, body) {
+                                        console.log('track-added');
+                                        console.log(body);
+                              });
+                         });
+                     });                  
             });
 
          });
 
-
-         //console.log("Username: " + username);
-
- 
          // we can also pass the token to the browser to make requests from there
          // res.redirect('/#' +
          //   querystring.stringify({
