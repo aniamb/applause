@@ -174,8 +174,10 @@ app.get('/spotifyauth', function(req, res) {
 
  app.get('/callback', function(req, res) {
    var songURIs = [];
+   var artists = ["harry%20styles", "taylor%20swift", "bon%20iver", "drake", "troye%20sivan"];
+   var flag = 0;
+   var userid;
 
-   console.log("idk if htis works");
 
    // your application requests refresh and access tokens
    // after checking the state parameter
@@ -216,14 +218,16 @@ app.get('/spotifyauth', function(req, res) {
            json: true
          };
 
+         for (let j = 0; j < artists.length; j++) {
          // use the access token to access the Spotify Web API
          request.get(options, function(error, response, body1) {
             console.log("hi");
             username = body1.id;
+            userid = body1.id;
             console.log(body1.id)
 
             var searchArtists = {
-               url: 'https://api.spotify.com/v1/search?q=' + 'harry%20styles' + '&type=artist&limit=5',
+               url: 'https://api.spotify.com/v1/search?q=' + artists[j] + '&type=artist&limit=5',
                headers: {
                   'Authorization': 'Bearer ' + access_token,
                   'Content-Type': 'application/json',
@@ -260,55 +264,62 @@ app.get('/spotifyauth', function(req, res) {
                         console.log(songURIs);
                         console.log(body1.id);
 
-                        var createPlaylist = {
-
-                           url: 'https://api.spotify.com/v1/users/' + body1.id +  '/playlists',
-                           body: JSON.stringify({
-                               'name': 'Applause Playlist',
-                               'public': true
-                           }),
-                           dataType:'json',
-                           headers: {
-                               'Authorization': 'Bearer ' + access_token,
-                               'Content-Type': 'application/json',
-                           }
-                         };
-                         
-                         request.post(createPlaylist, function(error, response, body2) {
-                              console.log("playlist created")
-                              var bodie = JSON.parse(body2);
-                              console.log(bodie.id);
-                              console.log(body2.id); //playlist id
-
-                              console.log(songURIs[0]);
-                              var addTrack = {
-                                 url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
-                                 body: JSON.stringify({
-                                   'uris': songURIs
-                                 }),
-                                 dataType: 'json',
-                                 headers: {
-                                     'Authorization': 'Bearer ' + access_token,
-                                     'Content-Type': 'application/json',
-                                 }
-                               };
-
-                              request.post(addTrack, function(error, response, body) {
-                                        console.log('track-added');
-                                        console.log(body);
-                              });
-                         });
-                     });                  
+                        if (j == 4) {
+                           flag = 1;
+                           console.log(flag);
+                        }
+                     }); 
+                                  
             });
 
          });
 
-         // we can also pass the token to the browser to make requests from there
-         // res.redirect('/#' +
-         //   querystring.stringify({
-         //     access_token: access_token,
-         //     refresh_token: refresh_token
-         //   }));
+         }
+
+         console.log("userid: " + userid);
+         request.get(options, function(error, response, body1) {
+            
+            var createPlaylist = {
+
+               url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
+               body: JSON.stringify({
+                  'name': 'Applause Playlist',
+                  'public': true
+               }),
+               dataType:'json',
+               headers: {
+                  'Authorization': 'Bearer ' + access_token,
+                  'Content-Type': 'application/json',
+               }
+            };
+            console.log("post create playlist");
+
+            request.post(createPlaylist, function(error, response, body2) {
+               console.log("playlist created")
+               var bodie = JSON.parse(body2);
+               console.log(bodie.id);
+               console.log(body2.id); //playlist id
+
+               console.log(songURIs[0]);
+               var addTrack = {
+                  url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
+                  body: JSON.stringify({
+                    'uris': songURIs
+                  }),
+                  dataType: 'json',
+                  headers: {
+                      'Authorization': 'Bearer ' + access_token,
+                      'Content-Type': 'application/json',
+                  }
+                };
+
+               request.post(addTrack, function(error, response, body) {
+                         console.log('track-added');
+                         console.log(body);
+               });
+            });
+
+         });
 
          res.redirect('http://localhost:3000/profile');
 
