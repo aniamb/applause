@@ -178,9 +178,32 @@ app.get('/spotifyauth', function(req, res) {
    var artists = ["harry%20styles", "taylor%20swift", "bon%20iver", "drake", "troye%20sivan"];
    var flag = 0;
    var userid;
+   var reviewsArt = [];
 
+
+   console.log("hi");
+  
    console.log("Applause Username: "+ userName);
 
+   Review.find({'username': userName},   function(err, review) {
+      console.log("YESSSSS");
+      if (review) {
+         console.log(review.length);
+         console.log(review[0]);
+         for (let k = 0; k < 6; k++) {
+            var str = review[k].artist;
+            var n = str.replace(" ", "%20");
+            console.log(str);
+            console.log(n);
+            reviewsArt.push(review[k].artist);
+         }
+         
+        // res.status(200).json({results: review})
+         //res.end();
+      }
+   });
+
+   console.log(reviewsArt);
    // your application requests refresh and access tokens
    // after checking the state parameter
    
@@ -229,7 +252,7 @@ app.get('/spotifyauth', function(req, res) {
             console.log(body1.id)
 
             var searchArtists = {
-               url: 'https://api.spotify.com/v1/search?q=' + artists[j] + '&type=artist&limit=5',
+               url: 'https://api.spotify.com/v1/search?q=' + reviewsArt[j] + '&type=artist&limit=5',
                headers: {
                   'Authorization': 'Bearer ' + access_token,
                   'Content-Type': 'application/json',
@@ -258,8 +281,8 @@ app.get('/spotifyauth', function(req, res) {
                         console.log("get top tracks");
                         console.log(body3.tracks.length);
                         for (let i = 0; i < 4; i++) {
-                           console.log(body3.tracks[i].name);
-                           console.log(body3.tracks[i].id);
+                           // console.log(body3.tracks[i].name);
+                           // console.log(body3.tracks[i].id);
                            console.log(body3.tracks[i].uri);
                            songURIs.push(body3.tracks[i].uri);
                         }                                 
