@@ -179,18 +179,23 @@ app.get('/spotifyauth', function(req, res) {
    var flag = 0;
    var userid;
    var reviewsArt = [];
+   var artistLen;
 
 
    console.log("hi");
   
    console.log("Applause Username: "+ userName);
 
+
    Review.find({'username': userName},   function(err, review) {
       console.log("YESSSSS");
+      if (review.length < 6) {
+            artistLen = reviews.length;
+      }else {
+            artistLen = 6;
+      }
       if (review) {
-         console.log(review.length);
-         console.log(review[0]);
-         for (let k = 0; k < 6; k++) {
+         for (let k = 0; k < artistLen; k++) {
             var str = review[k].artist;
             var n = str.replace(" ", "%20");
             console.log(str);
@@ -243,7 +248,7 @@ app.get('/spotifyauth', function(req, res) {
            json: true
          };
 
-         for (let j = 0; j < artists.length; j++) {
+         for (let j = 0; j < artistLen; j++) {
          // use the access token to access the Spotify Web API
          request.get(options, function(error, response, body1) {
             console.log("hi");
