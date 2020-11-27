@@ -238,14 +238,14 @@ app.get('/spotifyauth', function(req, res) {
             };
 
 
-            request.get(searchArtists, function(error, response, body) {
+            request.get(searchArtists, function(error, response, body2) {
                console.log("search artist info:")
-               console.log(body.artists.items[0].id); //playlist id
+               console.log(body2.artists.items[0].id); //playlist id
 
                   //get top tracks of artist 
 
                      var topTracks = {
-                        url: 'https://api.spotify.com/v1/artists/' + body.artists.items[0].id + '/top-tracks?country=US',
+                        url: 'https://api.spotify.com/v1/artists/' + body2.artists.items[0].id + '/top-tracks?country=US',
                         headers: {
                            'Authorization': 'Bearer ' + access_token
                            //'Content-Type': 'application/json',
@@ -254,14 +254,14 @@ app.get('/spotifyauth', function(req, res) {
                      };
                      
                      //get top tracks and corresponding info
-                     request.get(topTracks, function(error, response, body) {
+                     request.get(topTracks, function(error, response, body3) {
                         console.log("get top tracks");
-                        console.log(body.tracks.length);
+                        console.log(body3.tracks.length);
                         for (let i = 0; i < 4; i++) {
-                           console.log(body.tracks[i].name);
-                           console.log(body.tracks[i].id);
-                           console.log(body.tracks[i].uri);
-                           songURIs.push(body.tracks[i].uri);
+                           console.log(body3.tracks[i].name);
+                           console.log(body3.tracks[i].id);
+                           console.log(body3.tracks[i].uri);
+                           songURIs.push(body3.tracks[i].uri);
                         }                                 
                         console.log(songURIs);
                         console.log(body1.id);
@@ -279,8 +279,8 @@ app.get('/spotifyauth', function(req, res) {
          }
 
          console.log("userid: " + userid);
-         request.get(options, function(error, response, body1) {
-            
+         request.get(options, function(error, response, body4) {
+            console.log("hi");
             var createPlaylist = {
 
                url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
@@ -296,11 +296,11 @@ app.get('/spotifyauth', function(req, res) {
             };
             console.log("post create playlist");
 
-            request.post(createPlaylist, function(error, response, body2) {
+            request.post(createPlaylist, function(error, response, body5) {
                console.log("playlist created")
-               var bodie = JSON.parse(body2);
+               var bodie = JSON.parse(body5);
                console.log(bodie.id);
-               console.log(body2.id); //playlist id
+               //console.log(body2.id); //playlist id
 
                console.log(songURIs[0]);
                var addTrack = {
@@ -315,9 +315,9 @@ app.get('/spotifyauth', function(req, res) {
                   }
                 };
 
-               request.post(addTrack, function(error, response, body) {
+               request.post(addTrack, function(error, response, body6) {
                          console.log('track-added');
-                         console.log(body);
+                         console.log(body6);
                });
             });
 
