@@ -60,6 +60,8 @@ var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
 
 var searchTerm;
+var userName;
+var songURIs = [];
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
@@ -173,11 +175,11 @@ app.get('/spotifyauth', function(req, res) {
  });
 
  app.get('/callback', function(req, res) {
-   var songURIs = [];
    var artists = ["harry%20styles", "taylor%20swift", "bon%20iver", "drake", "troye%20sivan"];
    var flag = 0;
    var userid;
 
+   console.log("Applause Username: "+ userName);
 
    // your application requests refresh and access tokens
    // after checking the state parameter
@@ -256,9 +258,9 @@ app.get('/spotifyauth', function(req, res) {
                         console.log("get top tracks");
                         console.log(body.tracks.length);
                         for (let i = 0; i < 4; i++) {
-                           // console.log(body.tracks[i].name);
-                           // console.log(body.tracks[i].id);
-                           // console.log(body.tracks[i].uri);
+                           console.log(body.tracks[i].name);
+                           console.log(body.tracks[i].id);
+                           console.log(body.tracks[i].uri);
                            songURIs.push(body.tracks[i].uri);
                         }                                 
                         console.log(songURIs);
@@ -688,6 +690,7 @@ app.get('/getalbumtracks', function(req, res, err) {
 
  app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
+   userName = req.query.userHandle;
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 
