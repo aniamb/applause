@@ -11,6 +11,7 @@ class ListenLater extends Component{
       this.state = {
         listenLater:[],
         listenLaterText: "Remove from listen to later.",
+        isYourProfile: true
       }
   }
 
@@ -23,6 +24,10 @@ class ListenLater extends Component{
     } else {
       currHandle = this.props.location.state.handle;
       console.log(currHandle);
+    }
+
+    if(currHandle != sessionStorage.getItem('currentUser')){
+        this.setState({isYourProfile:false})
     }
 
     axios.get('http://localhost:5000/listenlater', {
@@ -71,6 +76,9 @@ toAlbum (text) {
 
   render() {
     //   console.log("rendering")
+
+    const isProfile = this.state.isYourProfile;
+    let removeButton;
     let listenLaterList = [];
     let albumHolder = this.state.listenLater;
     let albumHolderLength = albumHolder.length;
@@ -81,14 +89,17 @@ toAlbum (text) {
     }else{
         for (let i = 0; i < albumHolder.length; i++) {
             console.log(albumHolder[i][0]);
+            if(isProfile){
+                removeButton = <div className="removeBtn"> <input type="submit" value={this.state.listenLaterText} onClick={ () => this.changeListenLater(i)}/></div>;  
+            } else {
+                removeButton = <div></div>
+            }
             listenLaterList.push(
                 <div className="grid-item">
-                    <img class="resize" src={albumHolder[i][2]} style= {{width:"12vw", height:"12vw", paddingTop:"15px"}} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
+                    <img className="resize" src={albumHolder[i][2]} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
                     <h1 className="listenAlbumName">{albumHolder[i][0]}</h1>
                     <h2 className="reviewArtistName">{albumHolder[i][1]}</h2>
-                    <div className="removeBtn">
-                            <input type="submit" value={this.state.listenLaterText} onClick={ () => this.changeListenLater(i)}/>
-                    </div>  
+                    {removeButton}
                 </div>
             )
         }
@@ -96,7 +107,7 @@ toAlbum (text) {
 
     return (
         <div>
-            <h1 className="pageTitle">Listen to Later Albums!</h1> 
+            <h1 className="pageTitle">@{this.props.location.state.handle}'s Listen to Later Albums!</h1> 
             <div className="grid-container">
                 {listenLaterList}
             </div>

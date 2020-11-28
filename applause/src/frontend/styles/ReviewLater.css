@@ -37,6 +37,13 @@
     cursor: pointer;
 }
 
+/* Album Cover */
+.resize {
+    width:12vw;
+    height:12vw;
+    padding-top:15px;
+}
+
 /* Album Name */
 .reviewAlbumName{
     font-family: 'Reem Kufi', sans-serif;
@@ -90,6 +97,11 @@ input{
     .reviewAlbumName {
         font-size: 4vw;
     }
+
+    .resize {
+        width:17vw;
+        height:17vw;
+    }
 }
 
 @media(max-width:600px){
@@ -103,5 +115,10 @@ input{
 
     .reviewAlbumName {
         font-size:4vw;
+    }
+    
+    .resize {
+        width:22vw;
+        height:22vw;
     }
 }

@@ -13,7 +13,8 @@ class ReviewLater extends Component{
       this.state = {
         reviewLater:[],
         reviewLaterText: "Remove from review later.",
-        isHovered:[]
+        isHovered:[],
+        isYourProfile:true
       }
   }
 
@@ -26,6 +27,10 @@ class ReviewLater extends Component{
     } else {
       currHandle = this.props.location.state.handle;
       console.log(currHandle);
+    }
+
+    if(currHandle != sessionStorage.getItem('currentUser')){
+        this.setState({isYourProfile:false})
     }
 
     axios.get('http://localhost:5000/reviewlater', {
@@ -79,6 +84,8 @@ toAlbum (text) {
 
   render() {
     //   console.log("rendering")
+    const isProfile = this.state.isYourProfile;
+    let removeButton;
     let reviewLaterList = [];
     let albumHolder = this.state.reviewLater;
     let albumHolderLength = albumHolder.length;
@@ -91,7 +98,7 @@ toAlbum (text) {
             console.log(albumHolder[i][0]);
             reviewLaterList.push(
                 <div className="grid-item">
-                    <img class="resize" src={albumHolder[i][2]} style= {{width:"15vw", height:"15vw", paddingTop:"15px"}} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
+                    <img className="resize" src={albumHolder[i][2]} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
                     <h1 className="reviewAlbumName">{albumHolder[i][0]}</h1>
                     <h2 className="reviewArtistName">{albumHolder[i][1]}</h2>
                     <div className="removeBtn">
@@ -104,7 +111,7 @@ toAlbum (text) {
 
     return (
         <div>
-            <h1 className="pageTitle">Review Later Albums!</h1> 
+            <h1 className="pageTitle">@{this.props.location.state.handle}'s Review Later Albums!</h1> 
             <div className="grid-container">
                 {reviewLaterList}
             </div>
