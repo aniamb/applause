@@ -17,6 +17,8 @@ import AlbumPage from './frontend/components/AlbumPage'
 import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
+import ReviewLater from './frontend/components/ReviewLater'
+import ListenLater from './frontend/components/ListenLater'
 
 
 
@@ -48,10 +50,13 @@ function App () {
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
+            <PrivateRoute path="/reviewlater" component={ReviewLater}/>
+            <PrivateRoute path="/listenlater" component={ListenLater}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>
             <PrivateRoute exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
+
             <PrivateRoute render= {() =>
                 // <Timeline />
                 <CreateAccount />
