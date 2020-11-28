@@ -61,7 +61,6 @@ var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 
 var searchTerm;
 var userName;
-var songURIs = [];
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
@@ -180,6 +179,7 @@ app.get('/spotifyauth', function(req, res) {
    var userid;
    var reviewsArt = [];
    var artistLen;
+   var songURIs = [];
 
 
    console.log("hi");
@@ -188,7 +188,6 @@ app.get('/spotifyauth', function(req, res) {
 
 
    Review.find({'username': userName},   function(err, review) {
-      console.log("YESSSSS");
       if (review.length < 6) {
             artistLen = reviews.length;
       }else {
@@ -198,19 +197,10 @@ app.get('/spotifyauth', function(req, res) {
          for (let k = 0; k < artistLen; k++) {
             var str = review[k].artist;
             var n = str.replace(" ", "%20");
-            console.log(str);
-            console.log(n);
             reviewsArt.push(review[k].artist);
          }
-         
-        // res.status(200).json({results: review})
-         //res.end();
       }
    });
-
-   console.log(reviewsArt);
-   // your application requests refresh and access tokens
-   // after checking the state parameter
    
    var code = req.query.code || null;
    var state = req.query.state || null;
@@ -303,11 +293,19 @@ app.get('/spotifyauth', function(req, res) {
             });
 
          });
-
+            flag = 1;
          }
 
+         console.log("Flag: " + flag);
          console.log("userid: " + userid);
-         request.get(options, function(error, response, body4) {
+
+         var options2 = {
+            url: 'https://api.spotify.com/v1/me',
+            headers: { 'Authorization': 'Bearer ' + access_token },
+            json: true
+          };
+
+         request.get(options2, function(error, response, body4) {
             console.log("hi");
             var createPlaylist = {
 
@@ -325,6 +323,7 @@ app.get('/spotifyauth', function(req, res) {
             console.log("post create playlist");
 
             request.post(createPlaylist, function(error, response, body5) {
+               console.log(body5);
                console.log("playlist created")
                var bodie = JSON.parse(body5);
                console.log(bodie.id);
@@ -344,7 +343,7 @@ app.get('/spotifyauth', function(req, res) {
                 };
 
                request.post(addTrack, function(error, response, body6) {
-                         console.log('track-added');
+                         //console.log('track-added');
                          console.log(body6);
                });
             });
