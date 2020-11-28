@@ -178,6 +178,7 @@ app.get('/spotifyauth', function(req, res) {
    var flag = 0;
    var userid;
    var reviewsArt = [];
+   var idk = [];
    var artistLen;
    var songURIs = [];
 
@@ -197,6 +198,12 @@ app.get('/spotifyauth', function(req, res) {
          }
       }
    });
+
+
+
+   var noDups = new Set(reviewsArt);
+	idk = Array.from(noDups);
+   
    
    var code = req.query.code || null;
    var state = req.query.state || null;
@@ -280,73 +287,57 @@ app.get('/spotifyauth', function(req, res) {
                         console.log(songURIs);
                         console.log(body1.id);
 
-                        if (j == 4) {
-                           flag = 1;
-                           console.log(flag);
+                        if (j == (artistLen-1)) {
+                           var createPlaylist = {
+
+                              url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
+                              body: JSON.stringify({
+                                 'name': 'Applause Playlist',
+                                 'public': true
+                              }),
+                              dataType:'json',
+                              headers: {
+                                 'Authorization': 'Bearer ' + access_token,
+                                 'Content-Type': 'application/json',
+                              }
+                           };
+                           console.log("post create playlist");
+               
+                           request.post(createPlaylist, function(error, response, body5) {
+                              console.log(body5);
+                              console.log("playlist created")
+                              var bodie = JSON.parse(body5);
+                              console.log(bodie.id);
+                              //console.log(body2.id); //playlist id
+               
+                              console.log(songURIs[0]);
+                              var addTrack = {
+                                 url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
+                                 body: JSON.stringify({
+                                   'uris': songURIs
+                                 }),
+                                 dataType: 'json',
+                                 headers: {
+                                     'Authorization': 'Bearer ' + access_token,
+                                     'Content-Type': 'application/json',
+                                 }
+                               };
+               
+                              request.post(addTrack, function(error, response, body6) {
+                                        //console.log('track-added');
+                                        console.log(body6);
+                              });
+                           });
+                           console.log("EDIT HERE");
                         }
                      }); 
                                   
             });
 
          });
-            flag = 1;
+            
          }
 
-         console.log("SONG1: " + songURIs[0]);
-         console.log("Flag: " + flag);
-         console.log("userid: " + userid);
-
-         var options2 = {
-            url: 'https://api.spotify.com/v1/me',
-            headers: { 'Authorization': 'Bearer ' + access_token },
-            json: true
-          };
-          console.log("SONG2: " + songURIs[0]);
-         request.get(options2, function(error, response, body4) {
-            console.log("hi");
-            var createPlaylist = {
-
-               url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
-               body: JSON.stringify({
-                  'name': 'Applause Playlist',
-                  'public': true
-               }),
-               dataType:'json',
-               headers: {
-                  'Authorization': 'Bearer ' + access_token,
-                  'Content-Type': 'application/json',
-               }
-            };
-            console.log("post create playlist");
-
-            request.post(createPlaylist, function(error, response, body5) {
-               console.log(body5);
-               console.log("playlist created")
-               var bodie = JSON.parse(body5);
-               console.log(bodie.id);
-               //console.log(body2.id); //playlist id
-
-               console.log(songURIs[0]);
-               var addTrack = {
-                  url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
-                  body: JSON.stringify({
-                    'uris': songURIs
-                  }),
-                  dataType: 'json',
-                  headers: {
-                      'Authorization': 'Bearer ' + access_token,
-                      'Content-Type': 'application/json',
-                  }
-                };
-
-               request.post(addTrack, function(error, response, body6) {
-                         //console.log('track-added');
-                         console.log(body6);
-               });
-            });
-
-         });
-         console.log("SONG3: " + songURIs[0]);
          res.redirect('http://localhost:3000/profile');
 
        } else {
