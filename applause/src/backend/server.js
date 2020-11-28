@@ -181,11 +181,7 @@ app.get('/spotifyauth', function(req, res) {
    var artistLen;
    var songURIs = [];
 
-
-   console.log("hi");
-  
    console.log("Applause Username: "+ userName);
-
 
    Review.find({'username': userName},   function(err, review) {
       if (review.length < 6) {
@@ -296,6 +292,7 @@ app.get('/spotifyauth', function(req, res) {
             flag = 1;
          }
 
+         console.log("SONG1: " + songURIs[0]);
          console.log("Flag: " + flag);
          console.log("userid: " + userid);
 
@@ -304,7 +301,7 @@ app.get('/spotifyauth', function(req, res) {
             headers: { 'Authorization': 'Bearer ' + access_token },
             json: true
           };
-
+          console.log("SONG2: " + songURIs[0]);
          request.get(options2, function(error, response, body4) {
             console.log("hi");
             var createPlaylist = {
@@ -349,10 +346,9 @@ app.get('/spotifyauth', function(req, res) {
             });
 
          });
-
+         console.log("SONG3: " + songURIs[0]);
          res.redirect('http://localhost:3000/profile');
 
-         
        } else {
          res.redirect('/#' +
            querystring.stringify({
