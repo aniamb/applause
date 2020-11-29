@@ -38,6 +38,8 @@ class Profile extends React.Component{
         hand: "",
         path:"",
         visibility: "",
+        reviewLater:false,
+        listenLater:false
     }
 }
 
@@ -68,6 +70,13 @@ async componentDidMount(){
     this.getReviews();
 }
 
+reviewLater = () => {
+    this.setState({reviewLater:true})
+}
+
+listenLater = () => {
+    this.setState({listenLater:true})
+}
 
 editProfile = () => {
     this.setState({edit:true});
@@ -257,11 +266,19 @@ render() {
                     {/* </div> */}
                 </div>
                 <div className="musicGroups">
-                    <button className="group">
+                    <button className="group" onClick={this.reviewLater}>
                             Review Later
+                            {this.state.reviewLater && <Redirect to={{
+                                    pathname: '/reviewlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
-                    <button className="group" >
+                    <button className="group" onClick={this.listenLater}>
                             Listen Later
+                            {this.state.listenLater && <Redirect to={{
+                                    pathname: '/listenlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
                 </div>
             </div>
