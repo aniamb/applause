@@ -6,6 +6,7 @@ import axios from 'axios'
 import { faTrash, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
+import Spotify from '../styles/spotify.png'
 
 const user =
     {
@@ -269,7 +270,8 @@ render() {
                                 }}/>: null}
                                 
                             </div>
-                            <a href="http://localhost:5000/spotifyauth">create spotify playlist</a>
+                            {/* <a href="http://localhost:5000/spotifyauth">create spotify playlist</a> */}
+                            <a href="http://localhost:5000/spotifyauth" rel="noopener noreferrer"><img title = "Create Playlist" style={{'height':'30px'}} src={Spotify} alt="Spotify"></img></a>
                             {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
                         {/* </div>                      */}
                     {/* </div> */}

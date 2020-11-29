@@ -61,6 +61,7 @@ var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 
 var searchTerm;
 var userName;
+var playlistId;
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
@@ -181,6 +182,7 @@ app.get('/spotifyauth', function(req, res) {
    var idk = [];
    var artistLen;
    var songURIs = [];
+   
 
    console.log("Applause Username: "+ userName);
 
@@ -307,6 +309,7 @@ app.get('/spotifyauth', function(req, res) {
                               console.log(body5);
                               console.log("playlist created")
                               var bodie = JSON.parse(body5);
+                              playlistId = bodie.id;
                               console.log(bodie.id);
                               //console.log(body2.id); //playlist id
                
@@ -337,7 +340,7 @@ app.get('/spotifyauth', function(req, res) {
          });
             
          }
-
+         
          res.redirect('http://localhost:3000/profile');
 
        } else {
