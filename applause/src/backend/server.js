@@ -186,7 +186,7 @@ app.get('/spotifyauth', function(req, res) {
 
    Review.find({'username': userName},   function(err, review) {
       if (review.length < 6) {
-            artistLen = reviews.length;
+            artistLen = review.length;
       }else {
             artistLen = 6;
       }
