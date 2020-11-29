@@ -18,8 +18,7 @@ import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
 import Comments from './frontend/components/Comments'
-
-
+import RecAlbums from './frontend/components/RecAlbums'
 
 function App () {
   return (
@@ -49,6 +48,7 @@ function App () {
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
+            <PrivateRoute path="/recalbums" component={RecAlbums}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>

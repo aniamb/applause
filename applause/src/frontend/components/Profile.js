@@ -38,6 +38,7 @@ class Profile extends React.Component{
         hand: "",
         path:"",
         visibility: "",
+        recAlbumsRedirect: false,
     }
 }
 
@@ -84,6 +85,10 @@ followerRedirectFunc = () => {
 
 followingRedirectFunc = () => {
   this.setState({followingRedirect:true});
+}
+
+recAlbumsRedirectFunc = () => {
+  this.setState({recAlbumsRedirect: true});
 }
 
 changeFollow = () => {
@@ -263,6 +268,10 @@ render() {
                     <button className="group" >
                             Listen Later
                     </button>
+                    <button className="group" onClick={this.recAlbumsRedirectFunc}>Recommended Albums </button>
+                    {this.state.recAlbumsRedirect ? <Redirect to={{
+                      pathname: '/recalbums'
+                    }}/>: null}
                 </div>
             </div>
             <div className="albumReviews">

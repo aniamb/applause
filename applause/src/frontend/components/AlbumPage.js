@@ -37,7 +37,7 @@ class AlbumPage extends React.Component{
     })
     .then(res => {
         console.log("Status is: " + res.status);
-        console.log(res.data.results);
+        console.log(res.data);
         this.setState({tracks: res.data.results});
         console.log(this.state.tracks);
     })
