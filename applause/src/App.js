@@ -17,6 +17,7 @@ import AlbumPage from './frontend/components/AlbumPage'
 import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
+import ViewPlaylist from './frontend/components/ViewPlaylist'
 
 
 
@@ -45,6 +46,7 @@ function App () {
             <PrivateRoute path="/viewprofile" component={ViewProfile}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <PrivateRoute path="/feed" component={Feed}/>
+            <PrivateRoute path="/viewplaylist" component={ViewPlaylist}/>
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>

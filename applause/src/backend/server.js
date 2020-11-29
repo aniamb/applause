@@ -61,13 +61,16 @@ var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 
 var searchTerm;
 var userName;
-var playlistId;
+var playlistId = [];
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
+
+
+
 
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
@@ -309,7 +312,8 @@ app.get('/spotifyauth', function(req, res) {
                               console.log(body5);
                               console.log("playlist created")
                               var bodie = JSON.parse(body5);
-                              playlistId = bodie.id;
+                              playlistId.push(bodie.uri);
+                              console.log(playlistId);
                               console.log(bodie.id);
                               //console.log(body2.id); //playlist id
                
@@ -351,6 +355,21 @@ app.get('/spotifyauth', function(req, res) {
        }
      });
    }
+ });
+
+
+ app.get('/getplaylistURI', function(req, res){
+   console.log(playlistId);
+   var uriSEND = playlistId[0];
+   playlistId = [];
+   if (playlistId) {
+
+      return res.status(200).send(uriSEND);
+      
+   }else {
+      return res.status(400).send('no playlistId found');
+   }
+
  });
 
 //createreview
