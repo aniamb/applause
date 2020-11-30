@@ -262,7 +262,10 @@ render() {
     // trackList.push(<p className="trackText">Tracklist:</p> )
    for (let j = 0; j < this.state.tracks.length; j++) {
        trackList.push(
-        <p className="trackText">  {this.state.tracks[j]} </p> 
+        // <p className="trackText">  {this.state.tracks[j]} </p> 
+            <tr>
+                <td>{this.state.tracks[j]}</td>
+            </tr>
        )
    }
 
@@ -310,11 +313,10 @@ render() {
                         </figure>
                         <div className="reviewContentAlbum">
                             <p className="reviewAlbumAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandleAlbum">@{reviewHolder[i].username} </p>
+                            <p className="reviewHandleAlbum">@{reviewHolder[i].username}, {date_format} {time_format} </p>
                             <FontAwesomeIcon className="likes" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
                             <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
                             <br></br>
-                           <p className="reviewHandleAlbum">Posted: {date_format} {time_format}</p> 
                             <p className="reviewInfoAlbum">{reviewHolder[i].content}</p>
                         </div>    
                     </div>
@@ -375,6 +377,12 @@ render() {
                             <input type="submit" value={this.state.reviewLater} onClick={this.changeReviewLater}/>
                             <input type="submit" value={this.state.listenLater} onClick={this.changeListenLater}/>
                         </div>                        
+                </div>
+                <div className="trackListAlbum">
+                    <h1 className="trackListTitle">Track List</h1>
+                    <table>
+                        {trackList}
+                    </table>
                 </div>
             </div>
 

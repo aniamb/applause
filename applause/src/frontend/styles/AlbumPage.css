@@ -87,6 +87,7 @@
 
 .geniusPic{
     width:20px;
+    height: 20px;
     vertical-align: middle;
 }
 
@@ -108,7 +109,7 @@
     cursor: pointer;
 }
 
-.forLater{
+.forLaterAlbum{
     position: absolute;
     bottom: 0;
     right: 0;
@@ -133,6 +134,35 @@
     cursor: pointer;
 }
 
+/* DISPLAYING TRACK NAMES */
+.trackListAlbum {
+    margin:0px 30px;
+}
+
+.trackListTitle {
+    font-size: 35px;
+    font-family: 'Reem Kufi', sans-serif;
+}
+
+table{
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+    margin: auto;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: center;
+    padding: 8px;
+    font-family: 'Reem Kufi', sans-serif;
+    color: rgb(119,205,195);
+  }
+  
+  tr:nth-child(even) {
+    /* background-color: rgb(119,205,195);; */
+  }
 
 /* ALBUM REVIEWS (RIGHT SIDE) CSS */
 
@@ -210,10 +240,56 @@
     font-size: 15px;
 }
 
+.likes {
+    margin-top:10px;
+}
+
 
 /* Review Content */
 .reviewInfoAlbum {
     font-family: 'Reem Kufi', sans-serif;
     font-weight: normal;
     font-size:25px;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width:700px) {
+    .albumPic{
+        width: 20vw;
+        height:20vw;
+    }
+
+    .reviewAlbumAlbum {
+        font-size:15px;
+        line-height: 15px;
+    }
+
+    .albumSectionTitle{
+        font-size: 20px;
+    }
+
+    .pageHolderAlbum{
+        flex-direction: column;
+    }
+
+    .pageHolderAlbum > div{
+        width:100%;
+        margin: 15px 10px;
+    }
+
+    .albumInfo {
+        height:60vh;
+        /* width:30vw; */
+    }
+
+    .forLaterAlbum {
+        position: unset;
+        display: block;
+        justify-content: center;
+    }
+
+    .dropdown-album{
+        margin: auto;
+    }
+
 }
