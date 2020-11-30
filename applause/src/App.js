@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, BrowserRouter, Link, Redirect } from 'react-router-dom';
+import { Switch, Route, BrowserRouter, Link } from 'react-router-dom';
 import './App.css';
 import { PrivateRoute } from './frontend/components/PrivateRoute'
 import Feed from './frontend/components/Feed.js';
@@ -17,6 +17,14 @@ import AlbumPage from './frontend/components/AlbumPage'
 import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
+import Comments from './frontend/components/Comments'
+import EditProfileGoogle from './frontend/components/EditProfileGoogle'
+import ProfileGoogle from './frontend/components/ProfileGoogle'
+import RecAlbums from './frontend/components/RecAlbums'
+import ReviewLater from './frontend/components/ReviewLater'
+import ListenLater from './frontend/components/ListenLater'
+import ViewPlaylist from './frontend/components/ViewPlaylist'
+import CreatePlaylist from './frontend/components/CreatePlaylist'
 
 
 
@@ -45,14 +53,22 @@ function App () {
             <PrivateRoute path="/viewprofile" component={ViewProfile}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <PrivateRoute path="/feed" component={Feed}/>
+            <PrivateRoute path="/viewplaylist" component={ViewPlaylist}/>
+            <PrivateRoute path="/createplaylist" component={CreatePlaylist}/>
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
+            <Route exact path="/profilegoogle/:handle" component={ProfileGoogle}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
+            <Route path="/editprofilegoogle/:id" component={EditProfileGoogle}/>
+            <PrivateRoute path="/recalbums" component={RecAlbums}/>
+            <PrivateRoute path="/reviewlater" component={ReviewLater}/>
+            <PrivateRoute path="/listenlater" component={ListenLater}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>
             <PrivateRoute exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
-            <PrivateRoute render= {() =>
+            <PrivateRoute exact path="/comments/:reviewId" component={Comments}/>
+            <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />
                 // <Profile />

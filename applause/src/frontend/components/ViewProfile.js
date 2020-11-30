@@ -2,8 +2,6 @@ import React from 'react';
 import { Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar } from '@material-ui/core';
 import StarRatings from 'react-star-ratings';
 
@@ -37,7 +35,9 @@ class ViewProfile extends React.Component{
         followingRedirect: false,
         hand: "",
         path:"",
-        visibility: ""
+        visibility: "",
+        reviewLater:false,
+        listenLater:false
     }
 }
 
@@ -65,6 +65,14 @@ async componentDidMount(){
             console.log('error getting info');
         });
     }
+}
+
+reviewLater = () => {
+    this.setState({reviewLater:true})
+}
+
+listenLater = () => {
+    this.setState({listenLater:true})
 }
 
 followerRedirectFunc = () => {
@@ -149,8 +157,12 @@ render() {
             date.setHours(date.getHours()+2);
             var isPM = date.getHours() >= 12;
             var isMidday = date.getHours() === 12;
+            var minutes = date.getMinutes();
+            if(date.getMinutes() < 10){
+                minutes = "0" + date.getMinutes();
+            }
             var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
-                date.getMinutes()].join(':') + (isPM ? 'pm' : 'am');
+                minutes].join(':') + (isPM ? 'pm' : 'am');
             let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
             var isPrivate = "public"
             if(reviewsHolder[i].private === true){
@@ -188,23 +200,24 @@ render() {
 
   return (
     <div className="AlbumPage">
-        <div className = "albumHolder">
-            <div className="albumInfo">
-                <div className="albumInfoTemp">
-                    <div className="left">
+        <div className = "pageHolder">
+            <div className="leftSide">
+                <div className="profileInfo">
+                    {/* <div className="left"> */}
                         <Avatar 
                             style={{
                                 marginTop: "20px",
                                 display: 'inline-block',
                                 verticalAlign:"middle",
-                                width: "200px",
-                                height: "200px",
+                                width: "17vw",
+                                height: "17vw",
                             }} 
+                            className="profPic"
                             variant="circle"
                             src={images[this.state.path]}
                             alt={this.state.user.firstname + " " + this.state.user.lastname}
                         />
-                        <h1 className="userName">{this.state.user.firstname} {this.state.user.lastname}</h1>
+                        <h1 className="fullName">{this.state.user.firstname} {this.state.user.lastname}</h1>
                         <p className="profileHandle">@{this.state.user.handle}</p>
                         <button className="followBtn" onClick={this.changeFollow}>{this.state.isFollow}</button>
                         <div className="follow">
@@ -221,8 +234,24 @@ render() {
                             }}/>}
                         </div>
                         <h2 className="bio">{this.state.user.bio}</h2>
-                        <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p>
-                    </div>                     
+                        {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
+                    {/* </div>                      */}
+                </div>
+                <div className="musicGroups">
+                    <button className="group" onClick={this.reviewLater}>
+                            Review Later
+                            {this.state.reviewLater && <Redirect to={{
+                                    pathname: '/reviewlater',
+                                    state: {handle: this.props.location.state.username}
+                                }}/>}
+                    </button>
+                    <button className="group" onClick={this.listenLater}>
+                            Listen Later
+                            {this.state.listenLater && <Redirect to={{
+                                    pathname: '/listenlater',
+                                    state: {handle: this.props.location.state.username}
+                                }}/>}
+                    </button>
                 </div>
             </div>
             <div className="albumReviews">

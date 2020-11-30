@@ -4,7 +4,7 @@ import PasswordStrengthBar from 'react-password-strength-bar'
 import '../styles/CreateAccount.css';
 import axios from 'axios'
 import validator from 'validator';
-
+import GoogleButton from 'react-google-button'
 
 
 class CreateAccount extends React.Component{
@@ -44,6 +44,12 @@ handlePasswordConfirmChange(event) {
 handleHandleChange(event) {
   this.setState({handle: event.target.value})
 } 
+
+setLoggedIn(){
+  sessionStorage.setItem("loggedIn", true);
+}
+
+
 handleSubmit(event){
   const { password, passwordConfirm } = this.state
   event.preventDefault();
@@ -107,8 +113,16 @@ render() {
                         {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <input className="submitButton" type="submit" value="create account"/><br></br>
                 </form>
-        
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
+                <br></br>
+                <br></br>
+                <a href="http://localhost:5000/auth/google" >
+                  <GoogleButton
+                    className="googleBtn"
+                    type="light" // can be light or dark
+                    onClick={() => { this.setLoggedIn() }}
+                  />
+                </a>
                 {this.state.isRedirect && <Redirect to={{
                     pathname: '/editprofile',
                     state: {email:this.state.email}

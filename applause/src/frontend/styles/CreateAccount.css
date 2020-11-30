@@ -52,3 +52,9 @@ input[type=password] {
 .loginRedirect{
     margin-top: 9px;
 }
+
+.googleBtn{
+    margin: 0 auto;
+    color: rgba(0, 0, 0, 0.63);
+    box-shadow: rgba(0, 0, 0, 0.377) 0px 2px 4px 0px
+}

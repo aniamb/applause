@@ -1,12 +1,15 @@
 const crypto = require('crypto')
 const express = require('express');
-const _ = require("lodash");
+const _ = require('lodash');
 require('dotenv').config();
-const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = process.env;
 
 
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const request = require('request');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongodb.net/test?retryWrites=true&w=majority";
@@ -19,8 +22,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+var passport = require('passport')
+const session = require('express-session')
+require('./passport')(passport)
 
 mongoose.connect(dbConnectionString, { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
@@ -29,10 +37,28 @@ db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+
+//for google login
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use('/auth', require('./auth'))
+//end google login
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+   res.header('Access-Control-Allow-Headers', true);
+   //res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Credentials', true);
+   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+   next();
+ });
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -40,20 +66,21 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
 const { Server } = require('http');
-//const { default: Review } = require('../frontend/components/Review');
-//const { default: Review } = require('../frontend/components/Review');
 
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
 
 var searchTerm;
+var userName;
+var playlistId = [];
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
+
 
 
 
@@ -122,6 +149,239 @@ app.post('/searchserver', function (req,res1) {
 		});
 	}
 });
+
+
+
+var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
+var playlistId;
+
+var generateRandomString = function(length) {
+   var text = '';
+   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ 
+   for (var i = 0; i < length; i++) {
+     text += possible.charAt(Math.floor(Math.random() * possible.length));
+   }
+   return text;
+ };
+
+var stateKey = 'spotify_auth_state';
+
+app.get('/spotifyauth', function(req, res) {
+
+   var state = generateRandomString(16);
+   res.cookie(stateKey, state);
+ 
+   // // your application requests authorization
+   var scope = 'user-read-private user-read-email playlist-modify-public';
+
+   //res.header('Access-Control-Allow-Origin: *');
+   res.redirect('https://accounts.spotify.com/authorize?' +
+      querystring.stringify({
+      response_type: 'code',
+      client_id: SPOTIFY_CLIENT_ID,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+   }));
+      
+      console.log("basic redirect");
+ });
+
+ app.get('/callback', function(req, res) {
+   var artists = ["harry%20styles", "taylor%20swift", "bon%20iver", "drake", "troye%20sivan"];
+   var flag = 0;
+   var userid;
+   var reviewsArt = [];
+   var idk = [];
+   var artistLen;
+   var songURIs = [];
+   
+
+   console.log("Applause Username: "+ userName);
+
+   Review.find({'username': userName},   function(err, review) {
+      if (review.length < 6) {
+            artistLen = review.length;
+      }else {
+            artistLen = 6;
+      }
+      if (review) {
+         for (let k = 0; k < artistLen; k++) {
+            var str = review[k].artist;
+            var n = str.replace(" ", "%20");
+            reviewsArt.push(review[k].artist);
+         }
+      }
+   });
+
+
+
+   var noDups = new Set(reviewsArt);
+	idk = Array.from(noDups);
+   
+   
+   var code = req.query.code || null;
+   var state = req.query.state || null;
+   var storedState = req.cookies ? req.cookies[stateKey] : null;
+ 
+   if (state === null || state !== storedState) {
+     res.redirect('/#' +
+       querystring.stringify({
+         error: 'state_mismatch'
+       }));
+   } else {
+     res.clearCookie(stateKey);
+     var authOptions = {
+       url: 'https://accounts.spotify.com/api/token',
+       form: {
+         code: code,
+         redirect_uri: redirect_uri,
+         grant_type: 'authorization_code'
+       },
+       headers: {
+         'Authorization': 'Basic ' + (new Buffer(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString('base64'))
+       },
+       json: true
+     };
+ 
+     request.post(authOptions, function(error, response, body) {
+       if (!error && response.statusCode === 200) {
+ 
+         var access_token = body.access_token,
+             refresh_token = body.refresh_token;
+ 
+         var options = {
+           url: 'https://api.spotify.com/v1/me',
+           headers: { 'Authorization': 'Bearer ' + access_token },
+           json: true
+         };
+
+         for (let j = 0; j < artistLen; j++) {
+         // use the access token to access the Spotify Web API
+         request.get(options, function(error, response, body1) {
+            console.log("hi");
+            username = body1.id;
+            userid = body1.id;
+            console.log(body1.id)
+
+            var searchArtists = {
+               url: 'https://api.spotify.com/v1/search?q=' + reviewsArt[j] + '&type=artist&limit=5',
+               headers: {
+                  'Authorization': 'Bearer ' + access_token,
+                  'Content-Type': 'application/json',
+               },
+               json: true
+            };
+
+
+            request.get(searchArtists, function(error, response, body2) {
+               console.log("search artist info:")
+               console.log(body2.artists.items[0].id); //playlist id
+
+                  //get top tracks of artist 
+
+                     var topTracks = {
+                        url: 'https://api.spotify.com/v1/artists/' + body2.artists.items[0].id + '/top-tracks?country=US',
+                        headers: {
+                           'Authorization': 'Bearer ' + access_token
+                           //'Content-Type': 'application/json',
+                        },
+                        json: true
+                     };
+                     
+                     //get top tracks and corresponding info
+                     request.get(topTracks, function(error, response, body3) {
+                        console.log("get top tracks");
+                        console.log(body3.tracks.length);
+                        for (let i = 0; i < 4; i++) {
+                           // console.log(body3.tracks[i].name);
+                           // console.log(body3.tracks[i].id);
+                           console.log(body3.tracks[i].uri);
+                           songURIs.push(body3.tracks[i].uri);
+                        }                                 
+                        console.log(songURIs);
+                        console.log(body1.id);
+
+                        if (j == (artistLen-1)) {
+                           var createPlaylist = {
+
+                              url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
+                              body: JSON.stringify({
+                                 'name': 'Applause Playlist',
+                                 'public': true
+                              }),
+                              dataType:'json',
+                              headers: {
+                                 'Authorization': 'Bearer ' + access_token,
+                                 'Content-Type': 'application/json',
+                              }
+                           };
+                           console.log("post create playlist");
+               
+                           request.post(createPlaylist, function(error, response, body5) {
+                              console.log(body5);
+                              console.log("playlist created")
+                              var bodie = JSON.parse(body5);
+                              playlistId.push(bodie.uri);
+                              console.log(playlistId);
+                              console.log(bodie.id);
+                              //console.log(body2.id); //playlist id
+               
+                              console.log(songURIs[0]);
+                              var addTrack = {
+                                 url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
+                                 body: JSON.stringify({
+                                   'uris': songURIs
+                                 }),
+                                 dataType: 'json',
+                                 headers: {
+                                     'Authorization': 'Bearer ' + access_token,
+                                     'Content-Type': 'application/json',
+                                 }
+                               };
+               
+                              request.post(addTrack, function(error, response, body6) {
+                                        //console.log('track-added');
+                                        console.log(body6);
+                              });
+                           });
+                           console.log("EDIT HERE");
+                        }
+                     }); 
+                                  
+            });
+
+         });
+            
+         }
+         
+         res.redirect('http://localhost:3000/createplaylist');
+
+       } else {
+         res.redirect('/#' +
+           querystring.stringify({
+             error: 'invalid_token'
+           }));
+       }
+     });
+   }
+ });
+
+
+ app.get('/getplaylistURI', function(req, res){
+   console.log(playlistId);
+   var uriSEND = playlistId[0];
+   playlistId = [];
+   if (playlistId) {
+
+      return res.status(200).send(uriSEND);
+      
+   }else {
+      return res.status(400).send('no playlistId found');
+   }
+
+ });
 
 //createreview
 app.post('/createreview', function(req, res) {
@@ -272,8 +532,8 @@ app.post('/createaccount', function(req, res) {
    });
  });
 
- //login
- app.post('/login', function(req, res, err) {
+//login
+app.post('/login', function(req, res, err) {
    User.findOne({
       'email': req.body.email }, function(err, user) {
          if (user) {
@@ -298,7 +558,7 @@ app.post('/createaccount', function(req, res) {
       })
  });
 
- //send reset password email
+//send reset password email
 app.post('/resetpassword', function(req, res, err) {
    User.findOne({
       'email': req.body.email }, function(err, user) {
@@ -423,7 +683,7 @@ app.get('/getartistreviews', function(req, res, err) {
    })
 });
 
-  //get reviews associated with an album
+//get reviews associated with an album
 app.get('/getalbumreviews', function(req, res, err) {
    console.log(req.query.albumName)
    Review.find({'album': req.query.albumName, 'private': false }, function(err, review) {
@@ -474,8 +734,113 @@ app.get('/getalbumtracks', function(req, res, err) {
 
 });
 
+// recommends albums
+app.get('/findalbums', function(req, res, err) {
+
+  console.log("In Rec\t" + req.query.userHandle);
+
+  let currhandle = req.query.userHandle;
+
+  // Grabs the user of the current user
+  User.findOne({'handle': req.query.userHandle }, function(err, user) {
+
+    var userfollowing = [];
+    var randomReviews = [];
+    if (user) {
+
+      // user exists
+      for (var i = 0; i < user.following.length; i++) {
+        if (!userfollowing.includes(user.following[i])) {
+            userfollowing.push(user.following[i]);
+        }
+      }
+
+      // Found a random user from a list of following
+      var randomUser = _.sample(userfollowing);
+      
+      // Creates a list of reviews made by the random user
+      let currReviewList = [];
+
+      // Recieves the public Review ID's for each follower
+      var currPublicReviews = user.public_reviews;
+      
+      for (let i = 0; i < currPublicReviews.length; i++) {
+        let internalPromise =
+          Review.findById({'_id': mongoose.Types.ObjectId(currPublicReviews[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+            if (err) {
+              console.log(err);
+            }
+            if (review) {
+              currReviewList.push(review)
+            }
+          });
+      }
+      
+      // Creates a user object
+      User.findOne({'handle': randomUser }, function(err, user) {
+
+        let randReviewList = [];
+
+        if (user) {
+
+          // Recieves the public Review ID's for each follower
+          var randPublicReviews = user.public_reviews;          
+          
+          for (let i = 0; i < randPublicReviews.length; i++) {
+            let internalPromise =
+              Review.findById({'_id': mongoose.Types.ObjectId(randPublicReviews[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+                if (err) {
+                  console.log(err);
+                }
+                if (review) {
+                  if (review.rating >= 4 && !review.users_liked.includes(currhandle) &&
+                      !randReviewList.includes(review))
+                  {
+                    console.log(review.users_liked)
+                    console.log(review.album)
+                    randReviewList.push(review);
+                  }
+                }
+
+                if (i == randPublicReviews.length - 1) {
+
+                  var totalReview = [];
+                  console.log("Length of reviewList\t" + randReviewList.length);
+
+                  if (randReviewList.length > 0) {
+
+                    for (let i = 0; i < randReviewList.length; i++) {
+                      if (!currReviewList.includes(randReviewList[i])) {
+                        totalReview.push(randReviewList[i]);
+                      }
+                    }
+
+                    // console.log("Total Reviews\t" + totalReview)
+
+                    // Found a list of reviews
+                    randomReviews = _.shuffle(totalReview);
+            
+                    // Grabs only max three random albums
+                    if (randomReviews.length > 3) {
+                      randomReviews = randomReviews.slice(0, 3);
+                    }
+
+                    console.log("Randomized Reviews\t" + randomReviews.length)
+
+                    res.status(200).json(randomReviews);
+                  }
+                }
+            });
+          }
+        }
+      });
+    }
+  });
+});
+
 app.get('/profile', function(req, res){
-   console.log("In server\t" + req.query.userHandle);
+   console.log(req.query.userHandle);
+   userName = req.query.userHandle;
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 
@@ -1048,25 +1413,30 @@ app.get('/getfeedreviews', function(req, res, err) {
         })
 });
 
-
 // LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'handle' : req.query.handle}]}).exec(function (err, user){
-           console.log(user);
            res.status(200).json(user);
      });
 });
 
 //LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
 app.get('/fillProfile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'email' : req.query.email}]}).exec(function (err, user){
            console.log(user);
            res.status(200).json(user);
      });
+});
+
+app.get('/fillProfileGoogle', function(req, res, err) {
+   console.log(req.body);
+   User.findOne({$or: [
+       {'_id': ObjectId(req.query.id)}]}).exec(function (err, user){
+          console.log(user);
+          res.status(200).json(user);
+    });
 });
 
 const path = require("path");
@@ -1082,7 +1452,7 @@ const storage = multer.diskStorage({
       cb(null, "../public/");
    },
    filename: function(req, file, cb){
-      cb(null,"IMAGE-" + Date.now().toString() + "-" + file.originalname);
+      cb(null,"IMAGE-" + file.originalname);
    }
  });
 
@@ -1100,15 +1470,14 @@ const storage = multer.diskStorage({
    fileFilter: fileFilter
  })
 
-
 app.post('/uploadpicture', upload.single("file"), function(req, res, err) {    
-   console.log(req.file);
    if (req.file === null || req.file === undefined) {
-      res.status(200).send("../public/avatar.png")
+      console.log("Setting to default as file sent is")
+      res.status(200).send("avatar.png")
    } else {
+      console.log("Setting to new file sent")
       res.status(200).send(req.file.path.toString());
    }
-   console.log(req.file.path);
 });
 
 //Updating user profile fields
@@ -1141,10 +1510,217 @@ app.post('/editprofile', function(req, res, err) {
 });
 
 // Delete Account
-app.get('/delete', function(req, res, err) {
-    console.log(req.body.currUser);
+app.post('/delete', function(req, res, err) {
+    console.log("DELETE" + req.body.currUser);
     User.deleteOne({'handle': req.body.currUser}).exec(function(err){
         console.log("Account successfully deleted.")
         res.status(200).send('Deleting account worked');
     })
+})
+
+app.post('/postcomment', function(req, res, err) {
+   // Reviews.update({_id: req.body.id}, {$set:req.body.reviewInfo});
+   console.log("entered");
+   console.log(req.body);
+   console.log(req.body.commentInfo);
+   Review.findOneAndUpdate(
+      {"_id":req.body.id},
+      {$push : {comments : req.body.commentInfo}},
+      {new:true},
+      function(err,items){
+          if(err){
+              return res.status(400).send('Error occured when editing profile.')
+          }else{
+              console.log("Successfully updated profile.");
+              return res.status(200).send('Profile updated');
+          }
+          //res.end();
+      }
+  )
+   //res.end();
+})
+
+//delete comment
+app.post('/deletecomment', function(req, res, err) {
+   Review.updateOne(
+      {"_id":req.body.reviewId},
+      {$pull : {comments : {_id: ObjectId(req.body.commentId) }}},
+      function (err,result){
+        if(err){
+            console.log("Failed to delete comment");
+            res.status(400).send("Error in deleting comment");
+            res.end();
+        }else{
+          console.log("No errors in deleting comment")
+           res.status(200).send("No errors deleting comment")
+        }
+      })
+})
+
+// Add album to review Later
+app.post('/addreviewlater', function(req, res, err) {
+   console.log("in add review later");
+
+   var albumInfo = []
+   albumInfo.push(req.body.params.albumName)
+   albumInfo.push(req.body.params.artistName)
+   albumInfo.push(req.body.params.albumArt)
+   albumInfo.push(req.body.params.albumId)
+    User.updateOne(
+     {"handle" : req.body.params.handle},
+     {$push : {review_later : albumInfo }},
+     function (err,result){
+       if(err){
+           console.log("Failed to add album to review later");
+           res.status(400).send("Error in adding album to review later");
+           res.end();
+       }else{
+         res.status(200).send();
+         console.log("Added album to review later!");
+         res.end();
+       }
+     })
+})
+
+// Remove album from review Later
+app.get('/removereviewlater', function(req, res, err) {
+   console.log("in remove review later");
+
+   User.findOne({
+      'handle': req.query.handle}, function(err, user) {
+         if (user) {
+            console.log(user);
+            var albums = user.review_later
+            var idxToRemove = -1
+            for(let i = 0; i<albums.length; i++){
+               if(albums[i][3] === req.query.albumId){
+                  idxToRemove = i
+               }
+            }
+            // console.log(albumInfo)
+            if(idxToRemove >= 0){
+               User.updateOne(
+                  {"handle" : req.query.handle},
+                  {$pull : {review_later : user.review_later[idxToRemove] }},
+                  function (err,result){
+                     if(err){
+                           console.log("Failed to remove album from review later");
+                           res.status(400).send("Error in removing album from review later");
+                           res.end();
+                     }else{
+                        res.status(200).send();
+                        console.log("Removed album from review later!");
+                        res.end();
+                     }
+               })
+            }
+         } else {
+            //user not found
+              console.log('user not found');
+         }
+   })
+
+})
+
+// Get array of reviewLater from specific users
+app.get('/reviewlater', function(req, res, err) {
+   var albums = [];
+   console.log(req.query.userHandle);
+   User.findOne({
+      'handle': req.query.userHandle }, function(err, user) {
+         if (user) {
+            console.log(user);
+            res.status(200).send(user.review_later);
+            res.end();
+         } else {
+            //user not found
+              console.log('user not found');
+              res.status(400).send();
+              res.end();
+         }
+   })
+})
+
+// Add album to listen Later
+app.post('/addlistenlater', function(req, res, err) {
+   console.log("in add listen later");
+
+   var albumInfo = []
+   albumInfo.push(req.body.params.albumName)
+   albumInfo.push(req.body.params.artistName)
+   albumInfo.push(req.body.params.albumArt)
+   albumInfo.push(req.body.params.albumId)
+    User.updateOne(
+     {"handle" : req.body.params.handle},
+     {$push : {listen_later : albumInfo }},
+     function (err,result){
+       if(err){
+           console.log("Failed to add album to listen later");
+           res.status(400).send("Error in adding album to listen later");
+           res.end();
+       }else{
+         res.status(200).send();
+         console.log("Added album to listen to later!");
+         res.end();
+       }
+     })
+})
+
+// Remove album from listen Later
+app.get('/removelistenlater', function(req, res, err) {
+   console.log("in remove listen later");
+
+   User.findOne({
+      'handle': req.query.handle}, function(err, user) {
+         if (user) {
+            console.log(user);
+            var albums = user.listen_later
+            var idxToRemove = -1
+            for(let i = 0; i<albums.length; i++){
+               if(albums[i][3] === req.query.albumId){
+                  idxToRemove = i
+               }
+            }
+            // console.log(albumInfo)
+            if(idxToRemove >= 0){
+               User.updateOne(
+                  {"handle" : req.query.handle},
+                  {$pull : {listen_later : user.listen_later[idxToRemove] }},
+                  function (err,result){
+                     if(err){
+                           console.log("Failed to remove album from listen to later");
+                           res.status(400).send("Error in removing album from listen to later");
+                           res.end();
+                     }else{
+                        res.status(200).send();
+                        console.log("Removed album from listen to later!");
+                        res.end();
+                     }
+               })
+            }
+         } else {
+            //user not found
+              console.log('user not found');
+         }
+   })
+
+})
+
+// Get array of listenLater from specific users
+app.get('/listenlater', function(req, res, err) {
+   var albums = [];
+   console.log(req.query.userHandle);
+   User.findOne({
+      'handle': req.query.userHandle }, function(err, user) {
+         if (user) {
+            console.log(user);
+            res.status(200).send(user.listen_later);
+            res.end();
+         } else {
+            //user not found
+              console.log('user not found');
+              res.status(400).send();
+              res.end();
+         }
+   })
 })

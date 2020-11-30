@@ -2,7 +2,7 @@ import React from 'react';
 import '../styles/AlbumPage.css';
 import StarRatings from 'react-star-ratings';
 import Genius from '../styles/genius.png'
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from 'axios'
 
@@ -18,8 +18,8 @@ class AlbumPage extends React.Component{
         reviews:[],
         tracks:[],
         rating:'',
-        isReviewLater: 'Review Later',
-        isListenToLater: 'Listen to Later',
+        reviewLater: 'Review Later',
+        listenLater: 'Listen to Later',
         filter: "1"
     }
 }
@@ -37,7 +37,7 @@ class AlbumPage extends React.Component{
     })
     .then(res => {
         console.log("Status is: " + res.status);
-        console.log(res.data.results);
+        console.log(res.data);
         this.setState({tracks: res.data.results});
         console.log(this.state.tracks);
     })
@@ -59,8 +59,54 @@ class AlbumPage extends React.Component{
     .catch(error => {
         console.error(error);
     })  
-
+    this.isReviewLater();
+    this.isListenLater();
 }
+
+isListenLater = () => {
+    var listenLaterList = [];
+    var currHandle = sessionStorage.getItem('currentUser');
+
+    axios.get('http://localhost:5000/listenlater', {
+        params: {
+          userHandle: currHandle
+        }
+      }).then((response) => {
+        listenLaterList = response.data
+        console.log(listenLaterList) 
+        for(let i = 0; i<listenLaterList.length; i++){
+            if(listenLaterList[i][3] === this.state.albumId){
+                this.setState({listenLater:"Remove from listen to later."})
+            }
+        }
+      })
+      .catch((err) => {
+        console.log('error getting info');
+      })
+}
+
+isReviewLater = () => {
+    var reviewLaterList = [];
+    var currHandle = sessionStorage.getItem('currentUser');
+
+    axios.get('http://localhost:5000/reviewlater', {
+        params: {
+          userHandle: currHandle
+        }
+      }).then((response) => {
+        reviewLaterList = response.data
+        console.log(reviewLaterList) 
+        for(let i = 0; i<reviewLaterList.length; i++){
+            if(reviewLaterList[i][3] === this.state.albumId){
+                this.setState({reviewLater:"Remove from review later."})
+            }
+        }
+      })
+      .catch((err) => {
+        console.log('error getting info');
+      })
+}
+
 handleReviewSubmit(event){
     event.preventDefault();
     console.log(this.state.albumId);
@@ -68,15 +114,87 @@ handleReviewSubmit(event){
 }
 
 changeReviewLater = () => {
-    if (this.state.isReviewLater === "Review Later")
-        this.setState({isReviewLater:"Added to Review Later!"});
-    else this.setState({isReviewLater:"Review Later"});
+    // console.log(sessionStorage.getItem('currentUser'));
+    var user = sessionStorage.getItem('currentUser');
+    var albumArtwork = sessionStorage.getItem(this.state.albumId);
+    console.log(user)
+    if (this.state.reviewLater === "Review Later"){
+        console.log(user)
+        axios.post('http://localhost:5000/addreviewlater', {
+            params: {
+                handle: user,
+                albumName: this.state.albumName,
+                artistName: this.state.artistName,
+                albumArt: albumArtwork,
+                albumId: this.state.albumId
+            }
+        })
+        .then((response) => {
+            const data = response.data;
+            console.log('Successfully added to review later');
+            this.setState({reviewLater:"Remove from review later."});
+        })
+        .catch(() => {
+            alert("Error adding to review later");
+        });
+    } else {
+        axios.get('http://localhost:5000/removereviewlater', {
+            params: {
+                handle: user,
+                albumName: this.state.albumName,
+                artistName: this.state.artistName,
+                albumArt: albumArtwork,
+                albumId: this.state.albumId
+            }
+        })
+        .then((response) => {
+            console.log("Successfully removed from review later")
+            this.setState({reviewLater:"Review Later"});
+        }).catch(() => {
+            alert("Error removing from review later");
+        })
+    }
 }
 
 changeListenLater = () => {
-    if (this.state.isListenToLater === "Listen to Later")
-        this.setState({isListenToLater:"Added to Listen to Later!"});
-    else this.setState({isListenToLater:"Listen to Later"});
+    var user = sessionStorage.getItem('currentUser');
+    var albumArtwork = sessionStorage.getItem(this.state.albumId);
+    if (this.state.listenLater === "Listen to Later"){
+        console.log(user)
+        axios.post('http://localhost:5000/addlistenlater', {
+            params: {
+                handle: user,
+                albumName: this.state.albumName,
+                artistName: this.state.artistName,
+                albumArt: albumArtwork,
+                albumId: this.state.albumId
+            }
+        })
+        .then((response) => {
+            const data = response.data;
+            console.log('Successfully added to listen to later');
+            this.setState({listenLater:"Remove from listen to later."});
+        })
+        .catch(() => {
+            alert("Error adding to listen to later");
+        });
+    } else {
+        axios.get('http://localhost:5000/removelistenlater', {
+            params: {
+                handle: user,
+                albumName: this.state.albumName,
+                artistName: this.state.artistName,
+                albumArt: albumArtwork,
+                albumId: this.state.albumId
+            }
+        })
+        .then((response) => {
+            console.log("Successfully removed from listen to later")
+            this.setState({listenLater:"Listen to Later"});
+        }).catch(() => {
+            alert("Error removing from listen to later");
+        })
+    }
 }
 
 handleDropdownChange(event) {
@@ -107,6 +225,10 @@ handleDropdownChange(event) {
         });
     }
   }
+
+redirectComment(id) {
+    this.props.history.push('/comments/' + id);
+}
 
 render() {
 
@@ -188,7 +310,8 @@ render() {
                         <div className="reviewContent">
                             <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
                             <p className="reviewHandle">@{reviewHolder[i].username} </p>
-                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length} 
+                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+                            <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
                             <br></br>
                            <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
                             <p className="reviewInfo">{reviewHolder[i].content}</p>
@@ -247,8 +370,8 @@ render() {
                         
                         <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
                         <div className="forLater">
-                            <input type="submit" value={this.state.isReviewLater} onClick={this.changeReviewLater}/>
-                            <input type="submit" value={this.state.isListenToLater} onClick={this.changeListenLater}/>
+                            <input type="submit" value={this.state.reviewLater} onClick={this.changeReviewLater}/>
+                            <input type="submit" value={this.state.listenLater} onClick={this.changeListenLater}/>
                         </div>                        
                 </div>
             </div>

@@ -3,9 +3,10 @@ import { Avatar } from '@material-ui/core';
 import '../styles/Profile.css';
 import { Redirect} from 'react-router-dom'
 import axios from 'axios'
-import { faTrash, faUserCircle, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
+import Spotify from '../styles/spotify.png'
 
 const user =
     {
@@ -38,6 +39,9 @@ class Profile extends React.Component{
         hand: "",
         path:"",
         visibility: "",
+        recAlbumsRedirect: false,
+        reviewLater:false,
+        listenLater:false
     }
 }
 
@@ -59,6 +63,7 @@ async componentDidMount(){
           this.setState({path: response.data.meta_data.split("/")[3]});
         }
         sessionStorage.setItem("currentUser", this.state.user.handle);
+        sessionStorage.setItem("profileImagePath", this.state.path);
     })
     .catch((err) => {
         console.log('error getting info');
@@ -67,6 +72,13 @@ async componentDidMount(){
     this.getReviews();
 }
 
+reviewLater = () => {
+    this.setState({reviewLater:true})
+}
+
+listenLater = () => {
+    this.setState({listenLater:true})
+}
 
 editProfile = () => {
     this.setState({edit:true});
@@ -83,6 +95,10 @@ followerRedirectFunc = () => {
 
 followingRedirectFunc = () => {
   this.setState({followingRedirect:true});
+}
+
+recAlbumsRedirectFunc = () => {
+  this.setState({recAlbumsRedirect: true});
 }
 
 changeFollow = () => {
@@ -106,6 +122,20 @@ importAll(r) {
   return images;
 }
 
+getSpotify = () => {
+    console.log("cliick works");
+    
+    axios.get('http://localhost:5000/spotifyauth', {
+        //headers: {'Access-Control-Allow-Origin': '*'}
+    })
+    .then((response) => {
+        console.log("hi");
+        console.log(response);
+    })
+    .catch(() => {
+        alert("Error retrieving reviews");
+    });
+}
 
 getReviews = () => {
     var lookupUser = sessionStorage.getItem("currentUser");
@@ -135,7 +165,6 @@ deleteReview(reviewId) {
         }
     })
     .then((response) => {
-        const data = response.data;
         console.log('Successfully deleted review');
         window.location.reload();
         this.getReviews();
@@ -156,7 +185,7 @@ render() {
     let reviewHolderLength = reviewsHolder.length;
     if (reviewHolderLength === 0) {
         reviewList.push (
-            <h2>You haven't written any reviews.</h2>
+            <h2 key={0}>You haven't written any reviews.</h2>
         )
     }else{
         for (let i = 0; i < reviewsHolder.length; i++) {
@@ -164,7 +193,7 @@ render() {
     
             date.setHours(date.getHours()+2);
             var isPM = date.getHours() >= 12;
-            var isMidday = date.getHours() == 12;
+            var isMidday = date.getHours() === 12;
             var minutes = date.getMinutes();
             if(date.getMinutes() < 10){
                 minutes = "0" + date.getMinutes();
@@ -177,7 +206,7 @@ render() {
                 isPrivate = "private"
             }
             reviewList.push(
-                        <div className="albumCardProfile">
+                        <div className="albumCardProfile" key={i}>
                             <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
                                 <img class="resize" src={reviewsHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
@@ -241,6 +270,8 @@ render() {
                             </div>
                             <h2 className="bio">{this.state.user.bio}</h2>
                             <div className="navBtn">
+                                {/* <div className = "edit navBtn" onClick={this.getSpotify}>Spotify</div> */}
+                                
                                 <div className = "edit navBtn" onClick={this.editProfile}>Edit Profile</div>
                                 {this.state.edit ? <Redirect to={{
                                     pathname: '/editprofile',
@@ -250,18 +281,33 @@ render() {
                                 {this.state.logout ? <Redirect to={{
                                     pathname: '/login'
                                 }}/>: null}
+                                
                             </div>
+                            {/* <a href="http://localhost:5000/spotifyauth">create spotify playlist</a> */}
+                            <a href="http://localhost:5000/spotifyauth" rel="noopener noreferrer"><img title = "Create Playlist" style={{'height':'30px'}} src={Spotify} alt="Spotify"></img></a>
                             {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
                         {/* </div>                      */}
                     {/* </div> */}
                 </div>
                 <div className="musicGroups">
-                    <button className="group">
+                    <button className="group" onClick={this.reviewLater}>
                             Review Later
+                            {this.state.reviewLater && <Redirect to={{
+                                    pathname: '/reviewlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
-                    <button className="group" >
+                    <button className="group" onClick={this.listenLater}>
                             Listen Later
+                            {this.state.listenLater && <Redirect to={{
+                                    pathname: '/listenlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
+                    <button className="group" onClick={this.recAlbumsRedirectFunc}>Recommended Albums </button>
+                    {this.state.recAlbumsRedirect ? <Redirect to={{
+                      pathname: '/recalbums'
+                    }}/>: null}
                 </div>
             </div>
             <div className="albumReviews">
