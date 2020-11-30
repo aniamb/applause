@@ -2,11 +2,14 @@ const crypto = require('crypto')
 const express = require('express');
 const _ = require('lodash');
 require('dotenv').config();
-const { REACT_APP_EMAIL, REACT_APP_PASSWORD} = process.env;
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = process.env;
 
 
 const bodyParser = require("body-parser");
 const cors = require('cors');
+const request = require('request');
+const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const app = express();
 const port = process.env.PORT || 5000;
 const dbConnectionString = "mongodb+srv://applause:applause@cluster0.schfs.mongodb.net/test?retryWrites=true&w=majority";
@@ -19,6 +22,8 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+app.use(express.static(__dirname + '/public'))
+   .use(cookieParser());
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 var passport = require('passport')
@@ -32,7 +37,6 @@ db.once('open', () => console.log('connected to the database'));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
@@ -47,6 +51,14 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use('/auth', require('./auth'))
 //end google login
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', "http://localhost:3000");
+   res.header('Access-Control-Allow-Headers', true);
+   //res.header('Access-Control-Allow-Origin', '*');
+   res.header('Access-Control-Allow-Credentials', true);
+   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+   next();
+ });
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -60,12 +72,17 @@ var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");
 //var albumAPI = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/album/%7Bid%7D");
 
 var searchTerm;
+var userName;
+var playlistId = [];
 
 api.headers({
 	"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
+
+
+
 
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
@@ -132,6 +149,239 @@ app.post('/searchserver', function (req,res1) {
 		});
 	}
 });
+
+
+
+var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
+var playlistId;
+
+var generateRandomString = function(length) {
+   var text = '';
+   var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ 
+   for (var i = 0; i < length; i++) {
+     text += possible.charAt(Math.floor(Math.random() * possible.length));
+   }
+   return text;
+ };
+
+var stateKey = 'spotify_auth_state';
+
+app.get('/spotifyauth', function(req, res) {
+
+   var state = generateRandomString(16);
+   res.cookie(stateKey, state);
+ 
+   // // your application requests authorization
+   var scope = 'user-read-private user-read-email playlist-modify-public';
+
+   //res.header('Access-Control-Allow-Origin: *');
+   res.redirect('https://accounts.spotify.com/authorize?' +
+      querystring.stringify({
+      response_type: 'code',
+      client_id: SPOTIFY_CLIENT_ID,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+   }));
+      
+      console.log("basic redirect");
+ });
+
+ app.get('/callback', function(req, res) {
+   var artists = ["harry%20styles", "taylor%20swift", "bon%20iver", "drake", "troye%20sivan"];
+   var flag = 0;
+   var userid;
+   var reviewsArt = [];
+   var idk = [];
+   var artistLen;
+   var songURIs = [];
+   
+
+   console.log("Applause Username: "+ userName);
+
+   Review.find({'username': userName},   function(err, review) {
+      if (review.length < 6) {
+            artistLen = review.length;
+      }else {
+            artistLen = 6;
+      }
+      if (review) {
+         for (let k = 0; k < artistLen; k++) {
+            var str = review[k].artist;
+            var n = str.replace(" ", "%20");
+            reviewsArt.push(review[k].artist);
+         }
+      }
+   });
+
+
+
+   var noDups = new Set(reviewsArt);
+	idk = Array.from(noDups);
+   
+   
+   var code = req.query.code || null;
+   var state = req.query.state || null;
+   var storedState = req.cookies ? req.cookies[stateKey] : null;
+ 
+   if (state === null || state !== storedState) {
+     res.redirect('/#' +
+       querystring.stringify({
+         error: 'state_mismatch'
+       }));
+   } else {
+     res.clearCookie(stateKey);
+     var authOptions = {
+       url: 'https://accounts.spotify.com/api/token',
+       form: {
+         code: code,
+         redirect_uri: redirect_uri,
+         grant_type: 'authorization_code'
+       },
+       headers: {
+         'Authorization': 'Basic ' + (new Buffer(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString('base64'))
+       },
+       json: true
+     };
+ 
+     request.post(authOptions, function(error, response, body) {
+       if (!error && response.statusCode === 200) {
+ 
+         var access_token = body.access_token,
+             refresh_token = body.refresh_token;
+ 
+         var options = {
+           url: 'https://api.spotify.com/v1/me',
+           headers: { 'Authorization': 'Bearer ' + access_token },
+           json: true
+         };
+
+         for (let j = 0; j < artistLen; j++) {
+         // use the access token to access the Spotify Web API
+         request.get(options, function(error, response, body1) {
+            console.log("hi");
+            username = body1.id;
+            userid = body1.id;
+            console.log(body1.id)
+
+            var searchArtists = {
+               url: 'https://api.spotify.com/v1/search?q=' + reviewsArt[j] + '&type=artist&limit=5',
+               headers: {
+                  'Authorization': 'Bearer ' + access_token,
+                  'Content-Type': 'application/json',
+               },
+               json: true
+            };
+
+
+            request.get(searchArtists, function(error, response, body2) {
+               console.log("search artist info:")
+               console.log(body2.artists.items[0].id); //playlist id
+
+                  //get top tracks of artist 
+
+                     var topTracks = {
+                        url: 'https://api.spotify.com/v1/artists/' + body2.artists.items[0].id + '/top-tracks?country=US',
+                        headers: {
+                           'Authorization': 'Bearer ' + access_token
+                           //'Content-Type': 'application/json',
+                        },
+                        json: true
+                     };
+                     
+                     //get top tracks and corresponding info
+                     request.get(topTracks, function(error, response, body3) {
+                        console.log("get top tracks");
+                        console.log(body3.tracks.length);
+                        for (let i = 0; i < 4; i++) {
+                           // console.log(body3.tracks[i].name);
+                           // console.log(body3.tracks[i].id);
+                           console.log(body3.tracks[i].uri);
+                           songURIs.push(body3.tracks[i].uri);
+                        }                                 
+                        console.log(songURIs);
+                        console.log(body1.id);
+
+                        if (j == (artistLen-1)) {
+                           var createPlaylist = {
+
+                              url: 'https://api.spotify.com/v1/users/' + userid +  '/playlists',
+                              body: JSON.stringify({
+                                 'name': 'Applause Playlist',
+                                 'public': true
+                              }),
+                              dataType:'json',
+                              headers: {
+                                 'Authorization': 'Bearer ' + access_token,
+                                 'Content-Type': 'application/json',
+                              }
+                           };
+                           console.log("post create playlist");
+               
+                           request.post(createPlaylist, function(error, response, body5) {
+                              console.log(body5);
+                              console.log("playlist created")
+                              var bodie = JSON.parse(body5);
+                              playlistId.push(bodie.uri);
+                              console.log(playlistId);
+                              console.log(bodie.id);
+                              //console.log(body2.id); //playlist id
+               
+                              console.log(songURIs[0]);
+                              var addTrack = {
+                                 url: 'https://api.spotify.com/v1/playlists/' + bodie.id + '/tracks',
+                                 body: JSON.stringify({
+                                   'uris': songURIs
+                                 }),
+                                 dataType: 'json',
+                                 headers: {
+                                     'Authorization': 'Bearer ' + access_token,
+                                     'Content-Type': 'application/json',
+                                 }
+                               };
+               
+                              request.post(addTrack, function(error, response, body6) {
+                                        //console.log('track-added');
+                                        console.log(body6);
+                              });
+                           });
+                           console.log("EDIT HERE");
+                        }
+                     }); 
+                                  
+            });
+
+         });
+            
+         }
+         
+         res.redirect('http://localhost:3000/createplaylist');
+
+       } else {
+         res.redirect('/#' +
+           querystring.stringify({
+             error: 'invalid_token'
+           }));
+       }
+     });
+   }
+ });
+
+
+ app.get('/getplaylistURI', function(req, res){
+   console.log(playlistId);
+   var uriSEND = playlistId[0];
+   playlistId = [];
+   if (playlistId) {
+
+      return res.status(200).send(uriSEND);
+      
+   }else {
+      return res.status(400).send('no playlistId found');
+   }
+
+ });
 
 //createreview
 app.post('/createreview', function(req, res) {
@@ -589,6 +839,7 @@ app.get('/findalbums', function(req, res, err) {
 
 app.get('/profile', function(req, res){
    console.log(req.query.userHandle);
+   userName = req.query.userHandle;
    User.findOne({'handle': req.query.userHandle }, function(err, user) {
         if (user) {
 

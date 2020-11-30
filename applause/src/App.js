@@ -23,6 +23,8 @@ import ProfileGoogle from './frontend/components/ProfileGoogle'
 import RecAlbums from './frontend/components/RecAlbums'
 import ReviewLater from './frontend/components/ReviewLater'
 import ListenLater from './frontend/components/ListenLater'
+import ViewPlaylist from './frontend/components/ViewPlaylist'
+import CreatePlaylist from './frontend/components/CreatePlaylist'
 
 
 
@@ -51,6 +53,8 @@ function App () {
             <PrivateRoute path="/viewprofile" component={ViewProfile}/>
             <Route exact path="/reset/:token" component={ResetScreen} />
             <PrivateRoute path="/feed" component={Feed}/>
+            <PrivateRoute path="/viewplaylist" component={ViewPlaylist}/>
+            <PrivateRoute path="/createplaylist" component={CreatePlaylist}/>
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <Route exact path="/profilegoogle/:handle" component={ProfileGoogle}/>
