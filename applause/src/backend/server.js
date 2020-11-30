@@ -1107,8 +1107,8 @@ app.get('/removereviewlater', function(req, res, err) {
       'handle': req.query.handle}, function(err, user) {
          if (user) {
             console.log(user);
-            albums = user.review_later
-            idxToRemove = -1
+            var albums = user.review_later
+            var idxToRemove = -1
             for(let i = 0; i<albums.length; i++){
                if(albums[i][3] === req.query.albumId){
                   idxToRemove = i
@@ -1191,8 +1191,8 @@ app.get('/removelistenlater', function(req, res, err) {
       'handle': req.query.handle}, function(err, user) {
          if (user) {
             console.log(user);
-            albums = user.listen_later
-            idxToRemove = -1
+            var albums = user.listen_later
+            var idxToRemove = -1
             for(let i = 0; i<albums.length; i++){
                if(albums[i][3] === req.query.albumId){
                   idxToRemove = i

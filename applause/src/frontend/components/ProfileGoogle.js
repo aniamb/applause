@@ -38,6 +38,9 @@ class ProfileGoogle extends React.Component{
         hand: "",
         path:"",
         visibility: "",
+        recAlbumsRedirect: false,
+        reviewLater:false,
+        listenLater:false
     }
 }
 
@@ -68,6 +71,13 @@ async componentDidMount(){
     this.getReviews();
 }
 
+reviewLater = () => {
+    this.setState({reviewLater:true})
+}
+
+listenLater = () => {
+    this.setState({listenLater:true})
+}
 
 editProfile = () => {
     this.setState({edit:true});
@@ -85,6 +95,10 @@ followerRedirectFunc = () => {
 followingRedirectFunc = () => {
   this.setState({followingRedirect:true});
 }
+
+recAlbumsRedirectFunc = () => {
+    this.setState({recAlbumsRedirect: true});
+  }
 
 changeFollow = () => {
     if (this.state.isFollow === "Follow")
@@ -257,12 +271,24 @@ render() {
                     {/* </div> */}
                 </div>
                 <div className="musicGroups">
-                    <button className="group">
+                <button className="group" onClick={this.reviewLater}>
                             Review Later
+                            {this.state.reviewLater && <Redirect to={{
+                                    pathname: '/reviewlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
-                    <button className="group" >
+                    <button className="group" onClick={this.listenLater}>
                             Listen Later
+                            {this.state.listenLater && <Redirect to={{
+                                    pathname: '/listenlater',
+                                    state: {handle: sessionStorage.getItem('currentUser')}
+                                }}/>}
                     </button>
+                    <button className="group" onClick={this.recAlbumsRedirectFunc}>Recommended Albums </button>
+                    {this.state.recAlbumsRedirect ? <Redirect to={{
+                      pathname: '/recalbums'
+                    }}/>: null}
                 </div>
             </div>
             <div className="albumReviews">

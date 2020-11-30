@@ -1,8 +1,6 @@
 import React from 'react';
-import { Redirect} from 'react-router-dom'
 import '../styles/Profile.css';
 import axios from 'axios'
-import { Avatar } from '@material-ui/core';
 import StarRatings from 'react-star-ratings';
 
 class RecAlbums extends React.Component{
@@ -20,6 +18,7 @@ componentDidMount() {
   // Finds the local user
   var lookupUser = sessionStorage.getItem("currentUser");
   this.setState({currUser: lookupUser});
+  console.log(lookupUser)
 
   axios.get('http://localhost:5000/findalbums', {
     params: {

@@ -3,22 +3,7 @@ import '../styles/EditProfile.css';
 import axios from 'axios'
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-const user =
-    {
-        "firstname":"Jane",
-        "lastname":"Doe",
-        "handle": "janedoe",
-        "email": "1234@mail.net",
-        "password":"1234",
-        "reviews": {},
-        "followers":{"1":"hi"},
-        "following":{},
-        "favorites":{},
-        "groups":{},
-        "bio": "Lover of Pop, Harry Styles, and Country Music",
-        "file": null
-    }
+import { Avatar } from '@material-ui/core';
 
 class EditProfileGoogle extends React.Component{
   constructor(props) {
@@ -55,9 +40,8 @@ componentDidMount(){
     .then((response) => {        
         console.log("response received.");
         this.setState({handle: response.data.handle, firstname: response.data.firstname, 
-            lastname: response.data.lastname, bio: response.data.bio, visibility: response.data.visibility, email: response.data.email});
+            lastname: response.data.lastname, bio: response.data.bio, visibility: response.data.visibility, email: response.data.email, path: response.data.meta_data.split("/")[3]});
         sessionStorage.setItem("currentUser", response.data.handle);
-        console.log("visibiliy = " + this.state.visibility)
         
     })
     .catch((err) => {
@@ -91,7 +75,6 @@ handlePictureChange(event) {
 
 handleOptionChange(event) {
     this.setState({visibility: event.target.value});
-    console.log(this.state.visibility);
 }
 
 handleSubmit(event){
@@ -114,9 +97,27 @@ handleSubmit(event){
     // Calls the server for uploading a picture
       axios.post('http://localhost:5000/uploadpicture', formData).then(response => {
         console.log(response.data);
-        // Get's the path from the server to then be posted to the user's meta_data schema
-        this.setState({path: response.data});
-        const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail, meta_data: "../" + response.data, visibility: this.state.visibility};
+         // Nothing is being uploaded, so it will send avatar.png
+        
+        //  We first check if there is a path that already exists by checking if it's set
+        //    to default of avatar.png
+        if (this.state.path !== undefined && !this.state.path.includes("avatar.png")) {
+            // We found that the path exists, so we now check wheter or not that the response
+              // was set to avatar
+              if (response.data.includes("avatar.png")) {
+                this.setState({path: "../../public/" + this.state.path})
+  
+                // Now we know that the user has given us a picture
+              } else {
+                this.setState({path: "../" + response.data});
+              }
+          } else {
+            this.setState({path: "../" + response.data});
+          }
+        
+        
+        
+        const updateInfo = {handle:this.state.handle, firstname: this.state.firstname, lastname: this.state.lastname, bio:this.state.bio, currUserEmail:currUserEmail, meta_data: this.state.path, visibility: this.state.visibility};
         
         axios.post('http://localhost:5000/editprofile', updateInfo).then(r => {
             console.log("Edited profile successfully.");
@@ -144,47 +145,74 @@ deleteAccount(event){
     })
 }
 
+importAll(r) {
+    let images = {};
+    r.keys().map((item, index) => { 
+      images[item.replace('./', '')] = r(item);
+    });
+    return images;
+  }
+
 render() {
+    let images = this.importAll(require.context('../../public/', false));
   return (
     <div className="EditProfile">
         <div className="container">
             <div className="left">
-                <FontAwesomeIcon className="prof profileIcon" icon={faUserCircle} size="6x"/>
+                <Avatar 
+                  style={{
+                    marginTop: "20px",
+                    display: 'inline-block',
+                    verticalAlign:"middle",
+                    width: "155px",
+                    height: "155px",
+                  }} 
+                  variant="circle"
+                  src={images[this.state.path]}
+                  alt={this.state.firstname + " " + this.state.lastname}
+                />
+                
                 <form onSubmit={this.handleSubmit.bind(this)}>
-                    <input type="file" className="custom-file-input" name="myImage" onChange= {this.handlePictureChange} />
-                    {console.log(this.state.file)}
-                    {/* <button className="upload-button" type="submit">Upload to DB</button> */}
+                    <input type="file" id="file" className="inputfile" name="file" onChange= {this.handlePictureChange} />
+                    <label for="file">Choose Image</label>
                     <br></br>
+
                     <label>Handle</label>
-                    <input type="text" id="username" required value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
+                    <br/>
+                    <input type="text" id="username" className="editProfileInput" required value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
                     {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <br></br>
 
                     <label>First Name</label>
-                    <input type="text" id="name" value={this.state.firstname} onChange={this.handleFirstnameChange.bind(this)}/> 
+                    <br/>
+                    <input type="text" id="name" className="editProfileInput" value={this.state.firstname} onChange={this.handleFirstnameChange.bind(this)}/> 
                     <br></br>
 
                     <label>Last Name</label>
-                    <input type="text" id="name" value={this.state.lastname} onChange={this.handleLastnameChange.bind(this)}/> 
+                    <br/>
+                    <input type="text" id="name" className="editProfileInput" value={this.state.lastname} onChange={this.handleLastnameChange.bind(this)}/> 
                     <br></br>
 
                     <label>Bio</label>
-                    <textarea rows="3" cols="20" name="bio" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
+                    <br/>
+                    <textarea rows="3" cols="20" name="bio" className="editProfileInputTextArea" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
                     <br></br>
 
                     <label>Profile</label>
+                        <br/>
                         <input type="radio" id="public" name="visibility" value="public" checked={this.state.visibility === 'public'} onChange = {this.handleOptionChange.bind(this)}/>
-                        <label for="public">public</label>
+                        <label for="public">  Public</label>
+                        <br/>
                         <input type="radio" id="private" name="visibility" value="private" checked={this.state.visibility === 'private'} onChange = {this.handleOptionChange.bind(this)}/>
-                        <label for="private">private</label><br/>  
+                        <label for="private">Private</label><br/>  
+                      
+                      <br/>  
 
-                    <input className="submit button" type="submit" value="Save Changes"/>
+                      <input className="submit button" type="submit" value="Save Changes"/>
                 </form>
                 <input className = "button" type="button" value="Delete Account" onClick={this.deleteAccount.bind(this)}/>
             </div>
         </div>
-        
-        {/* {this.state.wantDelete ? <> : null} */}
     </div>
 
   );
