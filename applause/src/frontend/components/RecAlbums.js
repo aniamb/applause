@@ -54,9 +54,9 @@ render() {
     
     albums.push(
       <div className="grid-item" onClick={this.toAlbum(oneReview.album + "/" + oneReview.artist + "/" + oneReview.albumId)}>
-        <figure className="albumReview" >
-          <img class="resize" src={oneReview.image} style= {{width:"7.5vw", height:"7.5vw", marginLeft:"50%"}} alt="Avatar"/>
-          <figcaption style= {{width:"100%", marginLeft: "30%"}}>
+        <figure className="albumReview" style= {{width:"100%"}}>
+          <img class="resize" src={oneReview.image} style= {{width:"7.5vw", height:"7.5vw", margin:"0 auto"}} alt="Avatar"/>
+          <figcaption style= {{width:"100%", margin: "0 auto"}}>
             <StarRatings
               className="starRating"
               rating= {oneReview.rating}
