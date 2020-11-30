@@ -1,101 +1,122 @@
-
-.AlbumPage{
-    padding-right: 10px;
-    padding-left: 10px;
-    margin-top: 10px;
-    height: 100%;
-    margin-bottom: 20px;
+/* WHOLE PAGE CSS */
+.albumPage{
+    max-width: 100%;
+    height:100%;
 }
 
-.albumPic{
-    height: 250px;
-}
-
-.artistHeader{
-    display: inline-block;
-    width: 100%;
-    margin: 0 auto;
-}
-
-.artistName2{
-    font-size: 65px;
-}
-
-.albumHolder{
-    margin-left: 100px;
-    margin-right: 100px;
-    margin-top: 50px;
+.pageHolderAlbum{
     display: flex;
-    height: 100%;
-    margin-bottom: 100px;
+    justify-content: center;
+    margin:7vh;
+}
 
+/* ALBUM (LEFT) SIDE CSS */
+
+.leftSideAlbum {
+    flex:45%;
 }
 
 .albumInfo {
-    flex: 45%;
-}
-
-.dropdown-album{
-    float: right;
-    margin-left: 90px;
-    border-radius: 25px;
-    border: none;
-    background-color: white;
-    font-size: 15px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 10px;
-}
-
-.albumInfoTemp{
-    background-color: rgb(119,205,195);
-    border-radius: 7%;
-    height: 100%;
-    width: 625px;
-    margin: 0 auto;
+    /* width:30%; */
+    height:80vh;
+    background:rgb(119,205,195);
+    border-radius: 5px;
+    margin:0px 35px;
     position: relative;
+    margin: 0px 30px;
+}
+
+.albumPic{
+    width: 15vw;
+    height:15vw;
+    margin-top:15px;
 }
 
 .albumSectionTitle{
-    font-size: 50px;
+    font-size: 40px;
+    font-family: 'Reem Kufi', sans-serif;
+}
+
+.by {
+    font-size: 20px;
 }
 
 .albumArtistSectionTitle{
-    line-height: 10px;
+    /* line-height: 10px; */
+    font-family: 'Reem Kufi', sans-serif;
     font-size: 30px;
+    margin:0;
+    padding:0;
+    font-weight: normal;
 }
 
 .star-ratings{
     display: inline;
 }
 
-
 .totalRatings{
     margin-top: 0;
     display: inline;
+    padding-left:10px;
+    font-size:15px;
 }
 
 .reviewButton{
-    margin-top: 8px;
-    width: fit-content;
+    /* margin-top: 8px; */
+    /* width: fit-content; */
+    margin:auto;
+    display: block;
     border-radius: 25px;
     border: none;
-    height: 25px;
+    width:130px;
+    /* height: 25px; */
+    /* background-color: white; */
+    background-color:rgb(119,205,195);
+    color:white;
+    border:2px solid white;
+    font-size: 12px;
+    padding:6px;
+    /* box-shadow: 4px 4px 5px rgb(74, 124, 118); */
+} 
+
+.reviewButton:hover {
+    cursor: pointer;
+    color:rgb(119,205,195);
     background-color: white;
-    font-size: 20px;
-    box-shadow: 4px 4px 5px rgb(74, 124, 118);
-    margin-right: 5px;
+}
+
+.geniusPic{
+    width:20px;
+    vertical-align: middle;
+}
+
+.geniusBtn {
+    vertical-align: middle;
+    margin-top:10px;
+    border:2px solid white;
+    border-radius: 25px;
+    background-color:rgb(119,205,195);
+    color:white;
+    font-size: 12px;
+    height:30px;
+    width:130px;
+}
+
+.geniusBtn:hover {
+    background-color:white;
+    color:rgb(119,205,195);
+    cursor: pointer;
 }
 
 .forLater{
-    float: right;
     position: absolute;
     bottom: 0;
     right: 0;
-    margin-bottom: 30px;
-    margin-right: 20px;
+    padding-right:10px;
+    padding-bottom: 10px;
 }
 
-.forLater input{
+.forLaterAlbum input{
     margin-top: 8px;
     width: fit-content;
     border-radius: 25px;
@@ -107,6 +128,27 @@
     margin-right: 5px;
 }
 
+.forLaterAlbum input:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+}
+
+
+/* ALBUM REVIEWS (RIGHT SIDE) CSS */
+
+/* REVIEW SECTION AS A WHOLE */
+
+.dropdown-album{
+    display:block;
+    right:0;
+    border-radius: 25px;
+    border: none;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+    margin-right: 10px;
+}
+
 .albumReviews {
     justify-content: center;
     margin-left: 50px; 
@@ -116,10 +158,11 @@
 .albumReviewScroll{
     height: 900px;
     overflow: auto;
+    margin-top:10px;
 }
 
-
-.albumCard {
+/* The Review Card */
+.albumCardAlbum {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
@@ -128,65 +171,49 @@
     padding: 6px;
     height: 190px;
     margin-bottom: 15px;
+    overflow-y: scroll;
+    line-height: 15px;
 }
 
   /* On mouse-over, add a deeper shadow */
-.albumCard:hover {
+.albumCardAlbum:hover {
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
- 
-.albumReview{
+
+/* I think this is for the left side of the card (pic + star rating) */
+.albumReviewAlbum{
     margin: 0;
     padding-top: 3px;
 }
-  /* Add some padding inside the card container */
-.reviewContent {
+
+.reviewContentAlbum {
     padding: 2px 16px;
     text-align: left;
     word-wrap: break-word;
     overflow-y: scroll;
 }
 
-.reviewHandle{
+/* Review Title */
+.reviewAlbumAlbum {
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px;
+    font-weight: normal;
+    line-height: 25px;
+}
+
+/* Review time/date/edit stuff */
+.reviewHandleAlbum {
+    margin:0;
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
     text-align: left;
     font-size: 15px;
-    line-height: 5px;
 }
 
-.reviewInfo{
-    line-height: 40px;
-    font-size: 25px;
-    
-}
 
-.tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
-  }
-  
-.tooltip .tooltiptext {
-    visibility: hidden;
-    width: 150px;
-    background-color: white;
-    color: black;
-    text-align: center;
-    padding: 5px 0;
-    border-radius: 6px;
-    opacity: .8;
-    top: -5px;
-    right: 105%;
-   
-    /* Position the tooltip text - see examples below! */
-    position: absolute;
-    z-index: 1;
-}
-  
-  /* Show the tooltip text when you mouse over the tooltip container */
-.tooltip:hover .tooltiptext {
-visibility: visible;
-}
-
-.trackText {
-    font-size: 15px;
+/* Review Content */
+.reviewInfoAlbum {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: normal;
+    font-size:25px;
 }

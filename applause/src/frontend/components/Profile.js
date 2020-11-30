@@ -216,7 +216,7 @@ render() {
   let images = this.importAll(require.context('../../public/', false));
   
   return (
-    <div className="AlbumPage">
+    <div className="profilePage">
         <div className = "pageHolder">
             <div className="leftSide">
                 <div className="profileInfo">
