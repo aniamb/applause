@@ -820,17 +820,14 @@ app.get('/getfeedreviews', function(req, res, err) {
 
 // LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'handle' : req.query.handle}]}).exec(function (err, user){
-           console.log(user);
            res.status(200).json(user);
      });
 });
 
 //LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
 app.get('/fillProfile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'email' : req.query.email}]}).exec(function (err, user){
            console.log(user);
@@ -851,7 +848,7 @@ const storage = multer.diskStorage({
       cb(null, "../public/");
    },
    filename: function(req, file, cb){
-      cb(null,"IMAGE-" + Date.now().toString() + "-" + file.originalname);
+      cb(null,"IMAGE-" + file.originalname);
    }
  });
 
@@ -869,15 +866,14 @@ const storage = multer.diskStorage({
    fileFilter: fileFilter
  })
 
-
 app.post('/uploadpicture', upload.single("file"), function(req, res, err) {    
-   console.log(req.file);
    if (req.file === null || req.file === undefined) {
-      res.status(200).send("../public/avatar.png")
+      console.log("Setting to default as file sent is")
+      res.status(200).send("avatar.png")
    } else {
+      console.log("Setting to new file sent")
       res.status(200).send(req.file.path.toString());
    }
-   console.log(req.file.path);
 });
 
 //Updating user profile fields
