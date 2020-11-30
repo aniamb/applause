@@ -10,6 +10,7 @@ class RecAlbums extends React.Component{
     super(props);
     this.state = {
       reviewArray: [],
+      currUser: ""
     }
   }
 
@@ -18,6 +19,7 @@ componentDidMount() {
 
   // Finds the local user
   var lookupUser = sessionStorage.getItem("currentUser");
+  this.setState({currUser: lookupUser});
 
   axios.get('http://localhost:5000/findalbums', {
     params: {
@@ -52,10 +54,9 @@ render() {
     var oneReview = tempReviewArray[i];
     
     albums.push(
-      <div className="albumCardProfile" onClick={this.toAlbum(oneReview.album + "/" + oneReview.artist + "/" + oneReview.albumId)}>
+      <div className="grid-item" onClick={this.toAlbum(oneReview.album + "/" + oneReview.artist + "/" + oneReview.albumId)}>
         <figure className="albumReview" >
-          <img class="resize" src={oneReview.image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
-          <figcaption>
+          <figcaption style= {{width:"100%", marginLeft: "30%"}}>
             <StarRatings
               className="starRating"
               rating= {oneReview.rating}
@@ -66,31 +67,25 @@ render() {
               starDimension = "30px"
               starSpacing = "1px"
               name='rating'
+              
             />
           </figcaption>
         </figure>
-        <div className="reviewContentProfile">
-          <p className="reviewAlbumProfile">
-            <b>{oneReview.album} by {oneReview.artist}</b>
-          </p>
+        <div className="reviewContentProfile" style= {{textAlign: "center"}}>
+          <h1 className="listenAlbumName">{oneReview.album}</h1>
+          <h2 className="reviewArtistName">{oneReview.artist}</h2>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="Followers">
-      <h1> Recommended Albums!</h1>
-      <div className="AlbumPage">
-        <div className = "albumHolder">
-          <div className="albumInfo">
-            <div className="albumInfoTemp">
-              {albums}
-            </div>
-          </div>
-        </div>
+    <div>
+      <h1 className="pageTitle">@{this.state.currUser}'s Recommended Albums!</h1> 
+      <div className="grid-container">
+        {albums}
       </div>
-    </div>
+    </div>    
   );
 }}
 
