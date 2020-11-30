@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const express = require('express');
 require('dotenv').config();
-const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD, SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET } = process.env;
 
 
 const bodyParser = require("body-parser");
@@ -139,8 +139,7 @@ app.post('/searchserver', function (req,res1) {
 });
 
 
-var client_id = '1e16a710b11b440080bd4f588115191e'; // Your client id
-var client_secret = '10443ec704464dc990af339e1bbee0f3'; // Your secret
+
 var redirect_uri = 'http://localhost:5000/callback'; // Your redirect uri
 var playlistId;
 
@@ -168,7 +167,7 @@ app.get('/spotifyauth', function(req, res) {
    res.redirect('https://accounts.spotify.com/authorize?' +
       querystring.stringify({
       response_type: 'code',
-      client_id: client_id,
+      client_id: SPOTIFY_CLIENT_ID,
       scope: scope,
       redirect_uri: redirect_uri,
       state: state
@@ -229,7 +228,7 @@ app.get('/spotifyauth', function(req, res) {
          grant_type: 'authorization_code'
        },
        headers: {
-         'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+         'Authorization': 'Basic ' + (new Buffer(SPOTIFY_CLIENT_ID + ':' + SPOTIFY_CLIENT_SECRET).toString('base64'))
        },
        json: true
      };
