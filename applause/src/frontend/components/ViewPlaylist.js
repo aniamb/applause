@@ -65,7 +65,9 @@ render() {
     const uri = String(idk[0]);
     console.log(this.state.artist);
   return (
-
+        <div>
+          <h1>Open Spotify to find your new playlist!</h1>
+          <br></br>
         <div>
         <SpotifyPlayer
             uri={this.state.artist}
@@ -74,7 +76,7 @@ render() {
             theme={theme}
         />
         </div>
-        
+        </div>
   );
 }
 

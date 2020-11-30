@@ -345,7 +345,7 @@ app.get('/spotifyauth', function(req, res) {
             
          }
          
-         res.redirect('http://localhost:3000/profile');
+         res.redirect('http://localhost:3000/createplaylist');
 
        } else {
          res.redirect('/#' +
