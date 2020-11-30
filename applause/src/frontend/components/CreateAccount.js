@@ -4,7 +4,8 @@ import PasswordStrengthBar from 'react-password-strength-bar'
 import '../styles/CreateAccount.css';
 import axios from 'axios'
 import validator from 'validator';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
 
 class CreateAccount extends React.Component{
@@ -44,6 +45,17 @@ handlePasswordConfirmChange(event) {
 handleHandleChange(event) {
   this.setState({handle: event.target.value})
 } 
+
+googleRedirect(event){
+  event.preventDefault();
+  axios.get('http://localhost:5000/auth/google').then(response => {
+      console.log(" google redirect successful");
+  }).catch((err) => {
+      console.log("google redirect fail");
+  })
+}
+
+
 handleSubmit(event){
   const { password, passwordConfirm } = this.state
   event.preventDefault();
@@ -107,6 +119,8 @@ render() {
                         {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <input className="submitButton" type="submit" value="create account"/><br></br>
                 </form>
+                <a href="http://localhost:5000/auth/google" ><FontAwesomeIcon icon={faGoogle} size="sm" color="red"/> Log In With Google</a>
+
         
                 <div className="loginRedirect"><NavLink to="/login">existing user?</NavLink></div>
                 {this.state.isRedirect && <Redirect to={{

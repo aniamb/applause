@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const express = require('express');
 require('dotenv').config();
-const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
 
 
 const bodyParser = require("body-parser");
@@ -20,6 +20,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+var passport = require('passport')
+const session = require('express-session')
+require('./passport')(passport)
 
 mongoose.connect(dbConnectionString, { useNewUrlParser: true });
 mongoose.set('useFindAndModify', false);
@@ -32,6 +35,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
+
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+app.use('/auth', require('./auth'))
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -39,8 +53,6 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
 var unirest = require("unirest");
 const { useImperativeHandle } = require('react');
 const { Server } = require('http');
-//const { default: Review } = require('../frontend/components/Review');
-//const { default: Review } = require('../frontend/components/Review');
 
 
 var api = unirest("GET", "https://deezerdevs-deezer.p.rapidapi.com/search");

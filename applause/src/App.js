@@ -48,6 +48,7 @@ function App () {
             <PrivateRoute path="/feed" component={Feed}/>
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
+            <PrivateRoute path="/profile#" component={Profile}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
