@@ -3,6 +3,8 @@ import { NavLink, Redirect} from 'react-router-dom'
 import '../styles/Login.css';
 import axios from 'axios'
 import validator from 'validator'
+import GoogleButton from 'react-google-button'
+
 
 
 class Login extends React.Component{
@@ -71,6 +73,21 @@ render() {
                 <br/>
                 <NavLink to="/resetpassword">forgot password?</NavLink><br></br>
                 <NavLink to="/createaccount">new user?</NavLink><br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <a href="http://localhost:5000/auth/google" >
+                  <GoogleButton
+                    className="googleBtn"
+                    type="light" // can be light or dark
+                    onClick={() => { this.setLoggedIn() }}
+                  />
+                </a>
                 {this.state.isRedirect && <Redirect to={{
                     pathname: '/profile'
                 }}/>}

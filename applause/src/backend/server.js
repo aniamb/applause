@@ -1,7 +1,7 @@
 const crypto = require('crypto')
 const express = require('express');
 require('dotenv').config();
-const { REACT_APP_EMAIL, REACT_APP_PASSWORD, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const { REACT_APP_EMAIL, REACT_APP_PASSWORD} = process.env;
 
 
 const bodyParser = require("body-parser");
@@ -35,17 +35,17 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.urlencoded());
+
+//for google login
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false
 }))
-
-
 app.use(passport.initialize())
 app.use(passport.session())
-
 app.use('/auth', require('./auth'))
+//end google login
 
 // console.log that your server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
@@ -65,8 +65,6 @@ api.headers({
 	"x-rapidapi-key": "0eb2fb4595mshdb8688a763ce4f8p1f0186jsn77d3735b4c36",
 	"useQueryString": true
 });
-
-
 
 //searches API for artist/album
 app.post('/searchserver', function (req,res1) {
@@ -850,6 +848,15 @@ app.get('/fillProfile', function(req, res, err) {
      });
 });
 
+app.get('/fillProfileGoogle', function(req, res, err) {
+   console.log(req.body);
+   User.findOne({$or: [
+       {'_id': ObjectId(req.query.id)}]}).exec(function (err, user){
+          console.log(user);
+          res.status(200).json(user);
+    });
+});
+
 const path = require("path");
 console.log(path);
 console.log(__dirname);
@@ -922,8 +929,8 @@ app.post('/editprofile', function(req, res, err) {
 });
 
 // Delete Account
-app.get('/delete', function(req, res, err) {
-    console.log(req.body.currUser);
+app.post('/delete', function(req, res, err) {
+    console.log("DELETE" + req.body.currUser);
     User.deleteOne({'handle': req.body.currUser}).exec(function(err){
         console.log("Account successfully deleted.")
         res.status(200).send('Deleting account worked');

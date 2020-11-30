@@ -7,7 +7,6 @@ app.use(cors())
 let User = require('./models/user');
 require('dotenv').config();
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
-console.log(GOOGLE_CLIENT_ID)
 
 module.exports = function(passport) {
     passport.use(new GoogleStrategy({
@@ -20,7 +19,6 @@ module.exports = function(passport) {
         var fullName = profile.displayName.split(' ')
         var firstName = fullName[0]
         var lastName = fullName[fullName.length - 1];
-        console.log(profile.emails[0].value)
         const newUser = {
             firstname : firstName,
             lastname: lastName,

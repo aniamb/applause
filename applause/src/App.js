@@ -18,6 +18,8 @@ import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
 import Comments from './frontend/components/Comments'
+import EditProfileGoogle from './frontend/components/EditProfileGoogle'
+import ProfileGoogle from './frontend/components/ProfileGoogle'
 
 
 
@@ -48,14 +50,15 @@ function App () {
             <PrivateRoute path="/feed" component={Feed}/>
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
-            <PrivateRoute path="/profile#" component={Profile}/>
+            <Route exact path="/profilegoogle/:handle" component={ProfileGoogle}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
+            <Route path="/editprofilegoogle/:id" component={EditProfileGoogle}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>
             <PrivateRoute exact path="/editreview/:album/:artist/:reviewid" component={EditReview}/>
             <PrivateRoute exact path="/comments/:reviewId" component={Comments}/>
-            <PrivateRoute render= {() =>
+            <Route render= {() =>
                 // <Timeline />
                 <CreateAccount />
                 // <Profile />

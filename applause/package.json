@@ -27,6 +27,7 @@
     "react": "^16.13.1",
     "react-avatar-edit": "^0.9.0",
     "react-dom": "^16.13.1",
+    "react-google-button": "^0.7.1",
     "react-native-elements": "^2.3.2",
     "react-password-strength-bar": "^0.3.2",
     "react-router-dom": "^5.2.0",
