@@ -1,0 +1,124 @@
+/* Page title */
+.pageTitle {
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: bold;
+    font-size:40px;
+}
+
+/* COntainer sizing for the page */
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    margin-top:20px;
+    padding: 0 10vw;
+    /* grid-column-gap:10vw; */
+    grid-row-gap:5vw;
+}
+
+.grid-item {
+    padding: 20px;
+    /* width:250px;
+    height:350px; */
+    margin:0 5vw;
+    width:20vw;
+    font-size: 30px;
+    text-align: center;
+    background-color:rgb(119,205,195);
+    border-radius: 25px;
+}
+  
+.grid-item:hover {
+    -ms-transform: scale(1.05);
+    -webkit-transform: scale(1.05);
+    transform: scale(1.05);
+    transition: 0.5s;
+    z-index: 9;
+    cursor: pointer;
+}
+
+/* Album Cover */
+.resize {
+    width:12vw;
+    height:12vw;
+    padding-top:15px;
+}
+
+/* Album Name */
+.reviewAlbumName{
+    font-family: 'Reem Kufi', sans-serif;
+    font-weight: bold;
+    font-size:1.75vw;
+}
+
+/* Artist Name */
+.reviewArtistName {
+    font-weight: normal;
+    margin:0;
+    font-size:15px;  
+}
+
+/* Remove from list */
+input{
+    margin:0;
+    padding:5px;
+}
+
+.removeBtn{
+    padding-top:5px;
+    padding-bottom:5px;
+}
+
+.removeBtn input{
+    width: fit-content;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: rgb(241, 241, 241);
+    font-size: 13px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+
+.removeBtn input:hover{
+    cursor: pointer;
+    color:rgb(119,205,195);
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width:700px) {
+    .grid-container{
+        grid-template-columns: auto auto;
+    }
+
+    .grid-item {
+        width:25vw;
+    }
+
+    .reviewAlbumName {
+        font-size: 4vw;
+    }
+
+    .resize {
+        width:17vw;
+        height:17vw;
+    }
+}
+
+@media(max-width:600px){
+    .grid-container{
+        grid-template-columns: auto;
+    }
+
+    .grid-item {
+        width:35vw;
+    }
+
+    .reviewAlbumName {
+        font-size:4vw;
+    }
+    
+    .resize {
+        width:22vw;
+        height:22vw;
+    }
+}

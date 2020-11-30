@@ -922,17 +922,14 @@ app.get('/getfeedreviews', function(req, res, err) {
 
 // LOADING INFO INTO USER PROFILE CODE
 app.get('/profile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'handle' : req.query.handle}]}).exec(function (err, user){
-           console.log(user);
            res.status(200).json(user);
      });
 });
 
 //LOADING INFO INTO EDIT PROFILE CODE FROM CREATE ACCOUNT
 app.get('/fillProfile', function(req, res, err) {
-    console.log(req.body);
     User.findOne({$or: [
         {'email' : req.query.email}]}).exec(function (err, user){
            console.log(user);
@@ -953,7 +950,7 @@ const storage = multer.diskStorage({
       cb(null, "../public/");
    },
    filename: function(req, file, cb){
-      cb(null,"IMAGE-" + Date.now().toString() + "-" + file.originalname);
+      cb(null,"IMAGE-" + file.originalname);
    }
  });
 
@@ -971,15 +968,14 @@ const storage = multer.diskStorage({
    fileFilter: fileFilter
  })
 
-
 app.post('/uploadpicture', upload.single("file"), function(req, res, err) {    
-   console.log(req.file);
    if (req.file === null || req.file === undefined) {
-      res.status(200).send("../public/avatar.png")
+      console.log("Setting to default as file sent is")
+      res.status(200).send("avatar.png")
    } else {
+      console.log("Setting to new file sent")
       res.status(200).send(req.file.path.toString());
    }
-   console.log(req.file.path);
 });
 
 //Updating user profile fields
@@ -1057,4 +1053,172 @@ app.post('/deletecomment', function(req, res, err) {
            res.status(200).send("No errors deleting comment")
         }
       })
+})
+
+// Add album to review Later
+app.post('/addreviewlater', function(req, res, err) {
+   console.log("in add review later");
+
+   var albumInfo = []
+   albumInfo.push(req.body.params.albumName)
+   albumInfo.push(req.body.params.artistName)
+   albumInfo.push(req.body.params.albumArt)
+   albumInfo.push(req.body.params.albumId)
+    User.updateOne(
+     {"handle" : req.body.params.handle},
+     {$push : {review_later : albumInfo }},
+     function (err,result){
+       if(err){
+           console.log("Failed to add album to review later");
+           res.status(400).send("Error in adding album to review later");
+           res.end();
+       }else{
+         res.status(200).send();
+         console.log("Added album to review later!");
+         res.end();
+       }
+     })
+})
+
+// Remove album from review Later
+app.get('/removereviewlater', function(req, res, err) {
+   console.log("in remove review later");
+
+   User.findOne({
+      'handle': req.query.handle}, function(err, user) {
+         if (user) {
+            console.log(user);
+            albums = user.review_later
+            idxToRemove = -1
+            for(let i = 0; i<albums.length; i++){
+               if(albums[i][3] === req.query.albumId){
+                  idxToRemove = i
+               }
+            }
+            // console.log(albumInfo)
+            if(idxToRemove >= 0){
+               User.updateOne(
+                  {"handle" : req.query.handle},
+                  {$pull : {review_later : user.review_later[idxToRemove] }},
+                  function (err,result){
+                     if(err){
+                           console.log("Failed to remove album from review later");
+                           res.status(400).send("Error in removing album from review later");
+                           res.end();
+                     }else{
+                        res.status(200).send();
+                        console.log("Removed album from review later!");
+                        res.end();
+                     }
+               })
+            }
+         } else {
+            //user not found
+              console.log('user not found');
+         }
+   })
+
+})
+
+// Get array of reviewLater from specific users
+app.get('/reviewlater', function(req, res, err) {
+   var albums = [];
+   console.log(req.query.userHandle);
+   User.findOne({
+      'handle': req.query.userHandle }, function(err, user) {
+         if (user) {
+            console.log(user);
+            res.status(200).send(user.review_later);
+            res.end();
+         } else {
+            //user not found
+              console.log('user not found');
+              res.status(400).send();
+              res.end();
+         }
+   })
+})
+
+// Add album to listen Later
+app.post('/addlistenlater', function(req, res, err) {
+   console.log("in add listen later");
+
+   var albumInfo = []
+   albumInfo.push(req.body.params.albumName)
+   albumInfo.push(req.body.params.artistName)
+   albumInfo.push(req.body.params.albumArt)
+   albumInfo.push(req.body.params.albumId)
+    User.updateOne(
+     {"handle" : req.body.params.handle},
+     {$push : {listen_later : albumInfo }},
+     function (err,result){
+       if(err){
+           console.log("Failed to add album to listen later");
+           res.status(400).send("Error in adding album to listen later");
+           res.end();
+       }else{
+         res.status(200).send();
+         console.log("Added album to listen to later!");
+         res.end();
+       }
+     })
+})
+
+// Remove album from listen Later
+app.get('/removelistenlater', function(req, res, err) {
+   console.log("in remove listen later");
+
+   User.findOne({
+      'handle': req.query.handle}, function(err, user) {
+         if (user) {
+            console.log(user);
+            albums = user.listen_later
+            idxToRemove = -1
+            for(let i = 0; i<albums.length; i++){
+               if(albums[i][3] === req.query.albumId){
+                  idxToRemove = i
+               }
+            }
+            // console.log(albumInfo)
+            if(idxToRemove >= 0){
+               User.updateOne(
+                  {"handle" : req.query.handle},
+                  {$pull : {listen_later : user.listen_later[idxToRemove] }},
+                  function (err,result){
+                     if(err){
+                           console.log("Failed to remove album from listen to later");
+                           res.status(400).send("Error in removing album from listen to later");
+                           res.end();
+                     }else{
+                        res.status(200).send();
+                        console.log("Removed album from listen to later!");
+                        res.end();
+                     }
+               })
+            }
+         } else {
+            //user not found
+              console.log('user not found');
+         }
+   })
+
+})
+
+// Get array of listenLater from specific users
+app.get('/listenlater', function(req, res, err) {
+   var albums = [];
+   console.log(req.query.userHandle);
+   User.findOne({
+      'handle': req.query.userHandle }, function(err, user) {
+         if (user) {
+            console.log(user);
+            res.status(200).send(user.listen_later);
+            res.end();
+         } else {
+            //user not found
+              console.log('user not found');
+              res.status(400).send();
+              res.end();
+         }
+   })
 })
