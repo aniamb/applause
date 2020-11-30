@@ -51,8 +51,11 @@ let User = new mongoose.Schema({
     favorites: {
         type: [String]
     },
-    groups: {
-        type: [String]
+    listen_later: {
+        type: [Array]
+    },
+    review_later: {
+        type: [Array]
     },
     meta_data: {
         type: String

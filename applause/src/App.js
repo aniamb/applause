@@ -20,6 +20,9 @@ import EditReview from './frontend/components/EditReview'
 import Comments from './frontend/components/Comments'
 import EditProfileGoogle from './frontend/components/EditProfileGoogle'
 import ProfileGoogle from './frontend/components/ProfileGoogle'
+import RecAlbums from './frontend/components/RecAlbums'
+import ReviewLater from './frontend/components/ReviewLater'
+import ListenLater from './frontend/components/ListenLater'
 
 
 
@@ -53,6 +56,9 @@ function App () {
             <Route exact path="/profilegoogle/:handle" component={ProfileGoogle}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
             <Route path="/editprofilegoogle/:id" component={EditProfileGoogle}/>
+            <PrivateRoute path="/recalbums" component={RecAlbums}/>
+            <PrivateRoute path="/reviewlater" component={ReviewLater}/>
+            <PrivateRoute path="/listenlater" component={ListenLater}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
             <PrivateRoute exact path="/artistpage/:artistName" component ={ArtistPage}/>
             <PrivateRoute exact path="/review/:album/:artist/:albumId" component={Review}/>

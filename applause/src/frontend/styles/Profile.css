@@ -43,6 +43,23 @@
     font-size:15px
 }
 
+.followBtn{
+    /* margin-bottom: 30px; */
+    margin: 10px 0px;
+    width: 125px;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgb(74, 124, 118);
+}
+
+.followBtn:hover {
+    color:rgb(119,205,195);
+    cursor: pointer;
+}
+
 .follow {
     display: flex;
     justify-content: center;
