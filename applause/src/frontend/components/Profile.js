@@ -198,8 +198,8 @@ render() {
                             <div className="reviewContentProfile">
                                 <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}  </b>   
                                     <TwitterShareButton
-                                    title={reviewsHolder[i].content}
                                     url="https://applause.com/"
+                                    title={'Check out my review for ' + reviewsHolder[i].album + ' by ' + reviewsHolder[i].artist + ' on Applause: "' + reviewsHolder[i].content + '"'}
                                     >
                                     <TwitterIcon size={25} round />
                                     </TwitterShareButton></p>                 
@@ -207,14 +207,6 @@ render() {
                                 <p className="reviewInfoProfile">{reviewsHolder[i].content}</p>
                                 
                             </div>
-                            {/* <div>
-                                <TwitterShareButton
-                                    title="Hello"
-                                    url="https://stackoverflow.com/"
-                                    >
-                                    <TwitterIcon size={32} round />
-                                </TwitterShareButton> 
-                            </div>     */}
                         </div>
             )
         }

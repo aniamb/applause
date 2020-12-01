@@ -6,6 +6,7 @@ import '../styles/Feed.css';
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
+import { TwitterShareButton, TwitterIcon } from "react-share";
 
 class Feed extends Component {
     constructor(props) {
@@ -200,7 +201,13 @@ class Feed extends Component {
                               </figure>
                               </div>
                               <div className="reviewContent">
-                                  <h1>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</h1>
+                                  <h1>{reviewsHolder[i].album}, {reviewsHolder[i].artist}
+                                  <TwitterShareButton
+                                    url="https://applause.com/"
+                                    title={'Check out ' + reviewsHolder[i].username + "'s" + ' review for ' + reviewsHolder[i].album + ' by ' + reviewsHolder[i].artist + ' on Applause: "' + reviewsHolder[i].content + '"'}
+                                    >
+                                    <TwitterIcon size={25} round />
+                                    </TwitterShareButton></h1>
                                   <h2 className="dateInfo">reviewed by @{reviewsHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
                                   <p className="reviewInfo">{reviewsHolder[i].content}</p>
                                   {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
