@@ -80,7 +80,6 @@ render() {
                 <br></br>
                 <br></br>
                 <br></br>
-                <br></br>
                 <a href="http://localhost:5000/auth/google" >
                   <GoogleButton
                     className="googleBtn"
