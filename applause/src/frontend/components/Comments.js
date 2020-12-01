@@ -26,6 +26,7 @@ class Comments extends Component{
           commentContent: "",
           commentUsername: "",
           username: "",
+          currLiked: false
 
       }
     }
@@ -49,6 +50,12 @@ componentDidMount () {
             reviewComments: response.data[0].comments,
             reviewTime: response.data[0].time
         });
+        var currUser = sessionStorage.getItem("currentUser");
+        if((response.data[0].users_liked.includes(currUser))){
+            this.setState({currLiked: true})
+        }else{
+            this.setState({currLiked: false})
+        }
         console.log(this.state.reviewComments)
     }).catch(() => {
         alert("Error getting review");
@@ -142,6 +149,70 @@ deleteComment(indexToDelete, commentId){
   })
 }
 
+isLiked(id){
+    if(this.state.currLiked){
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(false, id)} size="sm" color="red"/>
+        )
+    } else {
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(true, id)} size="sm"/>
+        )
+    }
+}
+
+changeLike(changeLikeTo, id){
+    // var usersLiked = this.state.feedReviewsLiked
+    if(!changeLikeTo){
+        this.setState({currLiked: false})
+        this.unlike(id)
+    } else {
+        this.setState({currLiked: true})
+        this.like(id)
+    }
+   // this.setState({feedReviewsLiked: usersLiked})
+}
+
+unlike = (id) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("unliking review")
+    axios.get('http://localhost:5000/unlike', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully unliked review")
+        var numLiked = this.state.reviewLikes
+        numLiked--
+        this.setState({reviewLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
+
+like = (id) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("liking review")
+    axios.get('http://localhost:5000/like', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully liked review")
+        var numLiked = this.state.reviewLikes
+        numLiked++
+        this.setState({reviewLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
+
 importAll(r) {
     let images = {};
     r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
@@ -182,7 +253,8 @@ importAll(r) {
                 <h1>{this.state.reviewAlbum}, {this.state.reviewArtist}</h1>
                 <h2 className="dateInfo">reviewed by @{this.state.reviewUsername}  {finalDate} <span className="time">{finalTime}</span></h2>
                 <p className="reviewInfo">{this.state.reviewContent}</p>
-                <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/>{this.state.reviewLikes}
+                {/* <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/>{this.state.reviewLikes} */}
+                {this.isLiked(this.props.match.params.reviewId)}{this.state.reviewLikes}
                 <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}}/> {this.state.reviewComments.length}
             </div>    
         </div>
