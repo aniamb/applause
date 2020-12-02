@@ -39,7 +39,7 @@ class Following extends Component{
       currHandle = this.props.location.state.hand;
     }
 
-    console.log(currHandle);
+    console.log("CURR HANDLE" + currHandle);
     axios.get('http://localhost:5000/following', {
         params: {
           userHandle: currHandle
@@ -185,14 +185,11 @@ render() {
       }
 
       userNames.push(
-          <div className="follow" onClick={() => this.linkToProfile(this.state.followingData[i])} >
+          <div className="follow-grid-item follow-card" onClick={() => this.linkToProfile(this.state.users[i].handle)} >
             <div className="followProfPic">
               <Avatar 
                 style={{
-                  margin: "auto",
-                  // marginLeft: "20%",
-                  // marginTop: "5%",
-                  float: "left",
+                  margin: "0 auto",                    
                   width: "100px",
                   height: "100px",
                 }} 
@@ -201,64 +198,66 @@ render() {
                 alt={this.state.users[i].firstname + " " + this.state.users[i].lastname}
               />
             </div>
-            <div className="headerName">
-              
-              <h2>
-                {this.state.users[i].firstname} {this.state.users[i].lastname}
-              </h2>
-
-              <h3>
-                @{this.state.users[i].handle}
-              </h3>
-                {/* <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button> */}
+            <div className="headerName follow-title">
+                <div className="follow-name">
+                  <h2>
+                    {this.state.users[i].firstname}
+                  <br/>
+                    {this.state.users[i].lastname}
+                  </h2>
+                </div>
+                <h3>
+                  @{this.state.users[i].handle}
+                </h3>
             </div>
-            </div>
+          </div>
       )
     }
-
     let recFollow = [];
-    for(let i = 0; i< this.state.findToFollowUsers.length; i++){
-      if (i === 0) {
-        console.log("Here")
+    let recFollowHeader = []
+    if(this.props.location.state.hand === sessionStorage.getItem("currentUser")){
+        recFollowHeader.push(<div><h1> Recommended Users to Follow!</h1></div>)
+        for(let i = 0; i< this.state.findToFollowUsers.length; i++){
+          if (i === 0) {
+            console.log("Here")
+          }
+
+          let path = ""
+          // console.log(this.state.findToFollowUsers[i]);
+
+          if (this.state.findToFollowUsers[i].meta_data !== "" && this.state.findToFollowUsers[i].meta_data !== undefined) {
+            path = this.state.findToFollowUsers[i].meta_data.split("/")[3];
+          }
+          
+          recFollow.push(
+              <div className="follow-grid-item follow-card" onClick={() => this.linkToProfile(this.state.findToFollowUsers[i].handle)} >
+                <div className="followProfPic">
+                  <Avatar 
+                    style={{
+                      margin: "0 auto",
+                      width: "100px",
+                      height: "100px"
+                    }} 
+                    variant="circle"
+                    src={images[path]}
+                    alt={this.state.findToFollowUsers[i].firstname + " " + this.state.findToFollowUsers[i].lastname}
+                  />
+                </div>
+                <div className="headerName follow-title">
+                  <div className="follow-name">
+                    <h2>
+                      {this.state.findToFollowUsers[i].firstname} 
+                      <br/>
+                      {this.state.findToFollowUsers[i].lastname}
+                    </h2>
+                  </div>
+                  <h3>
+                    @{this.state.findToFollowUsers[i].handle}
+                  </h3>
+                </div>
+                </div>
+          )
       }
-
-      let path = ""
-      // console.log(this.state.findToFollowUsers[i]);
-
-      if (this.state.findToFollowUsers[i].meta_data !== "" && this.state.findToFollowUsers[i].meta_data !== undefined) {
-        path = this.state.findToFollowUsers[i].meta_data.split("/")[3];
-      }
-
-      recFollow.push(
-          <div className="follow" onClick={() => this.linkToProfile(this.state.findToFollowUsers[i].handle)} >
-            <div className="followProfPic">
-              <Avatar 
-                style={{
-                  margin: "auto",
-                  // marginLeft: "20%",
-                  // marginTop: "5%",
-                  float: "left",
-                  width: "100px",
-                  height: "100px",
-                }} 
-                variant="circle"
-                src={images[path]}
-                alt={this.state.findToFollowUsers[i].firstname + " " + this.state.findToFollowUsers[i].lastname}
-              />
-            </div>
-            <div className="headerName">
-              
-              <h2>
-                {this.state.findToFollowUsers[i].firstname} {this.state.findToFollowUsers[i].lastname}
-              </h2>
-
-              <h3>
-                @{this.state.findToFollowUsers[i].handle}
-              </h3>
-                {/* <button onClick={() => this.unfollow(this.state.followingData[i])}>Unfollow!</button> */}
-            </div>
-            </div>
-      )
     }
   
   userNames.sort();
@@ -269,8 +268,8 @@ render() {
       <div className="header">
 
         <h1> Following!</h1>
-          <div className="row">
-            <div className="userOrder">
+          <div>
+            <div className="follower-grid-container">
                 {userNames}
             </div>
             {this.state.navigate && <Redirect to={{
@@ -278,9 +277,10 @@ render() {
                 state: {"username": this.state.username}
             }}/>}
           </div>
-          <h1> Recommended Users to Follow!</h1>
-          <div className="row">
-            <div className="userOrder">
+          <br/>
+          <div>
+            {recFollowHeader}
+            <div className="follower-grid-container">
                 {recFollow}
             </div>
             {this.state.navigate && <Redirect to={{

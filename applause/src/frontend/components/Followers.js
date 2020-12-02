@@ -128,15 +128,11 @@ class Followers extends Component{
         } 
 
         userNames.push(
-            <div className="follow" onClick={() => this.linkToProfile(this.state.users[i].handle)}>
+            <div className="follow-grid-item follow-card" onClick={() => this.linkToProfile(this.state.users[i].handle)}>
               <div className="followProfPic">
                 <Avatar
                   style={{
-                    float: "left",
-                    // margin: "auto",
-                    margin: "5%",
-                    // marginTop: "5%",
-                    
+                    margin: "0 auto",                    
                     width: "100px",
                     height: "100px",
                   }} 
@@ -145,10 +141,14 @@ class Followers extends Component{
                   alt={this.state.users[i].firstname + " " + this.state.users[i].lastname}
                 />
               </div>
-              <div className="headerName">
-                <h2>
-                  {this.state.users[i].firstname} {this.state.users[i].lastname}
-                </h2>
+              <div className="headerName follow-title">
+                <div className="follow-name">
+                  <h2>
+                    {this.state.users[i].firstname}
+                  <br/>
+                    {this.state.users[i].lastname}
+                  </h2>
+                </div>
                 <h3>
                   @{this.state.users[i].handle}
                 </h3>
@@ -164,8 +164,8 @@ class Followers extends Component{
       <div className="header">
         
         <h1> Followers!</h1>
-          <div className="row">
-            <div className="userOrder">
+          <div>
+            <div className="follower-grid-container">
                 {userNames}
             </div>
           {this.state.navigate && <Redirect to={{

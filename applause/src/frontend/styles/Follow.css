@@ -2,10 +2,13 @@
 
   .follow {
     border: 3px solid transparent;
-    display: flex;
     justify-content: center;
     margin-right: 5%;
     /* margin-left: 15%; */
+  }
+
+  .followProfPic{
+    width: 100%;
   }
   
   .header h1 {
@@ -17,8 +20,9 @@
     }
 
     .headerName h2 {
-      margin-left: 50%;
-      text-align: right;
+      /* margin-left: 50%; */
+      margin: 0 auto;
+      text-align: center;
       font-weight: 350;
       font-family: 'Reem Kufi';
       color:black;
@@ -31,18 +35,78 @@
     }
 
     .headerName h3 {
-      margin-left: 55%;
+      /* margin-left: 55%; */
       font-family: 'Reem Kufi';
       font-weight: 350;
       color: rgb(119,205,195);
+      margin-top: 0;
     }
-    .headerName h3:hover {
-      font-weight: 750;
-      font-family: 'Reem Kufi';
-      color: black;
-    }
+    
   
   .userOrder {
     flex-direction: column;
     width: 100%
   }
+
+  .follower-grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    margin-top:20px;
+    margin-bottom: 30px;
+    padding: 0 10vw;
+    grid-column-gap: 5vw;
+    grid-row-gap: 3vw;
+  }
+
+  .follow-grid-item{
+    padding: 8px;
+    /* width:250px;
+    height:350px; */
+    margin:0 5vw;
+    width:20vw;
+    font-size: 30px;
+    text-align: center;
+    
+    border-radius: 25px;
+  }
+
+  .follow-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .follow-card:hover{
+    box-shadow: 0 4px 8px 0 rgba(84, 143, 136, 0.575);
+  }
+  
+  .follow-title {
+    color: grey;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+  }
+
+  /* MEDIA QUERIES */
+@media screen and (max-width:750px) {
+  .follow-grid-container{
+      grid-template-columns: auto auto;
+  }
+
+  .follow-grid-item {
+      width:25vw;
+  }
+}
+
+@media(max-width:600px){
+  .follow-grid-container{
+      grid-template-columns: auto;
+  }
+
+  .follow-grid-item {
+      width:35vw;
+  }
+
+}
