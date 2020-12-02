@@ -202,7 +202,7 @@ td, th {
     height: 190px;
     margin-bottom: 15px;
     overflow-y: scroll;
-    line-height: 15px;
+    line-height: 25px;
 }
 
   /* On mouse-over, add a deeper shadow */
