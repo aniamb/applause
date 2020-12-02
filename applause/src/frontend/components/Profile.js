@@ -285,9 +285,9 @@ render() {
                                     state: {handle: sessionStorage.getItem('currentUser')}
                                 }}/>}
                     </button>
-                    <button className="group" onClick={this.recAlbumsRedirectFunc}>Recommended Albums </button>
+                    <button className="group" onClick={this.recAlbumsRedirectFunc}>Recommended For You </button>
                     {this.state.recAlbumsRedirect ? <Redirect to={{
-                      pathname: '/recalbums'
+                      pathname: '/recommended'
                     }}/>: null}
                 </div>
             </div>
