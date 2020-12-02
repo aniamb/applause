@@ -124,13 +124,13 @@ app.post('/searchserver', function (req,res1) {
 	}else {
 		api.query({
 			"q": searchTerm
-		});
+      });
 		
 		api.end(function (res) {
 			if (res.error) throw new Error(res.error);
 			var i;
 			var k = 'value';
-
+         // console.log(res.body)
 			for (i = 0; i < res.body.data.length; i++) {
             
 				var val1 = new Content(res.body.data[i].album.id, res.body.data[i].album.title, res.body.data[i].artist.name, res.body.data[i].album.cover_medium, res.body.data[i].artist.picture_medium); 
@@ -718,6 +718,7 @@ app.get('/getalbumtracks', function(req, res, err) {
       if (yes.error) throw new Error(yes.error);
 
       console.log("body: ");
+
       console.log("Number of tracks: " + yes.body.nb_tracks);
       for (let i = 0; i < yes.body.nb_tracks; i++) {
          //console.log(yes.body.tracks.data[i].title);
@@ -1034,6 +1035,237 @@ app.get('/unfollow', function(req, res){
       }
     })
   });
+
+app.get('/recommendedFollow', function(req, res) {
+
+  // All users to be sending
+  recommendFollowers = [];
+
+  // Users that current user is following
+  var userfollowing = [];
+
+  // Users that are following current user
+  var userfollowed = [];
+
+  console.log("\nHandle inputted\t" + req.query.userHandle)
+
+  User.findOne({'handle': req.query.userHandle}, function(err, user) {
+    if (user) {
+      
+      // Users that current user is following
+      for (var i = 0; i < user.following.length; i++) {
+        if (!userfollowing.includes(user.following[i])) {
+          userfollowing.push(user.following[i]);
+        }
+      }
+
+      console.log("userfollowing array\t" + userfollowing)
+
+      // Users that are following current user
+      for (var i = 0; i < user.followers.length; i++) {
+        if (!userfollowed.includes(user.followers[i])) {
+          userfollowed.push(user.followers[i]);
+        }
+      }
+
+      console.log("userfollowed array\t" + userfollowed)
+    }
+
+    // Creates an array of users that are not being followed but are following
+    var allNotFollowed = []
+    console.log("Users followed:\t" + userfollowed)
+    console.log("Users following:\t" + userfollowing)
+    for (let i = 0; i < userfollowed.length; i++) {
+      if (!userfollowing.includes(userfollowed[i])) {
+        allNotFollowed.push(userfollowed[i])
+      }
+    }
+
+    console.log("All not followed\t" +allNotFollowed);
+
+    // Checks if there are 3 elements of users that are following you but you are not reciprocating
+    if (allNotFollowed.length === 3) {
+      res.status(200).send(allNotFollowed);
+      res.end();
+    }
+    // If there are more than 3 users following but not followed by, we randomly select them
+    else if (allNotFollowed.length > 3) {
+
+
+      for (let i = 0; i < allNotFollowed.length; i++) {
+        var element = _.sample(allNotFollowed);
+
+        if (!recommendFollowers.includes(element) && element !== req.query.userHandle && !userfollowing.includes(users[i].handle)){
+          recommendFollowers.push(element);
+        }
+
+        if (recommendFollowers.length === 3) {
+          break;
+        }
+      }
+
+      res.status(200).send(recommendFollowers);
+      res.end();
+
+    }
+
+    // Only two users are following you, but not being reciprocated
+    else if (allNotFollowed.length == 2) {
+
+      // Adds both elements of allNotFollowed to recommendedFollowers
+      recommendFollowers.push.apply(recommendFollowers, allNotFollowed);
+
+      console.log("Useres in recommendFollowers\t" + recommendFollowers)
+
+      // Grabs a random handle from one of the user's following
+      var random_handle = _.sample(recommendFollowers);
+
+      // Finds the user with a handle
+      User.findOne({'handle': random_handle}, function(err, user) {
+        if (user) {
+          
+          // Randomizes the array
+          var random_array = _.shuffle(user.following)
+
+          console.log("Randomized array\t" + random_array)
+
+          // Users that the random handle user is following
+          for (var i = 0; i < user.following.length; i++) {
+
+            // Make sure the handle doesn't already exist and it's not the current one
+            if (!recommendFollowers.includes(random_array[i]) && random_array[i] !== req.query.userHandle && !userfollowing.includes(random_array[i])) {
+              recommendFollowers.push(random_array[i]);
+              break;
+            }
+          }
+        }
+
+        // We have still not gotten 3 users
+
+        if (recommendFollowers.length !== 3) {
+        
+          console.log("Still not 3!\t" + recommendFollowers);
+
+          // Grabs a list of all users
+          User.find({"handle": { "$regex": "", "$options": "i" } }, function(err, users){
+            if (err) throw err;
+            
+            // Randomizes the list
+            var users = _.shuffle(users);
+  
+
+            for (var i = 0; i < users.length; i++) {
+              if (!recommendFollowers.includes(users[i].handle) && users[i].handle !== req.query.userHandle && !userfollowing.includes(users[i].handle)) {
+                console.log("Came across\t" + users[i].handle)
+                recommendFollowers.push(users[i].handle);
+              }
+  
+              if (recommendFollowers.length === 3) {
+                break;
+              }
+            }
+  
+            console.log("Sending when origin not 3\t" + recommendFollowers);
+            res.status(200).send(recommendFollowers);
+            res.end();
+          });
+        } else {
+          console.log("Sending\t" + recommendFollowers);
+          res.status(200).send(recommendFollowers);
+          res.end();
+        }
+      });
+
+    } 
+    else if (allNotFollowed.length == 1) {
+      // Adds both elements of allNotFollowed to recommendedFollowers
+      recommendFollowers.push.apply(recommendFollowers, allNotFollowed);
+
+      var random_handle = _.sample(recommendFollowers);
+
+      User.findOne({'handle': random_handle}, function(err, user) {
+        if (user) {
+          
+          // Randomizes the array
+          var random_array = _.shuffle(user.following)
+
+          // Users that the random handle user is following
+          for (var i = 0; i < user.following.length; i++) {
+            
+            // Make sure the handle doesn't already exist and it's not the current one
+            if (!recommendFollowers.includes(random_array[i]) && random_array[i] !== req.query.userHandle && !userfollowing.includes(random_array[i])) {
+              recommendFollowers.push(random_array[i]);
+              break;
+            }
+
+            if (recommendFollowers.length === 3) {
+              break;
+            }
+          }
+        }
+
+        if (recommendFollowers.length !== 3) {
+          
+          console.log("Still not 3!\t" + recommendFollowers);
+
+          // Grabs a list of all users
+          User.find({"handle": { "$regex": "", "$options": "i" } }, function(err, users){
+            if (err) throw err;
+            
+            // Randomizes the list
+            var users = _.shuffle(users);
+
+
+            for (var i = 0; i < users.length; i++) {
+              if (!recommendFollowers.includes(users[i].handle) && users[i].handle !== req.query.userHandle && !userfollowing.includes(users[i].handle)) {
+                console.log("Came across\t" + users[i].handle)
+                recommendFollowers.push(users[i].handle);
+              }
+
+              if (recommendFollowers.length === 3) {
+                break;
+              }
+            }
+
+            console.log("Sending when origin not 3\t" + recommendFollowers);
+            res.status(200).send(recommendFollowers);
+            res.end();
+          });
+        } else {
+          console.log("Sending\t" + recommendFollowers);
+          res.status(200).send(recommendFollowers);
+          res.end();
+        }
+      });
+    } 
+    else if (allNotFollowed.length == 0) {
+
+      var random_handle = _.sample(recommendFollowers);
+      console.log("Random handle found\t" + random_handle)
+      User.findOne({'handle': random_handle}, function(err, user) {
+        if (user) {
+          
+          // Randomizes the array
+          var random_array = _.shuffle(user.following)
+
+          // Users that the random handle user is following
+          for (var i = 0; i < user.following.length; i++) {
+            if (!recommendFollowers.includes(random_array[i])) {
+              recommendFollowers.push(random_array[i]);
+            }
+
+            if (recommendFollowers.length === 3) {
+              break;
+            }
+          }
+        }
+      });
+
+      res.status(200).send(recommendFollowers);
+      res.end();
+    }
+  });
+});
 
  //verify reset password link
  app.get('/reset', (req, res, next) => {
