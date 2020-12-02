@@ -6,6 +6,7 @@
 
 form{
     margin-top: 5px;
+    display: block;
 }
 
 .profileIcon{
@@ -35,7 +36,7 @@ h2 {
 }
 
 .container > div {
-    width:30%;
+    width:45%;
     height:65%;
     background:rgb(119,205,195);
     margin:auto;
@@ -63,6 +64,7 @@ h2 {
     font-size: 13px;
     margin: 10px;
     box-shadow: 4px 4px 5px rgb(74, 124, 118);
+    margin-top:20px;
 }
 
 .button:hover{
@@ -134,6 +136,7 @@ h2 {
 .inputfile + label {
     /* font-size: 1.25em;
     font-weight: 700; */
+    display: block;
     font-size: large;
     font-weight: bold;
     color: white;
@@ -151,11 +154,21 @@ h2 {
 .inputfile + label:hover {
     color: black;
     font-size: x-large;
-
     /* font-weight: bolder; */
+}
+
+.editTitle {
+    margin-top:15px;
+    display: block;
+    font-family: 'Reem Kufi', sans-serif;
+    font-size:25px; 
 }
 
 input[type=radio] {
     padding-right: 15%;
+}
 
+input[type=text] {
+    display: block;
+    margin:auto;
 }
