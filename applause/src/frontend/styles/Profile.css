@@ -143,6 +143,11 @@
     width: 55%;
 }
 
+.albumReviewRec {
+    justify-content: center;
+    margin: auto; 
+}
+
 .albumReviewScroll{
     height: 900px;
     overflow: auto;
@@ -292,3 +297,10 @@
         margin-bottom: 10px;
     }
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

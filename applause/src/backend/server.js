@@ -1,5 +1,6 @@
 const crypto = require('crypto')
 const express = require('express');
+const _ = require('lodash');
 require('dotenv').config();
 const { REACT_APP_EMAIL, REACT_APP_PASSWORD } = process.env;
 
@@ -580,6 +581,112 @@ app.get('/getalbumtracks', function(req, res, err) {
 
  });
 
+
+ // recommends artists
+app.get('/findartists', function(req, res, err) {
+
+   console.log("In Rec\t" + req.query.userHandle);
+ 
+   let currhandle = req.query.userHandle;
+ 
+   // Grabs the user of the current user
+   User.findOne({'handle': req.query.userHandle }, function(err, user) {
+ 
+     var userfollowing = [];
+     var randomReviews = [];
+     if (user) {
+ 
+       // user exists
+       for (var i = 0; i < user.following.length; i++) {
+         if (!userfollowing.includes(user.following[i])) {
+             userfollowing.push(user.following[i]);
+         }
+       }
+ 
+       // Found a random user from a list of following
+       var randomUser = _.sample(userfollowing);
+       
+       // Creates a list of reviews made by the random user
+       let currReviewList = [];
+ 
+       // Recieves the public Review ID's for each follower
+       var currPublicReviews = user.public_reviews;
+       
+       for (let i = 0; i < currPublicReviews.length; i++) {
+         let internalPromise =
+           Review.findById({'_id': mongoose.Types.ObjectId(currPublicReviews[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+             if (err) {
+               console.log(err);
+             }
+             if (review) {
+               currReviewList.push(review)
+             }
+           });
+       }
+       
+       // Creates a user object
+       User.findOne({'handle': randomUser }, function(err, user) {
+ 
+         let randReviewList = [];
+ 
+         if (user) {
+ 
+           // Recieves the public Review ID's for each follower
+           var randPublicReviews = user.public_reviews;          
+           
+           for (let i = 0; i < randPublicReviews.length; i++) {
+             let internalPromise =
+               Review.findById({'_id': mongoose.Types.ObjectId(randPublicReviews[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+                 if (err) {
+                   console.log(err);
+                 }
+                 if (review) {
+                   if (review.rating >= 4 && !review.users_liked.includes(currhandle) &&
+                       !randReviewList.includes(review))
+                   {
+                     console.log(review.users_liked)
+                     console.log(review.album)
+                     randReviewList.push(review);
+                   }
+                 }
+ 
+                 if (i == randPublicReviews.length - 1) {
+ 
+                   var totalReview = [];
+                   console.log("Length of reviewList\t" + randReviewList.length);
+ 
+                   if (randReviewList.length > 0) {
+ 
+                     for (let i = 0; i < randReviewList.length; i++) {
+                       if (!currReviewList.includes(randReviewList[i])) {
+                         totalReview.push(randReviewList[i]);
+                       }
+                     }
+ 
+                     // console.log("Total Reviews\t" + totalReview)
+ 
+                     // Found a list of reviews
+                     randomReviews = _.shuffle(totalReview);
+             
+                     // Grabs only max three random albums
+                     if (randomReviews.length > 3) {
+                       randomReviews = randomReviews.slice(0, 3);
+                     }
+ 
+                     console.log("Randomized Reviews\t" + randomReviews.length)
+ 
+                     res.status(200).json(randomReviews);
+                   }
+                 }
+             });
+           }
+         }
+       });
+     }
+   });
+ });
+ 
+
  app.get('/follow', function(req, res){
 
    let followUser = null
@@ -781,7 +888,7 @@ app.get('/getfeedreviews', function(req, res, err) {
                      for (let i = 0; i < publicIds.length; i++) { // need to have similar for loop for private ID's
                         console.log("id: " + publicIds[i]);
                         let internalPromise =
-                           Review.findById({'_id': mongoose.Types.ObjectId(publicIds[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
+                           Review.findById({'_id': mongoose.Types.ObjectId(publicIds[i])}, null, {sort: {'_id': 1}}, function (err, review) { // finding review in review table based on ID's stored in user table
                            if (err) {
                                console.log(err);
                            }
