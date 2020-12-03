@@ -3,7 +3,7 @@ import { Avatar } from '@material-ui/core';
 import '../styles/Profile.css';
 import { Redirect} from 'react-router-dom'
 import axios from 'axios'
-import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faTrash, faEdit, faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 import Spotify from '../styles/spotify.png'
@@ -42,7 +42,9 @@ class Profile extends React.Component{
         visibility: "",
         recAlbumsRedirect: false,
         reviewLater:false,
-        listenLater:false
+        listenLater:false,
+        feedReviewsLiked:[],
+        numLikes: []
     }
 }
 
@@ -65,6 +67,7 @@ async componentDidMount(){
         }
         sessionStorage.setItem("currentUser", this.state.user.handle);
         sessionStorage.setItem("profileImagePath", this.state.path);
+        
     })
     .catch((err) => {
         console.log('error getting info');
@@ -149,6 +152,21 @@ getReviews = () => {
     .then((response) => {
         const data = response.data;
         this.setState({ reviews: data });
+        var liked = this.state.feedReviewsLiked
+        var numLiked = this.state.numLikes
+        var currUser = sessionStorage.getItem("currentUser")
+        for(var i = 0; i<this.state.reviews.length; i++){
+            if((this.state.reviews[i].users_liked).includes(currUser)){
+                liked.push(true)
+            }else{
+                liked.push(false)
+            }
+        }
+        for(var j = 0; j<this.state.reviews.length; j++){
+            numLiked[j] = this.state.reviews[j].users_liked.length
+        }
+        this.setState({numLikes:numLiked})
+        this.setState({feedReviewsLiked: liked})
         console.log('Retrieved reviews!');
         console.log(data); // reviews are in console
     })
@@ -178,6 +196,73 @@ deleteReview(reviewId) {
 editReview(reviewAlbum, reviewArtist, reviewId) {
     this.props.history.push('/editreview/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
 }
+redirectComment(id) {
+    this.props.history.push('/comments/' + id);
+}
+isLiked(i, id){
+    var usersLiked = this.state.feedReviewsLiked
+    if(usersLiked[i]){
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(false, i, id)} size="sm" color="red"/>
+        )
+    } else {
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(true, i, id)} size="sm"/>
+        )
+    }
+}
+
+changeLike(changeLikeTo, i, id){
+    var usersLiked = this.state.feedReviewsLiked
+    if(!changeLikeTo){
+        usersLiked[i] = false
+        this.unlike(id, i)
+    } else {
+        usersLiked[i] = true
+        this.like(id, i)
+    }
+    this.setState({feedReviewsLiked: usersLiked})
+}
+
+unlike = (id, i) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("unliking review")
+    axios.get('http://localhost:5000/unlike', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully unliked review")
+        var numLiked = this.state.numLikes
+        numLiked[i]--
+        this.setState({numLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
+
+like = (id, i) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("liking review")
+    axios.get('http://localhost:5000/like', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully liked review")
+        var numLiked = this.state.numLikes
+        numLiked[i]++
+        this.setState({numLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
 
 sortData (reviewsHolder) {
     reviewsHolder.sort(
@@ -202,7 +287,7 @@ render() {
             <h2 key={0}>You haven't written any reviews.</h2>
         )
     }else{
-        for (let i = 0; i < reviewsHolder.length; i++) {
+        for (let i = reviewsHolder.length-1; i >= 0; i--) {
             let date = new Date(reviewsHolder[i].time);
     
             date.setHours(date.getHours()+2);
@@ -212,6 +297,7 @@ render() {
             if(date.getMinutes() < 10){
                 minutes = "0" + date.getMinutes();
             }
+            
             var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
                 minutes].join(':') + (isPM ? 'pm' : 'am');
             let time_format = (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() + ' at ' + time;
@@ -246,6 +332,9 @@ render() {
                                     <TwitterIcon size={25} round />
                                     </TwitterShareButton></p>                 
                                 <p className="reviewHandleProfile">@{reviewsHolder[i].username}, {time_format}, {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="editReview" icon={faEdit} size="sm"/></button><button className="trashBtn" onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
+                                <br/>
+                                {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
+                                <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewsHolder[i]._id)}/> {reviewsHolder[i].comments.length}
                                 <p className="reviewInfoProfile">{reviewsHolder[i].content}</p>
                                 
                             </div>
