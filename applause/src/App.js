@@ -21,6 +21,7 @@ import Comments from './frontend/components/Comments'
 import EditProfileGoogle from './frontend/components/EditProfileGoogle'
 import ProfileGoogle from './frontend/components/ProfileGoogle'
 import RecAlbums from './frontend/components/RecAlbums'
+import RecArtists from './frontend/components/RecArtists'
 import ReviewLater from './frontend/components/ReviewLater'
 import ListenLater from './frontend/components/ListenLater'
 import ViewPlaylist from './frontend/components/ViewPlaylist'
@@ -61,6 +62,7 @@ function App () {
             <PrivateRoute path="/editprofile" component={EditProfile}/>
             <Route path="/editprofilegoogle/:id" component={EditProfileGoogle}/>
             <PrivateRoute path="/recalbums" component={RecAlbums}/>
+            <PrivateRoute path="/recartists" component={RecArtists}/>
             <PrivateRoute path="/reviewlater" component={ReviewLater}/>
             <PrivateRoute path="/listenlater" component={ListenLater}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>
