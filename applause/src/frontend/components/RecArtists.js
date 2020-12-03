@@ -68,7 +68,7 @@ render() {
     artists.push(
       <div className="grid-item" onClick={this.toArtist(oneReview.artist)}>
         <figure className="albumReview" >
-          <img class="resize" src={oneReview.image} style= {{width:"7.5vw", height:"7.5vw", marginLeft:"50%"}} alt="Avatar"/>
+          <img class="resize" src={oneReview.image} style= {{width:"7.5vw", height:"7.5vw"}} alt="Avatar"/>
         </figure>
         <div className="reviewContentProfile" style= {{textAlign: "center"}}>
           <h2 className="reviewArtistName">{oneReview.artist}</h2>
