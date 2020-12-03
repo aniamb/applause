@@ -98,7 +98,7 @@ toAlbum (text) {
             console.log(albumHolder[i][0]);
             reviewLaterList.push(
                 <div className="grid-item">
-                    <img className="resize" src={albumHolder[i][2]} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
+                    <img className="resizeReviewLater" src={albumHolder[i][2]} alt="Avatar" onClick={this.toAlbum(albumHolder[i][0] + "/" + albumHolder[i][1] + "/" + albumHolder[i][3])}/>
                     <h1 className="reviewAlbumName">{albumHolder[i][0]}</h1>
                     <h2 className="reviewArtistName">{albumHolder[i][1]}</h2>
                     <div className="removeBtn">

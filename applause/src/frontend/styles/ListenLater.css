@@ -38,7 +38,7 @@
 }
 
 /* Album Cover */
-.resize {
+.resizeListenLater {
     width:12vw;
     height:12vw;
     padding-top:15px;
@@ -98,7 +98,7 @@ input{
         font-size: 4vw;
     }
 
-    .resize {
+    .resizeListenLater {
         width:17vw;
         height:17vw;
     }
@@ -122,7 +122,7 @@ input{
         height: 200px;
     }
 
-    .resize {
+    .resizeListenLater {
         width:22vw;
         height:22vw;
     }

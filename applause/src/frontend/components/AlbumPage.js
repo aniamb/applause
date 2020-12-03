@@ -262,7 +262,10 @@ render() {
     // trackList.push(<p className="trackText">Tracklist:</p> )
    for (let j = 0; j < this.state.tracks.length; j++) {
        trackList.push(
-        <p className="trackText">  {this.state.tracks[j]} </p> 
+        // <p className="trackText">  {this.state.tracks[j]} </p> 
+            <tr>
+                <td>{this.state.tracks[j]}</td>
+            </tr>
        )
    }
 
@@ -290,9 +293,10 @@ render() {
             let time_format = time
                 allReviews.push (
 
-                <div className="albumCard">
-                        <figure className="albumReview">
-                            <img src={reviewHolder[i].image} alt="Avatar"/>
+                <div className="albumCardAlbum">
+                        <figure className="albumReviewAlbum">
+                            {/* <img src={reviewHolder[i].image} alt="Avatar"/> */}
+                            <img class="resize" src={reviewHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings
                                 className="starRating"
@@ -307,14 +311,13 @@ render() {
                             />
                                 </figcaption>
                         </figure>
-                        <div className="reviewContent">
-                            <p className="reviewAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandle">@{reviewHolder[i].username} </p>
-                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+                        <div className="reviewContentAlbum">
+                            <p className="reviewAlbumAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
+                            <p className="reviewHandleAlbum">@{reviewHolder[i].username}, {date_format} {time_format} </p>
+                            <FontAwesomeIcon className="likes" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
                             <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
                             <br></br>
-                           <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
-                            <p className="reviewInfo">{reviewHolder[i].content}</p>
+                            <p className="reviewInfoAlbum">{reviewHolder[i].content}</p>
                         </div>    
                     </div>
                 )
@@ -332,22 +335,23 @@ render() {
 
     return (
 
-      <div className="AlbumPage">
-        <div className = "albumHolder">
-            <div className="albumInfo">
-                <div className="albumInfoTemp">
-                    <br></br>
+      <div className="albumPage">
+        <div className = "pageHolderAlbum">
+            <div className="leftSideAlbum">
+                <div className="albumInfo">
+                    {/* <br></br>
                     <br></br>
                     <br></br>
                     <div class="tooltip">
                         <img className ="albumPic" src={albumArt} alt="Avatar"/>
                         <span class="tooltiptext">{trackList}</span>
-                    </div>
-                   
+                    </div> */}
+                   <img className = "albumPic" src={albumArt} alt="albumPicAvatar"></img>
                     <h1 className="albumSectionTitle">{this.state.albumName}</h1> 
-                    <h2 className="albumArtistSectionTitle">{this.state.artistName}</h2>
+                    <h2 className="albumArtistSectionTitle"><span className="by">by</span> {this.state.artistName}</h2>
 
-                        {/* overall album rating */}
+                    {/* overall album rating */}
+                    <div className="ratingsAlbum">
                         <StarRatings
                                 className="starRating"
                                 rating= {aggRating[0]}
@@ -355,34 +359,39 @@ render() {
                                 starHoverColor="rgb(243,227, 0)"
                                 isSelectble = "true"
                                 numberOfStars={5}
-                                starDimension = "50px"
+                                starDimension = "3vw"
                                 starSpacing = "1px"
                                 name='rating'
                             />
                             {/* add total rating */}
-                            <p className="totalRatings">({reviewHolder.length})</p>
-                        <br></br>
+                            <p className="totalRatings">{reviewHolder.length} review</p>
+                        </div>
                         <br></br>
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
-                        <br></br>
-                        <br></br>
-                        <p className="trackText">Hover album art to view tracklist</p>
-                        
-                        <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a>
-                        <div className="forLater">
+
+                        {/* <p className="trackText">Hover album art to view tracklist</p> */}
+                        <a href={link}><button className="geniusBtn">Genius album <img className="geniusPic" title = "Learn More on Genius" src={Genius} alt="Genius"></img></button></a>
+
+                        {/* <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a> */}
+                        <div className="forLaterAlbum">
                             <input type="submit" value={this.state.reviewLater} onClick={this.changeReviewLater}/>
                             <input type="submit" value={this.state.listenLater} onClick={this.changeListenLater}/>
                         </div>                        
                 </div>
+                <div className="trackListAlbum">
+                    <h1 className="trackListTitle">Track List</h1>
+                    <table>
+                        {trackList}
+                    </table>
+                </div>
             </div>
+
             <div className="albumReviews">
                 <select className="dropdown-album" onChange={this.handleDropdownChange.bind(this)}>
                   <option value="1">Top Liked</option>
                   <option value="2">Most Recent</option>
                 </select> 
-                <br></br>
                 <div className="albumReviewScroll">
-                    {/* review cards */}
                     {allReviews}
                 </div> 
             </div>

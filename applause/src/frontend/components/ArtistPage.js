@@ -116,9 +116,9 @@ render() {
     let time_format = time
 
         allReviews.push (
-        <div className="card">
-        <figure className="albumReview">
-          <img src={reviewHolder[i].image} alt="Avatar"/>
+        <div className="cardArtist">
+        <figure className="albumReviewArtist">
+          <img src={reviewHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
           <figcaption>
             <StarRatings
                 className="starRating"
@@ -127,20 +127,20 @@ render() {
                 starHoverColor="yellow"
                 isSelectble = "true"
                 numberOfStars={5}
-                starDimension = "29px"
+                starDimension = "30px"
                 starSpacing = "0px"
                 name='rating'
             />
           </figcaption>
         </figure>
-        <div className="reviewContent">
-          <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p>
-          <p className="reviewHandle">@{reviewHolder[i].username} </p> 
-          <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
+        <div className="reviewContentArtist">
+          <p className="reviewAlbumArtist"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p>
+          <p className="reviewHandleArtist">@{reviewHolder[i].username}, {date_format} {time_format} </p> 
+          <FontAwesomeIcon className="likes" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
           <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
           <br></br>
-          <p className="reviewHandle">Posted: {date_format} {time_format}</p> 
-          <p className="reviewInfo">{reviewHolder[i].content}</p>
+          {/* <p className="reviewHandle">Posted: {date_format} {time_format}</p>  */}
+          <p className="reviewInfoArtist">{reviewHolder[i].content}</p>
         </div>    
     </div>
         
@@ -159,10 +159,10 @@ render() {
             console.log(reviewHolder[i].image);
             console.log(reviewHolder[i]);
             allAlbums.push (
-              <div className="album" onClick={this.toAlbum(reviewHolder[i].album + "/" + reviewHolder[i].artist + "/" + reviewHolder[i].albumId )}>
-              <img className="albumgrid" src={reviewHolder[i].image} alt="" ></img>
-              <p>{reviewHolder[i].album}</p>
-            </div>
+              <div className="albumArtist" onClick={this.toAlbum(reviewHolder[i].album + "/" + reviewHolder[i].artist + "/" + reviewHolder[i].albumId )}>
+                <img className="albumGridArtist" src={reviewHolder[i].image} alt="" ></img>
+                <p className="albumNameArtist">{reviewHolder[i].album}</p>
+              </div>
             )
 
             albumCheck.push(reviewHolder[i].album);
@@ -180,29 +180,27 @@ render() {
       <div className="ArtistPage">
         <div className="artistHeader">
           <img className="artistPic" src={artistPic} alt=""></img>
-          <div className="artistDiv"><h1 className="artistName2">{this.state.artistName}</h1></div>
+          <h1 className="artistName2">{this.state.artistName}</h1>
         </div>
-        <br></br>
-        <br></br>
-        <div className = "holder">
+        <div className = "holderArtist">
           <div className="allAlbums">
-            <h2 className="sectionTitle">Reviewed Albums</h2> 
+            <h2 className="sectionTitleArtist">Reviewed Albums</h2> 
             <div className="grid">
               {allAlbums}
-              </div>
+            </div>
           </div>
           <div className="artistReviews">
+            <div className="reviewSectionTitle">
+              <h2 id = "reviewSectionHeader" className="sectionTitleArtist">Reviews of albums by {this.state.artistName}</h2>
+              <select className="dropdown-artist" onChange={this.handleDropdownChange.bind(this)}>
+                <option value="1">Top Liked</option>
+                <option value="2">Most Recent</option>
+              </select> 
+            </div>
             <div className="artistReviewScroll">
-              <div className="reviewSectionTitle">
-                <h2 id = "reviewSectionHeader" className="sectionTitle">Reviews of music by {this.state.artistName}</h2>
-                <select className="dropdown" onChange={this.handleDropdownChange.bind(this)}>
-                  <option value="1">Top Liked</option>
-                  <option value="2">Most Recent</option>
-                </select> 
-              </div>
               {allReviews}
-          </div> 
-        </div>
+            </div> 
+          </div>
         </div>
       </div>
 
