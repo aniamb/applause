@@ -18,7 +18,8 @@ import ArtistPage from './frontend/components/ArtistPage'
 import Review from './frontend/components/Review'
 import EditReview from './frontend/components/EditReview'
 import Comments from './frontend/components/Comments'
-import Recommended from './frontend/components/Recommended'
+import RecAlbums from './frontend/components/RecAlbums'
+import RecArtists from './frontend/components/RecArtists'
 import ReviewLater from './frontend/components/ReviewLater'
 import ListenLater from './frontend/components/ListenLater'
 
@@ -52,7 +53,8 @@ function App () {
             <PrivateRoute path="/search" component={Search}/>
             <PrivateRoute path="/profile" component={Profile}/>
             <PrivateRoute path="/editprofile" component={EditProfile}/>
-            <PrivateRoute path="/recommended" component={Recommended}/>
+            <PrivateRoute path="/recalbums" component={RecAlbums}/>
+            <PrivateRoute path="/recartists" component={RecArtists}/>
             <PrivateRoute path="/reviewlater" component={ReviewLater}/>
             <PrivateRoute path="/listenlater" component={ListenLater}/>
             <PrivateRoute exact path="/albumpage/:albumName/:artistName/:albumId" component ={AlbumPage}/>

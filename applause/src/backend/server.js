@@ -524,7 +524,7 @@ app.get('/getalbumtracks', function(req, res, err) {
  
            // Recieves the public Review ID's for each follower
            var randPublicReviews = user.public_reviews;          
-           
+           let artistList = [];
            for (let i = 0; i < randPublicReviews.length; i++) {
              let internalPromise =
                Review.findById({'_id': mongoose.Types.ObjectId(randPublicReviews[i])}, function (err, review) { // finding review in review table based on ID's stored in user table
@@ -537,7 +537,11 @@ app.get('/getalbumtracks', function(req, res, err) {
                    {
                      console.log(review.users_liked)
                      console.log(review.album)
-                     randReviewList.push(review);
+                     if (!artistList.includes(review.artist)) {
+                        randReviewList.push(review);
+                        artistList.push(review.artist);
+                     }
+                     // randReviewList.push(review);
                    }
                  }
  
