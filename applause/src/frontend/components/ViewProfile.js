@@ -4,6 +4,8 @@ import '../styles/Profile.css';
 import axios from 'axios'
 import { Avatar } from '@material-ui/core';
 import StarRatings from 'react-star-ratings';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
 
 
 const user =
@@ -37,7 +39,9 @@ class ViewProfile extends React.Component{
         path:"",
         visibility: "",
         reviewLater:false,
-        listenLater:false
+        listenLater:false,
+        feedReviewsLiked:[],
+        numLikes: []
     }
 }
 
@@ -58,6 +62,21 @@ async componentDidMount(){
             if (response.data.user.meta_data !== "") {
                 this.setState({path: response.data.user.meta_data.split("/")[3]});
             }
+            var liked = this.state.feedReviewsLiked
+            var numLiked = this.state.numLikes
+            var currUser = sessionStorage.getItem("currentUser")
+            for(var i = 0; i<this.state.reviews.length; i++){
+                if((this.state.reviews[i].users_liked).includes(currUser)){
+                    liked.push(true)
+                }else{
+                    liked.push(false)
+                }
+            }
+            for(var j = 0; j<this.state.reviews.length; j++){
+                numLiked[j] = this.state.reviews[j].users_liked.length
+            }
+            this.setState({numLikes:numLiked})
+            this.setState({feedReviewsLiked: liked})
         // sessionStorage.setItem("currentUser", this.state.user.handle);
         })
         .catch((err) => {
@@ -133,7 +152,70 @@ importAll(r) {
     r.keys().map((item, index) => { images[item.replace('./', '')] = r(item); });
     return images;
   }
+  isLiked(i, id){
+    var usersLiked = this.state.feedReviewsLiked
+    if(usersLiked[i]){
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(false, i, id)} size="sm" color="red"/>
+        )
+    } else {
+        return (
+            <FontAwesomeIcon className="trash" icon={faHeart} onClick={() => this.changeLike(true, i, id)} size="sm"/>
+        )
+    }
+}
 
+changeLike(changeLikeTo, i, id){
+    var usersLiked = this.state.feedReviewsLiked
+    if(!changeLikeTo){
+        usersLiked[i] = false
+        this.unlike(id, i)
+    } else {
+        usersLiked[i] = true
+        this.like(id, i)
+    }
+    this.setState({feedReviewsLiked: usersLiked})
+}
+
+unlike = (id, i) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("unliking review")
+    axios.get('http://localhost:5000/unlike', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully unliked review")
+        var numLiked = this.state.numLikes
+        numLiked[i]--
+        this.setState({numLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
+
+like = (id, i) => {
+    var userHandle = sessionStorage.getItem("currentUser");
+    console.log("liking review")
+    axios.get('http://localhost:5000/like', {
+        params: {
+          reviewId: id,
+          handle: userHandle
+        }
+      }).then((response) => {
+        console.log("successfully liked review")
+        var numLiked = this.state.numLikes
+        numLiked[i]++
+        this.setState({numLikes:numLiked})
+        // window.location.reload();
+      })
+      .catch((err) => {
+       console.log('error getting info');
+      })
+}
   toAlbum (text) {
     return event => {
       event.preventDefault()
@@ -141,7 +223,9 @@ importAll(r) {
       console.log(text)
     }
   }
-
+  redirectComment(id) {
+    this.props.history.push('/comments/' + id);
+}
 render() {
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
@@ -151,7 +235,7 @@ render() {
             <h2>This user hasn't written any reviews.</h2>
         )
     }else{
-        for (let i = 0; i < reviewsHolder.length; i++) {
+        for (let i = reviewsHolder.length-1; i >= 0; i--) {
             let date = new Date(reviewsHolder[i].time);
     
             date.setHours(date.getHours()+2);
@@ -169,9 +253,9 @@ render() {
                 isPrivate = "private"
             }
             reviewList.push(
-                        <div className="albumCard">
+                        <div className="albumCardProfile">
                             <figure className="albumReview" onClick={this.toAlbum(reviewsHolder[i].album + "/" + reviewsHolder[i].artist + "/" + reviewsHolder[i].albumId)}>
-                                <img class="resize" src={reviewsHolder[i].image} alt="Avatar"/>
+                                <img class="resize" src={reviewsHolder[i].image} style= {{width:"12vw", height:"12vw"}} alt="Avatar"/>
                                 <figcaption>
                                     <StarRatings
                                 className="starRating"
@@ -186,10 +270,14 @@ render() {
                             />
                                 </figcaption>
                             </figure>
-                            <div className="reviewContent">
-                                <p className="reviewAlbum"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
-                                <p className="reviewHandle">@{reviewsHolder[i].username} {time_format} {isPrivate}</p>
-                                <p className="reviewInfo">{reviewsHolder[i].content}</p>
+                            <div className="reviewContentProfile">
+                                <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                <p className="reviewHandleProfile">@{reviewsHolder[i].username} {time_format} {isPrivate}</p>
+                                <br/>
+                                {this.isLiked(i, reviewsHolder[i]._id)}{this.state.numLikes[i]}
+                                <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewsHolder[i]._id)}/> {reviewsHolder[i].comments.length}
+
+                                <p className="reviewInfoProfile">{reviewsHolder[i].content}</p>
                                 
                             </div>    
                         </div>
