@@ -179,10 +179,23 @@ editReview(reviewAlbum, reviewArtist, reviewId) {
     this.props.history.push('/editreview/'+ reviewAlbum + '/' + reviewArtist+ '/' + reviewId);
 }
 
+sortData (reviewsHolder) {
+    reviewsHolder.sort(
+        function(a, b) {  
+          let dateA =  new Date(a.time).getTime();
+          let dateB =  new Date(b.time).getTime()      
+           if (dateA  === dateB) {
+              return b.users_liked.length - a.users_liked.length;
+           }
+           return dateB - dateA
+        });
+}
+
 render() {
 
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
+    this.sortData(reviewsHolder);
     let reviewHolderLength = reviewsHolder.length;
     if (reviewHolderLength === 0) {
         reviewList.push (
@@ -201,7 +214,7 @@ render() {
             }
             var time = [date.getHours() - (isPM && !isMidday ? 12 : 0), 
                 minutes].join(':') + (isPM ? 'pm' : 'am');
-            let time_format = time + ' ' + (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() ;
+            let time_format = (date.getMonth()+1) + '-' + date.getDate()+ '-' + date.getFullYear() + ' at ' + time;
             var isPrivate = "public"
             if(reviewsHolder[i].private === true){
                 isPrivate = "private"

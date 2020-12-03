@@ -142,9 +142,23 @@ importAll(r) {
     }
   }
 
+
+  sortData (reviewsHolder) {
+    reviewsHolder.sort(
+        function(a, b) {  
+          let dateA =  new Date(a.time).getTime();
+          let dateB =  new Date(b.time).getTime()      
+           if (dateA  === dateB) {
+              return b.users_liked.length - a.users_liked.length;
+           }
+           return dateB - dateA
+        });
+}
+
 render() {
     let reviewList = [];
     let reviewsHolder = this.state.reviews;
+    this.sortData(reviewsHolder);
     let reviewHolderLength = reviewsHolder.length;
     if (reviewHolderLength === 0) {
         reviewList.push (

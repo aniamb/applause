@@ -311,13 +311,12 @@ render() {
                             />
                                 </figcaption>
                         </figure>
-                        <div className="reviewContentAlbum">
-                            <p className="reviewAlbumAlbum"><b>{this.state.albumName}, {this.state.artistName}</b></p>
-                            <p className="reviewHandleAlbum">@{reviewHolder[i].username}, {date_format} {time_format} </p>
-                            <FontAwesomeIcon className="likes" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
-                            <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
+                        <div className="reviewContent">
+                            <h1>{reviewHolder[i].album}, {reviewHolder[i].artist}</h1>
+                            <h2 className="dateInfo">reviewed by @{reviewHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
+                            <p className="reviewInfo">{reviewHolder[i].content}</p>
+                            <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
                             <br></br>
-                            <p className="reviewInfoAlbum">{reviewHolder[i].content}</p>
                         </div>    
                     </div>
                 )

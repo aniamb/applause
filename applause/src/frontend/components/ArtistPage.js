@@ -133,14 +133,17 @@ render() {
             />
           </figcaption>
         </figure>
-        <div className="reviewContentArtist">
-          <p className="reviewAlbumArtist"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p>
-          <p className="reviewHandleArtist">@{reviewHolder[i].username}, {date_format} {time_format} </p> 
-          <FontAwesomeIcon className="likes" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
-          <FontAwesomeIcon className="comment" icon={faComment} size="sm" style={{marginLeft: "15px"}} onClick={() => this.redirectComment(reviewHolder[i]._id)}/> {reviewHolder[i].comments.length}
+        <div className="reviewContent">
+          <h1>{reviewHolder[i].album}, {reviewHolder[i].artist}</h1>
+          <h2 className="dateInfo">reviewed by @{reviewHolder[i].username}  {date_format} <span className="time">{time_format}</span></h2>
+          <p className="reviewInfo">{reviewHolder[i].content}</p>
+          {/* {this.isLiked(i, reviewHolder[i]._id)}{this.state.numLikes[i]} */}
+          {/* <p className="reviewAlbum"><b>{reviewHolder[i].album}, {reviewHolder[i].artist}</b></p> */}
+          {/* <p className="reviewHandle">@{reviewHolder[i].username} </p>  */}
+          <FontAwesomeIcon className="trash" icon={faHeart} size="sm"/> {reviewHolder[i].users_liked.length}
           <br></br>
           {/* <p className="reviewHandle">Posted: {date_format} {time_format}</p>  */}
-          <p className="reviewInfoArtist">{reviewHolder[i].content}</p>
+          {/* <p className="reviewInfo">{reviewHolder[i].content}</p> */}
         </div>    
     </div>
         
