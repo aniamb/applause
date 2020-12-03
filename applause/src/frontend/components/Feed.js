@@ -158,9 +158,22 @@ class Feed extends Component {
         }
       }
 
+    sortData (reviewsHolder) {
+        reviewsHolder.sort(
+            function(a, b) {  
+              let dateA =  new Date(a.time).getTime();
+              let dateB =  new Date(b.time).getTime()      
+               if (dateA  === dateB) {
+                  return b.users_liked.length - a.users_liked.length;
+               }
+               return dateB - dateA
+            });
+    }
+
     render () {
         let reviewList = [];
         let reviewsHolder = this.state.feedReviews;
+        this.sortData(reviewsHolder);
         for (let i = 0; i < reviewsHolder.length; i++) {
             let date = new Date(reviewsHolder[i].time);
        
