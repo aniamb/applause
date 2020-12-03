@@ -7,6 +7,7 @@ import { faTrash, faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 import Spotify from '../styles/spotify.png'
+import { TwitterShareButton, TwitterIcon } from "react-share";
 
 const user =
     {
@@ -224,11 +225,17 @@ render() {
                                 </figcaption>
                             </figure>
                             <div className="reviewContentProfile">
-                                <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}</b></p>
+                                <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}  </b>   
+                                    <TwitterShareButton
+                                    url="https://applause.com/"
+                                    title={'Check out my review for ' + reviewsHolder[i].album + ' by ' + reviewsHolder[i].artist + ' on Applause: "' + reviewsHolder[i].content + '"'}
+                                    >
+                                    <TwitterIcon size={25} round />
+                                    </TwitterShareButton></p>                 
                                 <p className="reviewHandleProfile">@{reviewsHolder[i].username}, {time_format}, {isPrivate}<button className="editBtn" onClick={() => this.editReview(reviewsHolder[i].album, reviewsHolder[i].artist, reviewsHolder[i]._id, )}><FontAwesomeIcon className="editReview" icon={faEdit} size="sm"/></button><button className="trashBtn" onClick={() => this.deleteReview(reviewsHolder[i]._id)}><FontAwesomeIcon className="trash" icon={faTrash} size="sm"/></button></p> 
                                 <p className="reviewInfoProfile">{reviewsHolder[i].content}</p>
                                 
-                            </div>    
+                            </div>
                         </div>
             )
         }
