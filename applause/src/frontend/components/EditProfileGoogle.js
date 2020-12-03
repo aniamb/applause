@@ -1,8 +1,6 @@
 import React from 'react';
 import '../styles/EditProfile.css';
 import axios from 'axios'
-import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Avatar } from '@material-ui/core';
 
 class EditProfileGoogle extends React.Component{
@@ -164,8 +162,8 @@ render() {
                     marginTop: "20px",
                     display: 'inline-block',
                     verticalAlign:"middle",
-                    width: "155px",
-                    height: "155px",
+                    width: "15vw",
+                    height: "15vw",
                   }} 
                   variant="circle"
                   src={images[this.state.path]}
@@ -177,37 +175,27 @@ render() {
                     <label for="file">Choose Image</label>
                     <br></br>
 
-                    <label>Handle</label>
-                    <br/>
+                    <label className="editTitle">Handle</label>
                     <input type="text" id="username" className="editProfileInput" required value={this.state.handle} onChange={this.handleHandleChange.bind(this)} maxLength="10"/> 
                     {this.state.errorMessage && <h5 className="error" style={{marginTop: "8px", marginBottom: "1px", color: "red"}}> { this.state.errorMessage } </h5>}
                     <br></br>
 
-                    <label>First Name</label>
-                    <br/>
+                    <label className="editTitle">First Name</label>
                     <input type="text" id="name" className="editProfileInput" value={this.state.firstname} onChange={this.handleFirstnameChange.bind(this)}/> 
-                    <br></br>
 
-                    <label>Last Name</label>
-                    <br/>
+                    <label className="editTitle">Last Name</label>
                     <input type="text" id="name" className="editProfileInput" value={this.state.lastname} onChange={this.handleLastnameChange.bind(this)}/> 
-                    <br></br>
 
-                    <label>Bio</label>
-                    <br/>
+                    <label className="editTitle">Bio</label>
                     <textarea rows="3" cols="20" name="bio" className="editProfileInputTextArea" value={this.state.bio} onChange={this.handleBioChange.bind(this)} maxLength="15"/>
-                    <br></br>
 
-                    <label>Profile</label>
-                        <br/>
+                    <label className="editTitle">Profile</label>
                         <input type="radio" id="public" name="visibility" value="public" checked={this.state.visibility === 'public'} onChange = {this.handleOptionChange.bind(this)}/>
                         <label for="public">  Public</label>
                         <br/>
                         <input type="radio" id="private" name="visibility" value="private" checked={this.state.visibility === 'private'} onChange = {this.handleOptionChange.bind(this)}/>
                         <label for="private">Private</label><br/>  
                       
-                      <br/>  
-
                       <input className="submit button" type="submit" value="Save Changes"/>
                 </form>
                 <input className = "button" type="button" value="Delete Account" onClick={this.deleteAccount.bind(this)}/>
