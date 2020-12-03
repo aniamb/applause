@@ -226,7 +226,7 @@ class Feed extends Component {
             <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
                 <label>
-                        <FontAwesomeIcon className="search" icon={faSearch} size="lg" style={{marginLeft: "15px"}} />
+                        <FontAwesomeIcon className="search" icon={faSearch} size="lg" style={{'marginLeft': "15px", 'marginRight': "5px" }} />
 
                         <input className = "searchBox" type="text" name="name" value={this.state.value} placeholder = "search" onChange={this.handleChange.bind(this)} required/>
                 </label>

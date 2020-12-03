@@ -99,6 +99,7 @@ h1{
 
 .searchSubmitButton{
     margin-top: 8px;
+    margin-left:5px;
     width: 60px;
     border-radius: 25px;
     border: none;
@@ -107,6 +108,11 @@ h1{
     font-size: 15px;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.267);
     
+}
+
+.searchBox{
+    display:unset !important;
+    margin:10px;
 }
 /* TO FIX */
 .albumCard {
