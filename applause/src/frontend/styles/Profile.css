@@ -18,7 +18,7 @@
 
 .profileInfo {
     /* width:30%; */
-    height:70vh;
+    height:80vh;
     background:rgb(119,205,195);
     border-radius: 5px;
     margin:0px 35px;
@@ -138,7 +138,7 @@
     outline: none;
     font-family: 'Reem Kufi', sans-serif;
     font-weight: normal;
-    font-size:20px;
+    /* font-size:20px; */
 }
 
 .group:hover {
@@ -247,42 +247,6 @@
 }
 
 /* MEDIA QUERIES */
-@media screen and (max-width:700px) {
-    .fullName{
-        font-size: 15px;
-    }
-
-    /* .followBtn{
-        width: 60%;
-        font-size:10px;
-    } */
-
-    .follow{
-        flex-direction: column;
-    }
-
-    .follow>div{
-        margin:5px;
-    }
-
-    .navBtn {
-        flex-direction: column;
-    }
-
-    .reviewAlbumProfile {
-        font-size:15px;
-        line-height: 15px;
-    }
-
-    .group {
-        width: calc(100vw/5);
-        height: calc(100vw/5);
-        margin:0px 10px;
-        font-size:20px;
-    }
-
-}
-
 @media(max-width:600px){
 
     .pageHolder{
@@ -307,5 +271,14 @@
         margin:auto;
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+
+    .profileInfo {
+        height:60vh;
+    }
+
+    .group {
+        width: calc(100vw/5);
+        height: calc(100vw/5);
     }
 }

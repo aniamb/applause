@@ -291,7 +291,7 @@ render() {
                                 
                             </div>
                             {/* <a href="http://localhost:5000/spotifyauth">create spotify playlist</a> */}
-                            <a href="http://localhost:5000/spotifyauth" rel="noopener noreferrer"><img title = "Create Playlist" style={{'height':'30px'}} src={Spotify} alt="Spotify"></img></a>
+                            <a href="http://localhost:5000/spotifyauth" rel="noopener noreferrer"><img title = "Create Playlist" style={{'height':'30px', 'width':'30px', 'marginTop':'10px'}} src={Spotify} alt="Spotify"></img></a>
                             {/* <p style={{fontSize: "12px"}}>this is a {this.state.visibility} profile</p> */}
                         {/* </div>                      */}
                     {/* </div> */}
