@@ -370,7 +370,7 @@ render() {
                         <input type="submit" className="reviewButton" value="Review this Album" onClick={this.handleReviewSubmit.bind(this)} />
 
                         {/* <p className="trackText">Hover album art to view tracklist</p> */}
-                        <a href={link}><button className="geniusBtn">Genius lyrics <img className="geniusPic" title = "Learn More on Genius" src={Genius} alt="Genius"></img></button></a>
+                        <a href={link}><button className="geniusBtn">Genius album <img className="geniusPic" title = "Learn More on Genius" src={Genius} alt="Genius"></img></button></a>
 
                         {/* <a href={link} target="_blank" rel="noopener noreferrer"><img title = "Learn More on Genius" style={{'height':'70px'}} src={Genius} alt="Genius"></img></a> */}
                         <div className="forLaterAlbum">
