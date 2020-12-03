@@ -227,7 +227,7 @@ render() {
                             <div className="reviewContentProfile">
                                 <p className="reviewAlbumProfile"><b>{reviewsHolder[i].album}, {reviewsHolder[i].artist}  </b>   
                                     <TwitterShareButton
-                                    url="https://applause.com/"
+                                    url=" "
                                     title={'Check out my review for ' + reviewsHolder[i].album + ' by ' + reviewsHolder[i].artist + ' on Applause: "' + reviewsHolder[i].content + '"'}
                                     >
                                     <TwitterIcon size={25} round />

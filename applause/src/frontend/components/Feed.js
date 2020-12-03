@@ -205,7 +205,7 @@ class Feed extends Component {
                               <div className="reviewContent">
                                   <h1>{reviewsHolder[i].album}, {reviewsHolder[i].artist}
                                   <TwitterShareButton
-                                    url="https://applause.com/"
+                                    url=" "
                                     title={'Check out ' + reviewsHolder[i].username + "'s" + ' review for ' + reviewsHolder[i].album + ' by ' + reviewsHolder[i].artist + ' on Applause: "' + reviewsHolder[i].content + '"'}
                                     >
                                     <TwitterIcon size={25} round />
