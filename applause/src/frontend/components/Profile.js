@@ -272,7 +272,7 @@ sortData (reviewsHolder) {
            if (dateA  === dateB) {
               return b.users_liked.length - a.users_liked.length;
            }
-           return dateB - dateA
+           return dateA - dateB
         });
 }
 
