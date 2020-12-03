@@ -24,6 +24,7 @@ p{
     height: 21px;
     border: none;
     width: 50%;
+    display: unset !important;
 } 
 input[type=password] {
     margin: 10px 5px;

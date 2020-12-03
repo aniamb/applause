@@ -224,7 +224,7 @@ class Feed extends Component {
         }
         return (
             <div className="Feed">
-                <form onSubmit={this.handleSubmit.bind(this)}>
+                <form onSubmit={this.handleSubmit.bind(this)} style={{'marginBottom': "10px"}}>
                 <label>
                         <FontAwesomeIcon className="search" icon={faSearch} size="lg" style={{'marginLeft': "15px", 'marginRight': "5px" }} />
 
