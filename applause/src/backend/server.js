@@ -114,7 +114,7 @@ app.post('/searchserver', function (req,res1) {
 	  
 			for (var i = 0; i < users.length; i++) {
 			  console.log(typeof(users[i].handle));
-			  userList.push(users[i].handle);
+			  userList.push(users[i]);
 			}
 			 console.log(userList);
 			 res1.status(200).json({result: userList});

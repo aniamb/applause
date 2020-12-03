@@ -3,7 +3,7 @@ import { Redirect} from 'react-router-dom'
 import axios from 'axios';
 import '../../App.css';
 import '../styles/Feed.css';
-import { faHeart, faComment } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faComment, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import StarRatings from 'react-star-ratings';
 
@@ -11,7 +11,7 @@ class Feed extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value:'',
+            value: '',
             navigate: false,
             albums: [],
             feedReviews:[],
@@ -219,10 +219,11 @@ class Feed extends Component {
             <div className="Feed">
                 <form onSubmit={this.handleSubmit.bind(this)}>
                 <label>
-                        Search: 
-                        <input className = "searchBox" type="text" name="name" value={this.state.value} onChange={this.handleChange.bind(this)} required/>
+                        <FontAwesomeIcon className="search" icon={faSearch} size="lg" style={{marginLeft: "15px"}} />
+
+                        <input className = "searchBox" type="text" name="name" value={this.state.value} placeholder = "search" onChange={this.handleChange.bind(this)} required/>
                 </label>
-                    <input type="submit" value="Search" />
+                    <input className = "searchSubmitButton" type="submit" value="Search" />
                 </form>
                 {this.state.navigate && <Redirect to={{
                     pathname: '/search',

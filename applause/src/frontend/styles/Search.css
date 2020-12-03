@@ -16,9 +16,93 @@ div.searchResults {
   
   .Search h1{
     text-align: center;
+    font-size: 25px;
   }
 
   .Search {
     text-align: center;
     font-family: 'Reem Kufi';
   }
+
+  .search-grid-container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    margin-top:20px;
+    margin-bottom: 30px;
+    padding: 0 10vw;
+    grid-column-gap: 5vw;
+    grid-row-gap: 3vw;
+  }
+
+  .search-grid-item{
+    padding: 8px;
+    /* width:250px;
+    height:350px; */
+    margin:0 5vw;
+    width:20vw;
+    font-size: 30px;
+    text-align: center;
+    
+    border-radius: 25px;
+  }
+
+  .search-card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+  }
+
+  .search-card:hover{
+    box-shadow: 0 4px 8px 0 rgba(84, 143, 136, 0.575);
+  }
+  
+  .search-title {
+    color: grey;
+    font-size: 18px;
+    display: block;
+    width: 100%;
+  }
+
+  .search-grid-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  .learn{
+    margin-top: 8px;
+    width: fit-content;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  /* MEDIA QUERIES */
+@media screen and (max-width:750px) {
+  .search-grid-container{
+      grid-template-columns: auto auto;
+  }
+
+  .search-grid-item {
+      width:25vw;
+  }
+  .search-grid-item img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media(max-width:600px){
+  .search-grid-container{
+      grid-template-columns: auto;
+  }
+
+  .search-grid-item {
+      width:35vw;
+  }
+
+}

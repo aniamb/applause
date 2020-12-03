@@ -96,3 +96,15 @@ h1{
     margin-top:10px;
     overflow: hidden;
 }
+
+.searchSubmitButton{
+    margin-top: 8px;
+    width: 60px;
+    border-radius: 25px;
+    border: none;
+    height: 25px;
+    background-color: white;
+    font-size: 15px;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.267);
+    
+}
